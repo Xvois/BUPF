@@ -28,8 +28,7 @@ export default async function PostPage({params}: { params: { post_id: string } }
                     </div>
                 </div>
                 <Separator/>
-                {/* // @ts-ignore */}
-                <CommentSection marked_comment={post.marked_comment} post_type={post.type} post_id={params.post_id}/>
+                <CommentSection marked_comment={post.marked_comment || undefined} post_type={post.type} post_id={params.post_id}/>
             </div>
         )
     }

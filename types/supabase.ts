@@ -171,7 +171,7 @@ export type Database = {
           target: string | null
           target_type: string | null
           tl_comments: number[]
-          type: string
+          type: "question" | "discussion" | "article"
         }
         Insert: {
           anonymous?: boolean
@@ -186,7 +186,7 @@ export type Database = {
           target?: string | null
           target_type?: string | null
           tl_comments?: number[]
-          type?: string
+          type?: "question" | "discussion" | "article"
         }
         Update: {
           anonymous?: boolean
@@ -201,7 +201,7 @@ export type Database = {
           target?: string | null
           target_type?: string | null
           tl_comments?: number[]
-          type?: string
+          type?: "question" | "discussion" | "article"
         }
         Relationships: [
           {

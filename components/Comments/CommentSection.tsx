@@ -88,22 +88,22 @@ export default async function CommentSection(props: {
     const {data: result} = await supabase.from("posts").select("tl_comments").eq("id", props.post_id).single();
 
     if(!user) {
-        return Response.json({error: "User not found"}, {status: 404});
+        return <></>;
     }
 
     if (!result) {
-        return Response.json({error: "Post not found"}, {status: 404})
+        return <></>
     }
     const {data: comments} = await supabase.from("comments").select("*, profiles (*)").in("id", result.tl_comments);
 
     if(!comments) {
-        return Response.json({error: "Error fetching comments"}, {status: 404});
+        return <></>
     }
 
     const {data: resolvedComments, error: resolvingError} = await recursiveChildSolver(structuredClone(comments));
 
     if(!resolvedComments || resolvingError) {
-        return Response.json({error: "Error resolving comments"}, {status: 500});
+        return <></>;
     }
 
     // Sort comments so that the marked comment is always first

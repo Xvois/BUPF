@@ -15,11 +15,12 @@ import Link from "next/link";
 export default async function UserDropdown() {
     const supabase = createClient();
     const {data: {user}, error} = await supabase.auth.getUser();
-    const {data, error: profileError} = await supabase.from('profiles').select().eq('id', user?.id).single();
-
-    if (!user) {
+        if (!user) {
         return <Link href={"/login"}>Log in</Link>;
     }
+    const {data, error: profileError} = await supabase.from('profiles').select().eq('id', user.id).single();
+
+
 
     if (!data) {
         return <span>Error fetching profile: {profileError?.message}</span>;
