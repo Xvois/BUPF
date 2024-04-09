@@ -28,7 +28,6 @@ import {useSearchParams} from "next/navigation";
 
 export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSchema>) => Promise<void> }) {
 
-    const [submissionError, setSubmissionError] = React.useState<string | null>(null);
     const searchParams = useSearchParams();
 
 

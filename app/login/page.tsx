@@ -4,11 +4,7 @@ import LoginForm from "@/app/login/login-form";
 import {Separator} from "@/components/ui/separator";
 import Link from "next/link";
 
-export default function Login({
-                                  searchParams,
-                              }: {
-    searchParams: { error: string };
-}) {
+export default function Login() {
     const signIn = async (props: { email: string, password: string }) => {
         "use server";
         const {email, password} = props;

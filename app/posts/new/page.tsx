@@ -3,7 +3,6 @@ import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import {z} from "zod";
 import {formSchema} from "@/app/posts/new/formSchema";
-import {NextResponse} from "next/server";
 
 
 export default async function Page({searchParams}: { searchParams: { type?: string, target? :string,  error?: string } }) {
