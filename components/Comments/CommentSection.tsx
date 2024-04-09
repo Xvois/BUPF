@@ -115,14 +115,14 @@ export default async function CommentSection(props: {
 
 
     return (
-        <div>
+        <div className={"space-y-4"}>
             {user && <CommentForm postID={+props.post_id}/>}
             <div className={"space-y-4"}>
                 {resolvedComments && resolvedComments.map(comment => (
                     <Comment
                         isDeletable={user ? user.id === comment.owner : false}
-                        isReportable={!!(user && user.id !== comment.owner)}
-                        isMarkable={!!(props.post_type === "question" && user && user.id === comment.owner)}
+                        isReportable={(user && user.id !== comment.owner)}
+                        isMarkable={(props.post_type === "question" && user && user.id === comment.owner)}
                         isMarked={comment.id === props.marked_comment}
                         postID={props.post_id}
                         key={comment.id}

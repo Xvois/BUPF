@@ -15,10 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn(inter.className, "px-2 sm:px-8")}>
-      <body className="bg-background text-foreground items-center">
+    <html lang="en" className={cn(inter.className, "px-2 sm:px-8 w-full max-w-screen-2xl mx-auto")}>
+      <body className="flex flex-col bg-background text-foreground items-center min-h-screen">
         <TopBar />
-        <main className="min-h-screen flex flex-col items-center">
+        <main className="flex-grow flex flex-col w-full items-center ">
           {children}
         </main>
       </body>

@@ -10,13 +10,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import Link from "next/link";
+import {Button} from "@/components/ui/button";
+
+
 
 
 export default async function UserDropdown() {
     const supabase = createClient();
     const {data: {user}, error} = await supabase.auth.getUser();
         if (!user) {
-        return <Link href={"/login"}>Log in</Link>;
+        return <Button variant={"link"} asChild>
+            <Link href={"/login"}>Log in</Link>
+        </Button>
+            ;
     }
     const {data, error: profileError} = await supabase.from('profiles').select().eq('id', user.id).single();
 

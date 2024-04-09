@@ -6,7 +6,6 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {createClient} from "@/utils/supabase/client";
 import useSWR from "swr";
 import {
     Select,
@@ -279,7 +278,7 @@ function Question(props: { defaultStates: { target: string | undefined } }) {
 
             </CardContent>
             <CardFooter>
-                <Button size="lg" type={"submit"} disabled={isSubmitting} variant={"default"}>Submit</Button>
+                <Button size="lg" type={"submit"} isLoading={isSubmitting} variant={"default"}>Submit</Button>
             </CardFooter>
         </Card>
     )

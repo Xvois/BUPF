@@ -32,27 +32,30 @@ export default function CommentForm({postID}: { postID: number }) {
 
     return (
         <form className={"flex flex-col gap-2"} onSubmit={onSubmit}>
-            <RichTextArea className={"min-h-20"} id={"comment"} placeholder={"Write a comment..."} value={comment} onChange={onChange}/>
-            <div className="items-top flex space-x-2">
-                <Checkbox
-                    name={"anonymous"}
-                    id={"anonymous"}
-                    checked={isAnonymous}
-                    onClick={() => setIsAnonymous(!isAnonymous)}
-                />
-                <div className="grid gap-1.5 leading-none">
-                    <label
-                        htmlFor="anonymous"
-                        className="text-sm font-medium leading-none"
-                    >
-                        Anonymous
-                    </label>
-                    <p className="text-sm text-muted-foreground">
-                        Your comment will be posted anonymously.
-                    </p>
+            <RichTextArea className={"min-h-20"} id={"comment"} placeholder={"Write a comment..."} value={comment}
+                          onChange={onChange}/>
+            <div className={"flex flex-row justify-between"}>
+                <div className="items-top flex space-x-2">
+                    <Checkbox
+                        name={"anonymous"}
+                        id={"anonymous"}
+                        checked={isAnonymous}
+                        onClick={() => setIsAnonymous(!isAnonymous)}
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                        <label
+                            htmlFor="anonymous"
+                            className="text-sm font-medium leading-none"
+                        >
+                            Anonymous
+                        </label>
+                        <p className="text-sm text-muted-foreground">
+                            Your comment will be posted anonymously.
+                        </p>
+                    </div>
                 </div>
+                <Button className={"w-fit"} variant={"secondary"} type="submit">Submit</Button>
             </div>
-            <Button className={"w-fit"} variant={"secondary"} type="submit">Submit</Button>
             <ServerError>
                 {submissionError}
             </ServerError>

@@ -19,6 +19,7 @@ import {
 import React, {useEffect} from "react";
 import {ServerError} from "@/components/ServerError";
 import RichTextArea from "@/components/RichTextArea";
+import {Checkbox} from "@/components/ui/checkbox";
 
 type ReplyButtonProps = {
     comment: Tables<"comments">;
@@ -31,14 +32,16 @@ export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
     const [open, setOpen] = React.useState(false);
     const [replyContent, setReplyContent] = React.useState<string>('');
     const [replyError, setReplyError] = React.useState<string | null>(null);
+    const [isAnonymous, setIsAnonymous] = React.useState(false);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (replyContent) {
             try {
-                await postComment(replyContent, false, postID, comment.id);
+                await postComment(replyContent, isAnonymous, postID, comment.id);
                 setReplyContent(''); // clear the text area after submitting
                 setReplyError(null);
+                setOpen(false);
             } catch (e) {
                 const error = e as Error;
                 setReplyError(error.message);
@@ -56,10 +59,29 @@ export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
             {
                 open &&
                 (
-                    <form onSubmit={onSubmit} className={"w-fit min-w-96"}>
-                        <RichTextArea onChange={onChange} className={""} id={"comment-reply"} value={replyContent}/>
-                        <Button onClick={() => setOpen(false)}>Cancel</Button>
-                        <Button type={"submit"}>Submit</Button>
+                    <form onSubmit={onSubmit} className={"w-fit min-w-96 border-l pl-4"}>
+                        <RichTextArea className={"text-foreground min-h-16"} onChange={onChange} id={"comment-reply"}
+                                      value={replyContent}/>
+                        <div className={"inline-flex w-full"}>
+                            <div className="flex space-x-2 items-center text-foreground">
+                                <Checkbox
+                                    name={"anonymous_comment"}
+                                    id={"anonymous_comment"}
+                                    checked={isAnonymous}
+                                    onClick={() => setIsAnonymous(!isAnonymous)}
+                                />
+                                <label
+                                    htmlFor="anonymous_comment"
+                                    className="text-sm font-medium leading-none"
+                                >
+                                    Anonymous
+                                </label>
+                            </div>
+                            <div className={"w-fit ml-auto"}>
+                                <Button variant={"link"} onClick={() => setOpen(false)}>Cancel</Button>
+                                <Button variant={"link"} type={"submit"}>Submit</Button>
+                            </div>
+                        </div>
                         <ServerError>
                             {replyError}
                         </ServerError>

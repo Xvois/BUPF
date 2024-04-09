@@ -21,7 +21,7 @@ export default function NavMenu({modules, topics}: {
 }) {
     return (
         <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className={"flex-wrap"}>
                 <NavigationMenuItem>
                     <Link href="/home" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -33,7 +33,7 @@ export default function NavMenu({modules, topics}: {
                     <NavigationMenuTrigger>Modules</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         {modules ?
-                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                            <ul className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                                 {modules.map((module) => (
                                     <ListItem
                                         key={module.id}
@@ -56,7 +56,7 @@ export default function NavMenu({modules, topics}: {
                     <NavigationMenuTrigger>Topics</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         {topics ?
-                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                            <ul className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                                 {topics.map((topic) => (
                                     <ListItem
                                         key={topic.id}
@@ -74,13 +74,6 @@ export default function NavMenu({modules, topics}: {
                             <p>Loading...</p>
                         }
                     </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href="/about" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            About
-                        </NavigationMenuLink>
-                    </Link>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>

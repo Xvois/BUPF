@@ -96,7 +96,7 @@ const MultiStageForm = ({children, pageSchema}: { children: React.ReactNode[], p
         throw new Error("MultiStageForm must be used within a Form component.")
     }
 
-    const {errors, isDirty, isValid} = form.formState;
+    const {errors, isDirty, isValid, isSubmitting} = form.formState;
     const pagesWithErrors = pageSchema
         ?.map((page, pageIndex) => page.some(field => field in errors) ? pageIndex : -1)
         .filter(index => index !== -1);
@@ -120,7 +120,7 @@ const MultiStageForm = ({children, pageSchema}: { children: React.ReactNode[], p
                 }
                 {
                     progress === children.length - 1 &&
-                    <Button disabled={!isValid} type={"submit"} className={"w-32"}>Submit</Button>
+                    <Button disabled={!isValid} isLoading={isSubmitting} type={"submit"} className={"w-32"}>Submit</Button>
                 }
             </div>
         </div>

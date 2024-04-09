@@ -12,7 +12,7 @@ export default async function TopBar() {
 
 
     return (
-        <div className={"inline-flex w-full justify-between my-4"}>
+        <div className={"inline-flex w-full flex-col-reverse sm:flex-row items-center justify-center gap-x-10 my-4"}>
             <NavMenu modules={modules} topics={topics}  />
             <UserDropdown />
         </div>

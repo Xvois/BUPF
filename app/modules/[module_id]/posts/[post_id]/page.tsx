@@ -13,8 +13,8 @@ export default async function PostPage({params}: { params: { post_id: string } }
 
     if (post) {
         return (
-            <div className={"w-full space-y-8"}>
-                <div className={"space-y-8"}>
+            <div className={"w-full space-y-4"}>
+                <div className={"border rounded-lg p-8 space-y-8"}>
                     <div>
                         <h1 className={"text-4xl font-bold mb-0"}>{post.heading}</h1>
                         <p className={"text-sm"}>
@@ -23,12 +23,15 @@ export default async function PostPage({params}: { params: { post_id: string } }
                         </p>
                     </div>
                     <Separator />
-                    <div className={"p-8"}>
-                        <MarkdownRender markdown={post.content}/>
+                    <MarkdownRender markdown={post.content}/>
+                    <div className={"w-fit ml-auto"}>
+                        <p className={"w-fit text-sm text-muted-foreground"}>
+                            Posted {new Date(post.created_at).toDateString()}
+                        </p>
                     </div>
                 </div>
-                <Separator/>
-                <CommentSection marked_comment={post.marked_comment || undefined} post_type={post.type} post_id={params.post_id}/>
+                <CommentSection marked_comment={post.marked_comment || undefined} post_type={post.type}
+                                post_id={params.post_id}/>
             </div>
         )
     }

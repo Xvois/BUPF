@@ -25,7 +25,7 @@ export default async function Comment({
 }) {
     return (
         <>
-            <div>
+            <div className={"max-w-screen-lg"}>
                 {
                     comment.anonymous ?
                         <p className={"text-sm"}>Anonymous</p>
@@ -33,7 +33,7 @@ export default async function Comment({
                         <Profile user={comment.profiles}/>
                 }
                 <MarkdownRender markdown={comment.content}/>
-                <div className={`inline-flex gap-4 text-sm underline items-start text-muted-foreground`}>
+                <div className={`inline-flex gap-4 text-sm items-start text-muted-foreground`}>
                     <ReplyButton comment={comment} postID={+postID} className={"p-0 h-fit hover:bg-background"}
                                  variant={"ghost"}>Reply</ReplyButton>
                     {
@@ -65,7 +65,7 @@ export default async function Comment({
                 </div>
             </div>
             {
-                comment.children.map((child, i) => (
+                comment.children.map((child) => (
                     <div className={"pl-4 mt-2 border-l"}>
                         <Comment
                             isDeletable={user ? user.id === comment.owner : false}

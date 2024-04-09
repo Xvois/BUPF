@@ -2,7 +2,6 @@ import {Tables} from "@/types/supabase";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
 import {Button} from "@/components/ui/button";
-import {createClient} from "@/utils/supabase/server";
 
 export default function Profile(props: { user: Tables<'profiles'> | null }) {
     const {user} = props;
@@ -12,7 +11,7 @@ export default function Profile(props: { user: Tables<'profiles'> | null }) {
     }
 
     return (
-        <HoverCard openDelay={0} closeDelay={50}>
+        <HoverCard>
             <HoverCardTrigger asChild>
                 <Button className={"p-0 h-fit"}
                         variant="link">{user.first_name} {user.last_name}</Button>
