@@ -17,7 +17,7 @@ export default function Post(props: PostProps & React.HTMLAttributes<HTMLDivElem
     const formattedContent = post.content.replace(/(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$)/g, '[LaTeX equation]');
 
     return (
-        <Card {...divProps} className={cn("w-full max-w-screen-lg", divProps.className)}>
+        <Card {...divProps} className={cn("w-full max-w-screen-lg rounded-md", divProps.className)}>
             <Link className={"focus-visible:outline-foreground"}
                   href={`/${post.target_type}s/${post.target}/posts/${post.id}`}>
                 <CardHeader className={"pt-6"}>

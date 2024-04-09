@@ -12,5 +12,5 @@ export async function GET(req: Request) {
         }
     })
 
-    return redirect('/done')
+    return redirect('/login')
 }

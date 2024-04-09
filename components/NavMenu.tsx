@@ -23,7 +23,7 @@ export default function NavMenu({modules, topics}: {
         <NavigationMenu>
             <NavigationMenuList className={"flex-wrap"}>
                 <NavigationMenuItem>
-                    <Link href="/home" legacyBehavior passHref>
+                    <Link href="/" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Home
                         </NavigationMenuLink>

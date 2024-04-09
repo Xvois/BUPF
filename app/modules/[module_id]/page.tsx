@@ -24,7 +24,7 @@ export default async function ModulePage({params}: { params: { module_id: string
                 <h1 className={"text-4xl uppercase font-bold"}>{module.id}</h1>
                 <p className={"text-2xl leading-none"}>{module.description}</p>
             </header>
-            <section className={"flex flex-col space-y-4 h-[1000px]"}>
+            <section className={"flex flex-col space-y-4 max-h-[1000px] md:h-[750px]"}>
                 <div>
                     <h2 className={"text-3xl font-semibold"}>Questions</h2>
                     <p className={"text-muted-foreground"}>

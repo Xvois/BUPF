@@ -11,8 +11,9 @@ import {Skeleton} from "@/components/ui/skeleton";
 import Post from "@/components/Post";
 import {Tables} from "@/types/supabase";
 import React from "react";
-import {ServerError} from "@/components/ServerError";
 import {Badge} from "@/components/ui/badge";
+import LinkBox from "@/components/LinkBox";
+import {ServerError} from "@/components/ServerError";
 
 // Calculate the weight for a post
 function calculateWeight(post: Tables<"posts">) {
@@ -21,7 +22,7 @@ function calculateWeight(post: Tables<"posts">) {
     const timeDifference = now - postDate; // in milliseconds
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24); // convert to days
     const commentsWeight = post.tl_comments.length;
-    return 2*commentsWeight - daysDifference; // adjust these values as needed
+    return commentsWeight - daysDifference; // adjust these values as needed
 }
 
 const QuestionsDisplay = (props: { target: string, tags: { key: string, value: string }[] }) => {
@@ -83,7 +84,7 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
     const sortedPosts = params.sort === 'rel' ? postsCopy?.sort((a, b) => calculateWeight(b) - calculateWeight(a)) : posts;
 
     return (
-        <div className={"flex md:flex-row  flex-col md:space-x-4 space-y-4 flex-grow overflow-hidden"}>
+        <div className={"flex md:flex-row flex-col md:space-x-4 space-y-4 md:space-y-0 flex-grow overflow-hidden"}>
             <div className={"space-y-4"}>
                 <div className={"flex-grow min-w-40 space-y-8 p-4 border rounded-md"}>
                     <div>
@@ -131,12 +132,15 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
                 </Button>
             </div>
             <div className={"relative md:w-3/4 overflow-y-scroll"}>
+                <ServerError>
+                    {error?.message}
+                </ServerError>
                 <div ref={scrollRef} className={"h-full overflow-y-scroll"}>
                     <div className={"flex flex-col space-y-4 items-end h-fit"}>
-                        <PostsList isLoading={isLoading} posts={sortedPosts} error={error}/>
+                        <PostsList isLoading={isLoading} posts={sortedPosts} error={error} target={props.target}/>
                     </div>
                 </div>
-                {posts && posts.length > 0 &&
+                {posts && posts.length > 4 &&
                     <div
                         className={`absolute px-4 py-2 rounded-3xl backdrop-brightness-[98%] backdrop-blur bottom-5 left-0 right-0 mx-auto w-fit h-fit text-sm transition-opacity ${!displayScrollHelper && "opacity-0"}`}>
                         Scroll for more...
@@ -148,10 +152,11 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
     )
 }
 
-function PostsList({isLoading, posts, error}: {
+function PostsList({isLoading, posts, error, target}: {
     isLoading: boolean,
     posts?: (Tables<"posts"> & { profiles: Tables<"profiles"> })[],
-    error: any
+    error: any,
+    target: string
 }) {
     if (isLoading) {
         return (
@@ -166,28 +171,25 @@ function PostsList({isLoading, posts, error}: {
     if (posts && posts.length > 0) {
         return (
             <>
-                {posts.map((post, i) => (
+                {posts.map((post) => (
                     <Post key={post.id} post={post}/>
                 ))}
+                {
+                    posts.length < 3 &&
+                    <LinkBox title={"Start a conversation."}
+                             href={`/posts/new?type=question&target=${target}`}
+                             className={"w-full scale-[99%] hover:scale-100"}
+                             description={"Questions are a little dry right now. Why not start a conversation by asking a question?"}/>
+                }
             </>
         );
     }
 
     return (
-        <div className={"w-full border rounded-md py-2 px-4 m-auto text-center"}>
-            {error ? (
-                <ServerError>
-                    <p>{error.message}</p>
-                </ServerError>
-            ) : (
-                <>
-                    <p>No posts</p>
-                    <p className={"text-sm text-muted-foreground"}>
-                        Be first to post!
-                    </p>
-                </>
-            )}
-        </div>
+        <LinkBox title={"Start a conversation."}
+                 href={`/posts/new?type=question&target=${target}`}
+                 className={"w-full scale-[99%] hover:scale-100"}
+                 description={"Questions are a little dry right now. Why not start a conversation by asking a question?"}/>
     );
 }
 

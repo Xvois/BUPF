@@ -5,7 +5,7 @@ interface ServerErrorProps {
     children: ReactNode;
 }
 
-export const ServerError = React.forwardRef((props: ServerErrorProps & React.HTMLAttributes<HTMLDivElement>) => {
+export const ServerError = React.forwardRef((props: ServerErrorProps & React.HTMLAttributes<HTMLDivElement>, ref) => {
     if(props.children) {
         return (
             <div {...props}
