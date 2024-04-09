@@ -2,8 +2,6 @@ import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import LinkBox from "@/components/LinkBox";
 import {Separator} from "@/components/ui/separator";
-import {Playfair_Display} from "next/font/google";
-import {ComboboxDemo} from "@/components/ComboboxDemo";
 
 export default async function ProtectedPage() {
     const supabase = createClient();
