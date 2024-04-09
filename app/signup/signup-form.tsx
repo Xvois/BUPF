@@ -12,15 +12,17 @@ import {ServerError} from "@/components/ServerError";
 import useSWR from "swr";
 import {sbFetcher} from "@/utils/fetcher";
 import {Tables} from "@/types/supabase";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {cn} from "@/lib/utils";
+import {ChevronsUpDown} from "lucide-react";
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select";
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandSeparator
+} from "@/components/ui/command";
 
 
 export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSchema>) => Promise<void> }) {
@@ -110,17 +112,20 @@ const MultiStageForm = ({children, pageSchema}: { children: React.ReactNode[], p
             <div className={"inline-flex w-full justify-between"}>
                 {
                     progress > 0 &&
-                    <Button className={`${errorPrior && 'outline outline-destructive'}`} type={"button"} variant={"secondary"} onClick={() => setProgress((val) => val - 1)}>{"<"}-
+                    <Button className={`${errorPrior && 'outline outline-destructive'}`} type={"button"}
+                            variant={"secondary"} onClick={() => setProgress((val) => val - 1)}>{"<"}-
                         Back</Button>
                 }
                 {
                     progress < children.length - 1 &&
-                    <Button className={`${errorNext && 'outline outline-destructive'}`} type={"button"} onClick={() => setProgress((val) => val + 1)} >Continue
+                    <Button className={`${errorNext && 'outline outline-destructive'}`} type={"button"}
+                            onClick={() => setProgress((val) => val + 1)}>Continue
                         -{">"}</Button>
                 }
                 {
                     progress === children.length - 1 &&
-                    <Button disabled={!isValid} isLoading={isSubmitting} type={"submit"} className={"w-32"}>Submit</Button>
+                    <Button disabled={!isValid} isLoading={isSubmitting} type={"submit"}
+                            className={"w-32"}>Submit</Button>
                 }
             </div>
         </div>
@@ -186,44 +191,93 @@ const UserDetailsInputs = () => {
 const CourseDetailsInputs = () => {
     const form = useFormContext<z.infer<typeof formSchema>>()
     const {data: courses, error, isLoading} = useSWR('courses', sbFetcher<Tables<"courses">>);
+    console.log(courses);
     return (
         <>
             <FormField
                 control={form.control}
                 name="course"
                 render={({field}) => (
-                    <FormItem className={"w-full"}>
+                    <FormItem className="flex flex-col">
                         <FormLabel>Course</FormLabel>
-                        <FormControl>
-                            <Select {...field} onValueChange={(course) => form.setValue("course", course)}>
-                                <SelectTrigger>
-                                    <SelectValue className={"uppercase"} placeholder="Select a course"/>
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Courses</SelectLabel>
-                                        {courses ?
-                                            courses.map((course) => (
-                                                <SelectItem className={"text-sm break-words"} key={course.id}
-                                                            value={course.id.toString()}>
-                                                    {course.type} {course.title}
-                                                </SelectItem>
-                                            ))
-                                            :
-                                            error ?
-                                                (
-                                                    <p>Error fetching modules: {error.message}</p>
-                                                )
-                                                :
-                                                (
-                                                    <p>Loading modules...</p>
-                                                )
-                                        }
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </FormControl>
-                        <FormDescription>Your course of study.</FormDescription>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <FormControl>
+                                    <Button
+                                        variant="outline"
+                                        role="combobox"
+                                        className={cn(
+                                            "max-w-[400px] w-full justify-between",
+                                            !field.value && "text-muted-foreground"
+                                        )}
+                                    >
+                                        {field.value
+                                            ? courses?.find(
+                                                (course) => course.id.toString() === field.value
+                                            )?.title
+                                            : "Select course"}
+                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                    </Button>
+                                </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="max-w-[400px] p-0">
+                                <Command className={"max-h-96 w-full overflow-y-scroll pt-12"}>
+                                    <div className={"fixed z-10 bg-popover w-full rounded-md top-0 scale-95"}>
+                                        <CommandInput placeholder="Search courses..."/>
+                                    </div>
+                                    <CommandEmpty>No course found.</CommandEmpty>
+                                    <CommandGroup className={"overflow-visible"} heading={"Standalone"}>
+                                        {courses?.filter(course => !course.title.toLowerCase().includes('theoretical') && !course.title.toLowerCase().includes('astrophysics') && course.id !== 0).map((course) => (
+                                            <CommandItem
+                                                value={course.type + course.title}
+                                                key={course.id}
+                                                onSelect={() => {
+                                                    form.setValue("course", course.id.toString())
+                                                }}
+                                            >
+                                                <p>{course.title} <span
+                                                    className={"text-xs text-muted-foreground"}>{course.type}</span></p>
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                    <CommandSeparator/>
+                                    <CommandGroup className={"overflow-visible"} heading={"With Astrophysics"}>
+                                        {courses?.filter(course => course.title.toLowerCase().includes('astrophysics') && course.id !== 0).map((course) => (
+                                            <CommandItem
+                                                value={course.type + course.title}
+                                                key={course.id}
+                                                onSelect={() => {
+                                                    form.setValue("course", course.id.toString())
+                                                }}
+                                            >
+                                                <p>{course.title} <span
+                                                    className={"text-xs text-muted-foreground"}>{course.type}</span></p>
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                    <CommandSeparator/>
+                                    <CommandGroup className={"overflow-visible"} heading={"With Theoretical"}>
+                                        {courses?.filter(course => course.title.toLowerCase().includes('theoretical') && course.id !== 0).map((course) => (
+                                            <CommandItem
+                                                value={course.type + course.title}
+                                                key={course.id}
+                                                onSelect={() => {
+                                                    form.setValue("course", course.id.toString())
+                                                }}
+                                            >
+                                                <p>{course.title} <span className={"text-xs text-muted-foreground"}>{course.type}</span></p>
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
+                        <FormDescription>
+                            Your enrolled course. This will affect what modules are available to you.
+                            Not a physics student? Choose <Button variant={"link"} type={"button"}
+                                                                  onClick={() => form.setValue("course", "0")}
+                                                                  className={"underline p-0 text-muted-foreground h-fit"}>Other</Button>.
+                        </FormDescription>
                         <FormMessage/>
                     </FormItem>
                 )}
