@@ -13,8 +13,16 @@ import {Tables} from "@/types/supabase";
 import React from "react";
 import {ServerError} from "@/components/ServerError";
 import {Badge} from "@/components/ui/badge";
-import {Separator} from "@/components/ui/separator";
 
+// Calculate the weight for a post
+function calculateWeight(post: Tables<"posts">) {
+    const now = Date.now();
+    const postDate = new Date(post.created_at).getTime();
+    const timeDifference = now - postDate; // in milliseconds
+    const daysDifference = timeDifference / (1000 * 60 * 60 * 24); // convert to days
+    const commentsWeight = post.tl_comments.length;
+    return 2*commentsWeight - daysDifference; // adjust these values as needed
+}
 
 const QuestionsDisplay = (props: { target: string, tags: { key: string, value: string }[] }) => {
 
@@ -50,20 +58,29 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
     }, [displayScrollHelper]); // Add displayScrollHelper to the dependency array
 
 
+    // Initialize state for user-selected parameters
     const [params, setParams] = React.useState({
-            chosenTag: ''
-        }
-    )
+        chosenTag: '',
+        sort: 'rel'
+    });
 
-    const searchParams = new URLSearchParams();
-    searchParams.append("target", props.target);
-    if (params.chosenTag) {
-        searchParams.append("tags", params.chosenTag);
-    }
+    // Construct the filter and sort queries based on user-selected parameters
+    const queryFilter = {target: props.target, tags: [params.chosenTag]};
+    const querySort = {ascending: params.sort === "asc" || params.sort === "rel"};
 
-    const {data: posts, error, isLoading} = useSWR<(Tables<"posts"> & {
+    // Fetch posts data from the API using SWR
+    let {data: posts, error, isLoading} = useSWR<(Tables<"posts"> & {
         profiles: Tables<"profiles">
-    })[]>(`/api/posts?${searchParams.toString()}`, fetcher);
+    })[]>(`/api/posts?filter=${JSON.stringify(queryFilter)}&sort=${JSON.stringify(querySort)}`, fetcher);
+
+    // If posts data is available, create a copy of the posts array
+    // This is done to avoid mutating the original data when sorting
+    const postsCopy = posts ? [...posts] : null;
+
+    // If the user-selected sort parameter is 'rel', sort the posts copy
+    // The sorting is done based on the weight calculated for each post
+    // If the sort parameter is not 'rel', use the original posts data
+    const sortedPosts = params.sort === 'rel' ? postsCopy?.sort((a, b) => calculateWeight(b) - calculateWeight(a)) : posts;
 
     return (
         <div className={"flex md:flex-row  flex-col md:space-x-4 space-y-4 flex-grow overflow-hidden"}>
@@ -79,14 +96,16 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
                     </div>
                     <div>
                         <Label>Sort by</Label>
-                        <Select defaultValue={"rel"}>
+                        <Select onValueChange={(e) => {
+                            setParams((prevParams) => ({...prevParams, sort: e}))
+                        }} defaultValue={"rel"}>
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder={"Relevance"}/>
                             </SelectTrigger>
                             <SelectContent className={"w-full"}>
                                 <SelectItem value="rel">Relevance</SelectItem>
-                                <SelectItem value="dataA">Date posted (Asc)</SelectItem>
-                                <SelectItem value="dateB">Date posted (Desc)</SelectItem>
+                                <SelectItem value="asc">Date posted (Asc)</SelectItem>
+                                <SelectItem value="desc">Date posted (Desc)</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -114,7 +133,7 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
             <div className={"relative md:w-3/4 overflow-y-scroll"}>
                 <div ref={scrollRef} className={"h-full overflow-y-scroll"}>
                     <div className={"flex flex-col space-y-4 items-end h-fit"}>
-                        <PostsList isLoading={isLoading} posts={posts} error={error}/>
+                        <PostsList isLoading={isLoading} posts={sortedPosts} error={error}/>
                     </div>
                 </div>
                 {posts && posts.length > 0 &&

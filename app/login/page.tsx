@@ -21,7 +21,7 @@ export default function Login({
         });
 
         if (error) {
-            throw new Error(`Failed to sign in: ${error.message}`)
+            return redirect("/login?error=" + error.message)
         }
 
         return redirect("/home");

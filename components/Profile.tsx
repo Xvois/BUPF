@@ -24,7 +24,7 @@ export default function Profile(props: { user: Tables<'profiles'> | null }) {
                     </Avatar>
                     <span>{user.first_name} {user.last_name}</span>
                 </div>
-                <p className={"text-sm text-muted-foreground"}>FIXME</p>
+                <p className={"text-sm text-muted-foreground"}>{user.course}</p>
             </HoverCardContent>
         </HoverCard>
     );

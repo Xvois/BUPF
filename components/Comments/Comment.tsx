@@ -66,7 +66,7 @@ export default async function Comment({
             </div>
             {
                 comment.children.map((child) => (
-                    <div className={"pl-4 mt-2 border-l"}>
+                    <div className={"pl-4 mt-2 border-l"} key={child.id}>
                         <Comment
                             isDeletable={user ? user.id === comment.owner : false}
                             isReportable={(user && user.id !== comment.owner)}

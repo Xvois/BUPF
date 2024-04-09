@@ -23,11 +23,13 @@ import {
     CommandItem,
     CommandSeparator
 } from "@/components/ui/command";
+import {useSearchParams} from "next/navigation";
 
 
 export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSchema>) => Promise<void> }) {
 
     const [submissionError, setSubmissionError] = React.useState<string | null>(null);
+    const searchParams = useSearchParams();
 
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -48,13 +50,8 @@ export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSche
         This leads to this mess where a server action is invoked
         through this function.
          */
-        console.log("Submitting")
-        try {
-            await props.signUp(values);
-        } catch (e) {
-            const error = e as Error;
-            setSubmissionError(error.message);
-        }
+        await props.signUp(values);
+
     }
 
     const pageSchema =
@@ -74,7 +71,7 @@ export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSche
                 </MultiStageForm>
             </form>
             <ServerError className={"w-full"}>
-                {submissionError}
+                {searchParams.get("error")}
             </ServerError>
         </Form>
     )
@@ -191,7 +188,6 @@ const UserDetailsInputs = () => {
 const CourseDetailsInputs = () => {
     const form = useFormContext<z.infer<typeof formSchema>>()
     const {data: courses, error, isLoading} = useSWR('courses', sbFetcher<Tables<"courses">>);
-    console.log(courses);
     return (
         <>
             <FormField
@@ -265,7 +261,8 @@ const CourseDetailsInputs = () => {
                                                     form.setValue("course", course.id.toString())
                                                 }}
                                             >
-                                                <p>{course.title} <span className={"text-xs text-muted-foreground"}>{course.type}</span></p>
+                                                <p>{course.title} <span
+                                                    className={"text-xs text-muted-foreground"}>{course.type}</span></p>
                                             </CommandItem>
                                         ))}
                                     </CommandGroup>

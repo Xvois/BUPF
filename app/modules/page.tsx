@@ -45,7 +45,7 @@ export default async function Modules() {
                         >
                             <div className={"flex w-full gap-2 flex-wrap mt-1"}>
                                 {module.tags?.map(tag => (
-                                    <Badge variant={"outline"}>{tag}</Badge>
+                                    <Badge key={tag} variant={"outline"}>{tag}</Badge>
                                 ))}
                             </div>
                         </LinkBox>
@@ -73,7 +73,7 @@ export default async function Modules() {
                         >
                             <div className={"flex w-full gap-2 flex-wrap"}>
                                 {module.tags?.map(tag => (
-                                    <Badge variant={"secondary"}>{tag}</Badge>
+                                    <Badge key={tag} variant={"secondary"}>{tag}</Badge>
                                 ))}
                             </div>
                         </LinkBox>

@@ -81,7 +81,7 @@ export default async function Page({searchParams}: { searchParams: { type?: stri
             throw new Error(`Failed to post: ${postError.message}`);
         }
 
-        return redirect("/home");
+        return redirect(`/${values.targetType}s/${values.target}`);
     };
 
     return (

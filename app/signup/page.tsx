@@ -45,7 +45,7 @@ export default async function Page() {
 
         const {error} = await supabase.auth.signUp(data)
         if(error) {
-            throw new Error(`Failed to sign up: ${error.message}: ${error.cause}`)
+            return redirect('/signup?error=' + error.message)
         }
 
         redirect('/')

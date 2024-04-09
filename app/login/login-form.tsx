@@ -10,11 +10,12 @@ import {formSchema} from "@/app/login/formSchema";
 import React from "react";
 import {ServerError} from "@/components/ServerError";
 import Link from "next/link";
+import {useSearchParams} from "next/navigation";
 
 
 export default function LoginForm(props: { signIn: (fd: z.infer<typeof formSchema>) => Promise<void> }) {
 
-    const [loginError, setLoginError] = React.useState<string | null>(null);
+    const searchParams = useSearchParams();
 
     const form = useForm<z.infer<typeof formSchema>>({
         mode: "onBlur",
@@ -33,12 +34,7 @@ export default function LoginForm(props: { signIn: (fd: z.infer<typeof formSchem
         This leads to this mess where a server action is invoked
         through this function.
          */
-        try {
-            await props.signIn(values);
-        } catch (e) {
-            const error = e as Error;
-            setLoginError(error.message);
-        }
+        await props.signIn(values);
     }
 
     return (
@@ -76,7 +72,7 @@ export default function LoginForm(props: { signIn: (fd: z.infer<typeof formSchem
                 <Link className={"underline text-sm text-muted-foreground"} href={"/forgot"}>Forgotten
                     password</Link>
                 <ServerError className={"w-full"}>
-                    {loginError}
+                    {searchParams.get("error")}
                 </ServerError>
             </form>
         </Form>

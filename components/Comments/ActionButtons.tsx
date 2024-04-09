@@ -20,6 +20,7 @@ import React, {useEffect} from "react";
 import {ServerError} from "@/components/ServerError";
 import RichTextArea from "@/components/RichTextArea";
 import {Checkbox} from "@/components/ui/checkbox";
+import {useSearchParams} from "next/navigation";
 
 type ReplyButtonProps = {
     comment: Tables<"comments">;
@@ -28,24 +29,19 @@ type ReplyButtonProps = {
 
 export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
     const {comment, postID, ...buttonProps} = props;
+    const searchParams = useSearchParams();
 
     const [open, setOpen] = React.useState(false);
     const [replyContent, setReplyContent] = React.useState<string>('');
-    const [replyError, setReplyError] = React.useState<string | null>(null);
     const [isAnonymous, setIsAnonymous] = React.useState(false);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (replyContent) {
-            try {
-                await postComment(replyContent, isAnonymous, postID, comment.id);
-                setReplyContent(''); // clear the text area after submitting
-                setReplyError(null);
-                setOpen(false);
-            } catch (e) {
-                const error = e as Error;
-                setReplyError(error.message);
-            }
+            await postComment(replyContent, isAnonymous, postID, comment.id);
+            setReplyContent('');
+            setOpen(false);
+
         }
     }
 
@@ -83,7 +79,7 @@ export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
                             </div>
                         </div>
                         <ServerError>
-                            {replyError}
+                            {searchParams.get("error")}
                         </ServerError>
                     </form>
                 )
