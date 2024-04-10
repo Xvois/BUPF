@@ -31,7 +31,7 @@ const resendEmail = async (user: User, redirect: URL) => {
     }
 }
 
-export function useFiveMinutesAgo() {
+function useFiveMinutesAgo() {
     const [fiveMinutesAgo, setFiveMinutesAgo] = React.useState(new Date(Date.now() - 5 * 60 * 1000));
 
     useEffect(() => {
