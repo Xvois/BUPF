@@ -3,6 +3,7 @@ import {redirect} from "next/navigation";
 import LinkBox from "@/components/LinkBox";
 import {Badge} from "@/components/ui/badge";
 import {Separator} from "@/components/ui/separator";
+import {Package} from "lucide-react";
 
 
 export default async function Modules() {
@@ -19,15 +20,21 @@ export default async function Modules() {
 
 
     return (
-        <div className="space-y-8">
-            <header>
+        <div className="space-y-4">
+            <header
+                className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none"
+            >
+                <div className={"inline-flex gap-2"}>
+                    <Package/>
+                    <p>Section</p>
+                </div>
                 <h1 className={"font-black text-4xl"}>Modules</h1>
                 <p>
                     View your modules, see what's coming up, and discuss with your peers.
                 </p>
             </header>
             <Separator/>
-            <section className={"space-y-4"}>
+            <section className={"space-y-4 p-6"}>
                 <div>
                     <h2 className={"text-2xl font-bold"}>Core modules</h2>
                     <p className={"text-sm text-muted-foreground"}>
@@ -40,7 +47,7 @@ export default async function Modules() {
                             key={module.id}
                             title={module.id.toUpperCase()}
                             href={`/modules/${module.id}`}
-                            className={"max-w-screen-lg flex-grow"}
+                            className={"max-w-screen-sm flex-grow"}
                             description={module.description || undefined}
                         >
                             <div className={"flex w-full gap-2 flex-wrap mt-1"}>
@@ -52,8 +59,8 @@ export default async function Modules() {
                     ))}
                 </div>
             </section>
-            <Separator />
-            <section className={"space-y-4"}>
+            <Separator/>
+            <section className={"space-y-4 p-6"}>
                 <div>
                     <h2 className={"text-2xl font-bold"}>Optional modules</h2>
                     <p className={"text-sm text-muted-foreground"}>
@@ -63,25 +70,26 @@ export default async function Modules() {
                 <div>
                     {
                         modules && modules?.filter(module => module.optional).length > 0 ?
-                        modules.filter(module => module.optional).map(module => (
-                        <LinkBox
-                            key={module.id}
-                            title={module.id.toUpperCase()}
-                            href={`/modules/${module.id}`}
-                            className={"max-w-screen-lg flex-grow md:w-1/2 lg:w-1/3 xl:w-1/4"}
-                            description={module.description || undefined}
-                        >
-                            <div className={"flex w-full gap-2 flex-wrap"}>
-                                {module.tags?.map(tag => (
-                                    <Badge key={tag} variant={"secondary"}>{tag}</Badge>
-                                ))}
-                            </div>
-                        </LinkBox>
-                    ))
+                            modules.filter(module => module.optional).map(module => (
+                                <LinkBox
+                                    key={module.id}
+                                    title={module.id.toUpperCase()}
+                                    href={`/modules/${module.id}`}
+                                    className={"max-w-screen-sm flex-grow"}
+                                    description={module.description || undefined}
+                                >
+                                    <div className={"flex w-full gap-2 flex-wrap"}>
+                                        {module.tags?.map(tag => (
+                                            <Badge key={tag} variant={"secondary"}>{tag}</Badge>
+                                        ))}
+                                    </div>
+                                </LinkBox>
+                            ))
                             :
                             <div className={"p-4 border rounded-md text-center"}>
                                 <p>No optional modules available.</p>
-                                <p className={"text-sm text-muted-foreground"}>Think this is a mistake? Contact a site admin.</p>
+                                <p className={"text-sm text-muted-foreground"}>Think this is a mistake? Contact a site
+                                    admin.</p>
                             </div>
                     }
                 </div>

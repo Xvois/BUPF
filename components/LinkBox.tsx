@@ -9,7 +9,7 @@ export default function LinkBox({title, description, href, className, ...props}:
                                 } & React.HTMLAttributes<HTMLDivElement>
 ) {
     return (
-        <Link className={cn("group flex flex-col border rounded-md p-4 transition-all hover:shadow hover:scale-[101%] focus:outline-foreground", className)} href={href}>
+        <Link className={cn("group flex flex-col border rounded-md p-4 transition-all hover:shadow hover:scale-[101%] focus:outline-foreground shadow bg-popover", className)} href={href}>
             <div
                  {...props}>
                 <h3 className={"text-xl font-bold"}>

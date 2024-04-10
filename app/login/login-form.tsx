@@ -67,7 +67,7 @@ export default function LoginForm(props: { signIn: (fd: z.infer<typeof formSchem
                         </FormItem>
                     )}
                 />
-                <Button isLoading={isSubmitting} disabled={!isDirty || !isValid} className={"w-32"}
+                <Button isLoading={isSubmitting} disabled={!isValid} className={"w-32"}
                         type={"submit"}>Login</Button>
                 <Link className={"underline text-sm text-muted-foreground"} href={"/forgot"}>Forgotten
                     password</Link>

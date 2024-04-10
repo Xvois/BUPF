@@ -1,9 +1,9 @@
 import {Tables} from "@/types/supabase";
-import {Card, CardFooter, CardHeader} from "@/components/ui/card";
-import Link from "next/link";
 import {cn} from "@/lib/utils";
 import Profile from "@/components/Profile";
-import {CircleCheck} from "lucide-react";
+import {CheckCircle, Component} from "lucide-react";
+import React from "react";
+import Link, {LinkProps} from "next/link";
 
 type PostProps = {
     post: Tables<'posts'> & {
@@ -11,37 +11,47 @@ type PostProps = {
     }
 };
 
-export default function Post(props: PostProps & React.HTMLAttributes<HTMLDivElement>) {
-    const {post, ...divProps} = props;
+export default function Post(props: PostProps & LinkProps & { className?: string }) {
+    const {post, ...linkProps} = props;
 
     const formattedContent = post.content.replace(/(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$)/g, '[LaTeX equation]');
 
+    let targetIdentifier = null;
+    switch (post.target_type) {
+        case "module":
+            targetIdentifier = <Component className={"h-3 w-3"}/>;
+            break;
+        case "topic":
+            targetIdentifier = <Component className={"h-3 w-3"}/>;
+            break;
+        default:
+            break;
+    }
+
     return (
-        <Card {...divProps} className={cn("w-full max-w-screen-lg rounded-md", divProps.className)}>
-            <Link className={"focus-visible:outline-foreground"}
-                  href={`/${post.target_type}s/${post.target}/posts/${post.id}`}>
-                <CardHeader className={"pt-6"}>
-                    <h2 className="text-xl font-semibold">{post.heading}</h2>
-                    <p className="text-sm leading-sm text-muted-foreground">
-                        {formattedContent}
-                    </p>
-                </CardHeader>
-            </Link>
-            <CardFooter className={"justify-between"}>
-                {!post.anonymous ?
-                    <Profile user={post.profiles} />
-                    :
-                    <p className={"text-sm"}>Anonymous</p>
-                }
-                {post.type === "question" &&
-                    (
-                        post.marked_comment ?
-                            <CircleCheck className={"w-6 h-6 text-green-500"}/>
-                            :
-                            <p className={"text-sm text-muted-foreground"}>No answer yet</p>
-                    )
-                }
-            </CardFooter>
-        </Card>
+        <Link {...linkProps} href={`/modules/${post.target}/posts/${post.id}`} className={cn("flex flex-col border rounded-md p-4 transition-all focus:outline-foreground bg-popover w-full", linkProps.className)}>
+            <div>
+                <h3 className={"text-xl font-bold"}>{post.heading}</h3>
+                <p className={"text-sm text-muted-foreground text-ellipsis overflow-hidden max-h-10"}>{formattedContent}</p>
+            </div>
+
+            <div className={"inline-flex justify-between mt-2"}>
+                <Profile user={post.profiles}/>
+                <div className={"inline-flex gap-2 "}>
+                    {
+                        post.type === "question" && post.marked_comment &&
+                        <div className={"inline-flex flex-row text-green-600/90 text-xs items-center gap-1"}>
+                            <CheckCircle className={'h-3 w-3'}/>
+                            <p>Answered</p>
+                        </div>
+                    }
+
+                    <div className={"inline-flex flex-row text-muted-foreground text-xs items-center gap-1"}>
+                        {targetIdentifier}
+                        <p>{post.target}</p>
+                    </div>
+                </div>
+            </div>
+        </Link>
     )
 }

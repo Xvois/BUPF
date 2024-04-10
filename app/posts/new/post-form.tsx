@@ -27,6 +27,7 @@ import Link from "next/link";
 import {ServerError} from "@/components/ServerError";
 import {sbFetcher} from "@/utils/fetcher";
 import {Tables} from "@/types/supabase";
+import {ExternalLink} from "lucide-react";
 
 
 export default function PostForm(
@@ -204,8 +205,8 @@ function Question(props: { defaultStates: { target: string | undefined } }) {
                                               placeholder="Enter the content of your question."/>
                             </FormControl>
                             <FormDescription>
-                                Use markdown to format your question. Need help? Check out the <Link
-                                className={"underline"} href={"/help/markdown"}>markdown guide</Link>.
+                                Use markdown & LaTeX to format your question. Need help? Check out this <Link
+                                className={"underline inline-flex items-center gap-1"} href={"https://ashki23.github.io/markdown-latex.html"}>markdown guide <ExternalLink alt={"external link"} className={"w-3 h-3"} /></Link>.
                             </FormDescription>
                             <FormMessage/>
                         </FormItem>
@@ -217,7 +218,7 @@ function Question(props: { defaultStates: { target: string | undefined } }) {
                         <FormItem>
                             <FormLabel>Module</FormLabel>
                             <FormControl>
-                                <Select {...field} onValueChange={(target) => form.setValue("target", target)}>
+                                <Select disabled {...field} onValueChange={(target) => form.setValue("target", target)}>
                                     <SelectTrigger>
                                         <SelectValue className={"uppercase"} placeholder="Select a module"/>
                                     </SelectTrigger>

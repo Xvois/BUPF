@@ -43,9 +43,9 @@ export default async function ProtectedPage() {
                 <div className={"flex flex-row flex-wrap gap-4"}>
                     <LinkBox title={"Modules"} href={"/modules"} className={"flex-grow"}
                              description={"View your modules, see what's coming up, and discuss with your peers."}/>
-                    <LinkBox title={"Topics"} href={"/modules"} className={"flex-grow"}
+                    <LinkBox title={"Topics"} href={"/topics"} className={"flex-grow"}
                              description={"Discuss physics topics with your peers, ask questions, and share knowledge."}/>
-                    <LinkBox title={"Articles"} href={"/modules"} className={"flex-grow"}
+                    <LinkBox title={"Articles"} href={"/articles"} className={"flex-grow"}
                              description={"Write and read articles on physics topics, share your knowledge and learn from others."}/>
                 </div>
             </section>

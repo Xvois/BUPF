@@ -38,7 +38,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
     const groupedQuestions = questions.reduce((grouped: (Tables<"posts"> & {
         profiles: Tables<"profiles"> | null
     })[][], post, index) => {
-        const groupIndex = Math.floor(index / 3);
+        const groupIndex = Math.floor(index / 4);
         if (!grouped[groupIndex]) {
             grouped[groupIndex] = [];
         }
@@ -48,7 +48,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
     const groupedDiscussions = discussions.reduce((grouped: (Tables<"posts"> & {
         profiles: Tables<"profiles"> | null
     })[][], post, index) => {
-        const groupIndex = Math.floor(index / 3);
+        const groupIndex = Math.floor(index / 4);
         if (!grouped[groupIndex]) {
             grouped[groupIndex] = [];
         }
@@ -58,7 +58,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
     const groupedArticles = articles.reduce((grouped: (Tables<"posts"> & {
         profiles: Tables<"profiles"> | null
     })[][], post, index) => {
-        const groupIndex = Math.floor(index / 3);
+        const groupIndex = Math.floor(index / 4);
         if (!grouped[groupIndex]) {
             grouped[groupIndex] = [];
         }

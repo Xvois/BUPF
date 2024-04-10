@@ -85,8 +85,8 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
 
     return (
         <div className={"flex md:flex-row flex-col md:space-x-4 space-y-4 md:space-y-0 flex-grow overflow-hidden"}>
-            <div className={"space-y-4"}>
-                <div className={"flex-grow min-w-40 space-y-8 p-4 border rounded-md"}>
+            <div className={"space-y-4 flex flex-col"}>
+                <div className={"flex-grow min-w-40 md:max-w-[350px] space-y-8 p-4 border rounded-md"}>
                     <div>
                         <h3 className={"text-xl font-bold"}>
                             Filters
@@ -126,10 +126,21 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
                         </ToggleGroup>
                     </div>
                 </div>
-
-                <Button className={"w-full"} asChild>
-                    <Link href={`/posts/new?type=question&target=${props.target}`}>Post here</Link>
-                </Button>
+                <div className={"flex-grow space-y-8 md:max-w-[350px] p-4 border rounded-md hidden md:block max-h-full"}>
+                    <div>
+                        <h3 className={"text-xl font-bold"}>
+                            Details
+                        </h3>
+                        <p className={"text-sm text-muted-foreground"}>
+                            Details about this modules questions.
+                        </p>
+                    </div>
+                    <div>
+                        <p className={"text-sm text-muted-foreground"}>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac nunc nec odio ultricies
+                        </p>
+                    </div>
+                </div>
             </div>
             <div className={"relative md:w-3/4 overflow-y-scroll"}>
                 <ServerError>
@@ -140,7 +151,7 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
                         <PostsList isLoading={isLoading} posts={sortedPosts} error={error} target={props.target}/>
                     </div>
                 </div>
-                {posts && posts.length > 4 &&
+                {posts && posts.length > 5 &&
                     <div
                         className={`absolute px-4 py-2 rounded-3xl backdrop-brightness-[98%] backdrop-blur bottom-5 left-0 right-0 mx-auto w-fit h-fit text-sm transition-opacity ${!displayScrollHelper && "opacity-0"}`}>
                         Scroll for more...
@@ -161,8 +172,8 @@ function PostsList({isLoading, posts, error, target}: {
     if (isLoading) {
         return (
             <>
-                {Array.from({length: 3}).map((_, i) => (
-                    <Skeleton className={"w-full max-w-screen-lg h-48"} key={i}/>
+                {Array.from({length: 5}).map((_, i) => (
+                    <Skeleton className={"w-full max-w-screen-lg h-32"} key={i}/>
                 ))}
             </>
         );
@@ -178,7 +189,7 @@ function PostsList({isLoading, posts, error, target}: {
                     posts.length < 3 &&
                     <LinkBox title={"Start a conversation."}
                              href={`/posts/new?type=question&target=${target}`}
-                             className={"w-full scale-[99%] hover:scale-100"}
+                             className={"w-full scale-[99%] hover:scale-[100%]"}
                              description={"Questions are a little dry right now. Why not start a conversation by asking a question?"}/>
                 }
             </>
@@ -188,7 +199,7 @@ function PostsList({isLoading, posts, error, target}: {
     return (
         <LinkBox title={"Start a conversation."}
                  href={`/posts/new?type=question&target=${target}`}
-                 className={"w-full scale-[99%] hover:scale-100"}
+                 className={"w-full scale-[99%] hover:scale-[100%]"}
                  description={"Questions are a little dry right now. Why not start a conversation by asking a question?"}/>
     );
 }

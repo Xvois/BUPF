@@ -83,7 +83,7 @@ Form context is used to manage form state, so a form
 wrapper is expected.
 
 An optional custom page schema can be supplied to
-help provide more context to users about errors
+help provide more context to auth about errors
 on other pages.
  */
 const MultiStageForm = ({children, pageSchema}: { children: React.ReactNode[], pageSchema?: string[][] }) => {
@@ -202,7 +202,7 @@ const CourseDetailsInputs = () => {
                                         variant="outline"
                                         role="combobox"
                                         className={cn(
-                                            "max-w-[400px] w-full justify-between",
+                                            "w-full justify-between overflow-x-clip",
                                             !field.value && "text-muted-foreground"
                                         )}
                                     >
@@ -215,7 +215,7 @@ const CourseDetailsInputs = () => {
                                     </Button>
                                 </FormControl>
                             </PopoverTrigger>
-                            <PopoverContent className="max-w-[400px] p-0">
+                            <PopoverContent className="max-w-[572px] w-screen p-0">
                                 <Command className={"max-h-96 w-full overflow-y-scroll pt-12"}>
                                     <div className={"fixed z-10 bg-popover w-full rounded-md top-0 scale-95"}>
                                         <CommandInput placeholder="Search courses..."/>
@@ -287,7 +287,7 @@ const CourseDetailsInputs = () => {
                         <FormControl>
                             <Input type={"number"} {...field} />
                         </FormControl>
-                        <FormDescription>Your year of study.</FormDescription>
+                        <FormDescription>Your current year of study. (1, 2, 3...)</FormDescription>
                         <FormMessage/>
                     </FormItem>
                 )}

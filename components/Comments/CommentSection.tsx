@@ -3,6 +3,7 @@ import Comment from "@/components/Comments/Comment";
 import CommentForm from "@/components/Comments/comment-form";
 import {Tables} from "@/types/supabase";
 import {PostgrestError} from "@supabase/supabase-js";
+import {cn} from "@/lib/utils";
 
 export type Comment = Tables<"comments"> & { profiles: Tables<"profiles"> | null } & { children: Comment[] }
 
@@ -78,11 +79,13 @@ async function recursiveChildSolver(tl_comments: (Tables<"comments"> & {
     return { data: resolvedComments, error: null };
 }
 
-export default async function CommentSection(props: {
+type CommentSectionProps = {
     post_id: string,
     post_type: "question" | "discussion" | "article",
     marked_comment?: number
-}) {
+}
+
+export default async function CommentSection(props: CommentSectionProps & React.HTMLAttributes<HTMLDivElement>) {
     const supabase = createClient();
     const {data: {user: user}} = await supabase.auth.getUser();
     const {data: result} = await supabase.from("posts").select("tl_comments").eq("id", props.post_id).single();
@@ -115,7 +118,7 @@ export default async function CommentSection(props: {
 
 
     return (
-        <div className={"space-y-4"}>
+        <div className={cn("space-y-8", props.className)}>
             {user && <CommentForm postID={+props.post_id}/>}
             <div className={"space-y-4"}>
                 {resolvedComments && resolvedComments.map(comment => (
