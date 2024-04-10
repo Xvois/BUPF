@@ -48,9 +48,11 @@ export default async function UserDropdown() {
             <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator/>
-                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link href={`/posts/${user.id}`}>My Posts</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>Followed Posts</DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Subscriptions</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                     <Link href={'/signout'}>Sign out</Link>

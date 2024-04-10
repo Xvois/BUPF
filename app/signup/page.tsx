@@ -48,7 +48,7 @@ export default async function Page() {
             return redirect('/signup?error=' + error.message)
         }
 
-        redirect('/')
+        return redirect('/')
     }
 
     return (

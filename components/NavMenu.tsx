@@ -13,6 +13,7 @@ import Link from "next/link";
 import * as React from "react";
 import {cn} from "@/lib/utils";
 import {Tables} from "@/types/supabase";
+import {BookCopy, Package} from "lucide-react";
 
 
 export default function NavMenu({modules, topics}: {
@@ -32,6 +33,22 @@ export default function NavMenu({modules, topics}: {
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>Modules</NavigationMenuTrigger>
                     <NavigationMenuContent>
+                        <li className="row-span-3 list-none">
+                            <NavigationMenuLink asChild>
+                                <a
+                                    className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none transition-shadow hover:shadow-md focus:shadow-md"
+                                    href="/modules"
+                                >
+                                    <Package/>
+                                    <div className="mb-2 mt-4 text-lg font-medium">
+                                        Modules
+                                    </div>
+                                    <p className="text-sm leading-tight text-muted-foreground">
+                                        Browse your core and optional modules for your enrolled course <span className={"group-focus:ml-1 group-hover:ml-1 transition-all"}>-{">"}</span>
+                                    </p>
+                                </a>
+                            </NavigationMenuLink>
+                        </li>
                         {modules ?
                             <ul className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                                 {modules.map((module) => (
@@ -43,9 +60,6 @@ export default function NavMenu({modules, topics}: {
                                         {module.description}
                                     </ListItem>
                                 ))}
-                                <ListItem title={"more"} key={"all_modules"} href={"/modules"}>
-                                    View all modules -{">"}
-                                </ListItem>
                             </ul>
                             :
                             <p>Loading...</p>
@@ -55,6 +69,23 @@ export default function NavMenu({modules, topics}: {
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>Topics</NavigationMenuTrigger>
                     <NavigationMenuContent>
+                        <li className="row-span-3 list-none">
+                            <NavigationMenuLink asChild>
+                                <a
+                                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none transition-shadow hover:shadow-md focus:shadow-md"
+                                    href="/topics"
+                                >
+                                    <BookCopy/>
+                                    <div className="mb-2 mt-4 text-lg font-medium">
+                                        Topics
+                                    </div>
+                                    <p className="text-sm leading-tight text-muted-foreground">
+                                        Browse specific physics topics relating to and going beyond your modules <span
+                                        className={"group-focus:ml-1 group-hover:ml-1 transition-all"}>-{">"}</span>
+                                    </p>
+                                </a>
+                            </NavigationMenuLink>
+                        </li>
                         {topics ?
                             <ul className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                                 {topics.map((topic) => (
@@ -66,9 +97,6 @@ export default function NavMenu({modules, topics}: {
                                         {topic.description}
                                     </ListItem>
                                 ))}
-                                <ListItem title={"more"} key={"all_modules"} href={"/modules"}>
-                                    View all topics -{">"}
-                                </ListItem>
                             </ul>
                             :
                             <p>Loading...</p>
@@ -95,8 +123,8 @@ const ListItem = React.forwardRef<
                     )}
                     {...props}
                 >
-                    <div className="uppercase text-sm font-medium leading-none">{title}</div>
-                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    <div className="capitalize text-sm font-medium leading-none">{title}</div>
+                    <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
                         {children}
                     </p>
                 </a>

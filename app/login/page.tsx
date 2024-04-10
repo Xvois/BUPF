@@ -20,7 +20,7 @@ export default function Login() {
             return redirect("/login?error=" + error.message)
         }
 
-        return redirect("/home");
+        return redirect("/");
     };
 
     return (
