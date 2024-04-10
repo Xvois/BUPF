@@ -63,7 +63,8 @@ export default function ConfirmPage() {
         try {
             await resendEmail(user, new URL("/auth/callback", window.location.origin));
         } catch (e) {
-            setErrorState(e);
+            const error = e as Error
+            setErrorState(error);
         }
         setIsResending(false);
 

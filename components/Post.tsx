@@ -11,7 +11,7 @@ type PostProps = {
     }
 };
 
-export default function Post(props: PostProps & LinkProps & { className?: string }) {
+export default function Post(props: PostProps & Omit<LinkProps,'href'> & { className?: string }) {
     const {post, ...linkProps} = props;
 
     const formattedContent = post.content.replace(/(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$)/g, '[LaTeX equation]');

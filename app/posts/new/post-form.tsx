@@ -206,7 +206,7 @@ function Question(props: { defaultStates: { target: string | undefined } }) {
                             </FormControl>
                             <FormDescription>
                                 Use markdown & LaTeX to format your question. Need help? Check out this <Link
-                                className={"underline inline-flex items-center gap-1"} href={"https://ashki23.github.io/markdown-latex.html"}>markdown guide <ExternalLink alt={"external link"} className={"w-3 h-3"} /></Link>.
+                                className={"underline inline-flex items-center gap-1"} href={"https://ashki23.github.io/markdown-latex.html"}>markdown guide <ExternalLink className={"w-3 h-3"} /></Link>.
                             </FormDescription>
                             <FormMessage/>
                         </FormItem>
