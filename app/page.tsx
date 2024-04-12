@@ -24,8 +24,8 @@ export default async function ProtectedPage() {
 
 
     return (
-        <div className="space-y-8">
-            <header>
+        <div className="space-y-4">
+            <header className={"p-6"}>
                 <p className={"text-3xl leading-none"}>Welcome to the</p>
                 <h1 className={"font-black text-4xl"}>Bath University Physics Forum</h1>
                 <p>
@@ -33,7 +33,7 @@ export default async function ProtectedPage() {
                 </p>
             </header>
             <Separator/>
-            <section className={"space-y-4"}>
+            <section className={"space-y-4 p-6"}>
                 <div>
                     <h2 className={"text-2xl font-bold"}>Forum sections</h2>
                     <p className={"text-sm text-muted-foreground"}>
@@ -50,7 +50,7 @@ export default async function ProtectedPage() {
                 </div>
             </section>
             <Separator/>
-            <section className={"space-y-4"}>
+            <section className={"space-y-4 p-6"}>
                 <div>
                     <h2 className={"text-2xl font-bold"}>Contribute</h2>
                     <p className={"text-sm text-muted-foreground"}>

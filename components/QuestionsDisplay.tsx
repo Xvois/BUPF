@@ -173,7 +173,7 @@ function PostsList({isLoading, posts, error, target}: {
         return (
             <>
                 {Array.from({length: 5}).map((_, i) => (
-                    <Skeleton className={"w-full max-w-screen-lg h-32"} key={i}/>
+                    <Skeleton className={"w-full h-32"} key={i}/>
                 ))}
             </>
         );
@@ -189,7 +189,7 @@ function PostsList({isLoading, posts, error, target}: {
                     posts.length < 3 &&
                     <LinkBox title={"Start a conversation."}
                              href={`/posts/new?type=question&target=${target}`}
-                             className={"w-full scale-[99%] hover:scale-[100%]"}
+                             className={"w-full"}
                              description={"Questions are a little dry right now. Why not start a conversation by asking a question?"}/>
                 }
             </>
@@ -199,7 +199,7 @@ function PostsList({isLoading, posts, error, target}: {
     return (
         <LinkBox title={"Start a conversation."}
                  href={`/posts/new?type=question&target=${target}`}
-                 className={"w-full scale-[99%] hover:scale-[100%]"}
+                 className={"w-full"}
                  description={"Questions are a little dry right now. Why not start a conversation by asking a question?"}/>
     );
 }

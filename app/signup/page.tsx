@@ -48,7 +48,7 @@ export default async function Page() {
             return redirect('/signup?error=' + error.message)
         }
 
-        return redirect('/')
+        return redirect('/auth/confirm?email=' + formData.email + '&sent_at=' + new Date().toISOString())
     }
 
     return (

@@ -57,7 +57,7 @@ export const reportComment = async (comment: Tables<"comments">, postID: number)
         /*
         RANT TIME:
         For **SOME** reason adding .single() to the report query, even WHEN the
-        result is a non-zero array yields null, meaning we instead fetch ALL records
+        result is a non-zero array, yields null meaning we instead fetch ALL records
         under this user.
 
         WHY?? Why does it return null?? It shouldn't?!

@@ -21,6 +21,15 @@ import {ServerError} from "@/components/ServerError";
 import RichTextArea from "@/components/RichTextArea";
 import {Checkbox} from "@/components/ui/checkbox";
 import {useSearchParams} from "next/navigation";
+import {useMediaQuery} from "@/hooks/use-media-query";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
 
 type ReplyButtonProps = {
     comment: Tables<"comments">;
@@ -30,6 +39,8 @@ type ReplyButtonProps = {
 export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
     const {comment, postID, ...buttonProps} = props;
     const searchParams = useSearchParams();
+    const isDesktop = useMediaQuery("(min-width: 768px)")
+    console.log(isDesktop)
 
     const [open, setOpen] = React.useState(false);
     const [replyContent, setReplyContent] = React.useState<string>('');
@@ -49,44 +60,58 @@ export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
         setReplyContent(e.target.value);
     }
 
+    const ReplyForm = () => (
+        <form onSubmit={onSubmit} className={"border-l pl-4 min-w-72 w-full md:w-96"}>
+            <RichTextArea className={"text-foreground min-h-16"} onChange={onChange} id={"comment-reply"}
+                          value={replyContent}/>
+            <div className={"inline-flex w-full"}>
+                <div className="flex space-x-2 items-center text-foreground">
+                    <Checkbox
+                        name={"anonymous_comment"}
+                        id={"anonymous_comment"}
+                        checked={isAnonymous}
+                        onClick={() => setIsAnonymous(!isAnonymous)}
+                    />
+                    <label
+                        htmlFor="anonymous_comment"
+                        className="text-sm font-medium leading-none"
+                    >
+                        Anonymous
+                    </label>
+                </div>
+                <div className={"w-fit ml-auto"}>
+                    <Button variant={"link"} onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button variant={"link"} type={"submit"}>Submit</Button>
+                </div>
+            </div>
+            <ServerError>
+                {searchParams.get("error")}
+            </ServerError>
+        </form>
+    )
+
+    if (!isDesktop) return (
+        <div className={"h-fit w-9 space-y-4"}>
+            <Button onClick={() => setOpen(true)} {...buttonProps}>Reply</Button>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent>
+                    <ReplyForm/>
+                </DialogContent>
+            </Dialog>
+        </div>
+    )
+
     return (
         <div className={"h-fit w-9 space-y-4"}>
             <Button onClick={() => setOpen(true)} {...buttonProps}>Reply</Button>
             {
                 open &&
-                (
-                    <form onSubmit={onSubmit} className={"w-fit min-w-96 border-l pl-4"}>
-                        <RichTextArea className={"text-foreground min-h-16"} onChange={onChange} id={"comment-reply"}
-                                      value={replyContent}/>
-                        <div className={"inline-flex w-full"}>
-                            <div className="flex space-x-2 items-center text-foreground">
-                                <Checkbox
-                                    name={"anonymous_comment"}
-                                    id={"anonymous_comment"}
-                                    checked={isAnonymous}
-                                    onClick={() => setIsAnonymous(!isAnonymous)}
-                                />
-                                <label
-                                    htmlFor="anonymous_comment"
-                                    className="text-sm font-medium leading-none"
-                                >
-                                    Anonymous
-                                </label>
-                            </div>
-                            <div className={"w-fit ml-auto"}>
-                                <Button variant={"link"} onClick={() => setOpen(false)}>Cancel</Button>
-                                <Button variant={"link"} type={"submit"}>Submit</Button>
-                            </div>
-                        </div>
-                        <ServerError>
-                            {searchParams.get("error")}
-                        </ServerError>
-                    </form>
-                )
+                <ReplyForm/>
             }
         </div>
     )
 }
+
 
 type MarkButtonProps = {
     isMarked: boolean;

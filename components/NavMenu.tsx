@@ -13,7 +13,7 @@ import Link from "next/link";
 import * as React from "react";
 import {cn} from "@/lib/utils";
 import {Tables} from "@/types/supabase";
-import {BookCopy, Component, Package} from "lucide-react";
+import {ArrowRight, BookCopy, Component} from "lucide-react";
 
 
 export default function NavMenu({modules, topics}: {
@@ -43,15 +43,17 @@ export default function NavMenu({modules, topics}: {
                                     <div className="mb-2 mt-4 text-lg font-medium">
                                         Modules
                                     </div>
-                                    <p className="text-sm leading-tight text-muted-foreground">
-                                        Browse your core and optional modules for your enrolled course <span className={"group-focus:ml-1 group-hover:ml-1 transition-all"}>-{">"}</span>
+                                    <p className="inline-flex items-center text-sm leading-tight text-muted-foreground">
+                                        Browse your core and optional modules for your enrolled course <ArrowRight
+                                        className={"text-sm text-muted-foreground group-hover:ml-2 ml-1 h-4 transition-all w-fit"}
+                                    />
                                     </p>
                                 </a>
                             </NavigationMenuLink>
                         </li>
                         {modules ?
                             <ul className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                {modules.slice(0,4).map((module) => (
+                                {modules.slice(0, 4).map((module) => (
                                     <ListItem
                                         key={module.id}
                                         title={module.id}
@@ -72,23 +74,25 @@ export default function NavMenu({modules, topics}: {
                         <li className="row-span-3 list-none">
                             <NavigationMenuLink asChild>
                                 <a
-                                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none transition-shadow hover:shadow-md focus:shadow-md"
+                                    className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none transition-shadow hover:shadow-md focus:shadow-md"
                                     href="/topics"
                                 >
                                     <BookCopy/>
                                     <div className="mb-2 mt-4 text-lg font-medium">
                                         Topics
                                     </div>
-                                    <p className="text-sm leading-tight text-muted-foreground">
-                                        Browse specific physics topics relating to and going beyond your modules <span
-                                        className={"group-focus:ml-1 group-hover:ml-1 transition-all"}>-{">"}</span>
+                                    <p className="inline-flex items-center text-sm leading-tight text-muted-foreground">
+                                        Browse specific physics topics relating to and going beyond your modules
+                                        <ArrowRight
+                                            className={"text-sm text-muted-foreground group-hover:ml-2 ml-1 h-4 transition-all w-fit"}
+                                        />
                                     </p>
                                 </a>
                             </NavigationMenuLink>
                         </li>
                         {topics ?
                             <ul className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                {topics.slice(0,4).map((topic) => (
+                                {topics.slice(0, 4).map((topic) => (
                                     <ListItem
                                         key={topic.id}
                                         title={topic.title}

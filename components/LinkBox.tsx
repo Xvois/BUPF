@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {cn} from "@/lib/utils";
 import React from "react";
+import {ArrowRight} from "lucide-react";
 
 export default function LinkBox({title, description, href, className, ...props}: {
                                     title: string,
@@ -9,9 +10,11 @@ export default function LinkBox({title, description, href, className, ...props}:
                                 } & React.HTMLAttributes<HTMLDivElement>
 ) {
     return (
-        <Link className={cn("group flex flex-col border rounded-md p-4 transition-all hover:shadow hover:scale-[101%] focus:outline-foreground shadow bg-popover", className)} href={href}>
+        <Link
+            className={cn("group flex flex-col border rounded-md p-4 transition-all focus:outline-foreground hover:bg-accent", className)}
+            href={href}>
             <div
-                 {...props}>
+                {...props}>
                 <h3 className={"text-xl font-bold"}>
                     {title}
                 </h3>
@@ -19,7 +22,9 @@ export default function LinkBox({title, description, href, className, ...props}:
                     {description}
                 </p>
                 {props.children}
-                <p className={"text-sm text-muted-foreground group-hover:mr-1 transition-all group-hover:text-foreground ml-auto w-fit"}>-{">"}</p>
+                <ArrowRight
+                    className={"text-sm text-muted-foreground group-hover:mr-1 h-4 transition-all group-hover:text-foreground ml-auto w-fit"}
+                />
             </div>
         </Link>
     )

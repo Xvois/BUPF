@@ -1,6 +1,7 @@
 import {redirect} from "next/navigation";
 import {cookies} from "next/headers";
 import {createClient} from "@/utils/supabase/server";
+import {revalidatePath} from "next/cache";
 
 export async function GET(req: Request) {
     const supabase = createClient();
@@ -12,5 +13,6 @@ export async function GET(req: Request) {
         }
     })
 
+    revalidatePath("/", "layout");
     return redirect('/login')
 }

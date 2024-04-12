@@ -2,6 +2,23 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
 import {cn} from "@/lib/utils";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "BUPF",
+    description: "Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.",
+    openGraph: {
+        title: "BUPF",
+        description: "Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.",
+        type: "website",
+        url: "https://bupf.co.uk",
+    },
+    twitter: {
+        title: "BUPF",
+        description: "Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.",
+        card: "summary_large_image",
+    }
+};
 
 const inter = Inter({ subsets: ['latin'] })
 
