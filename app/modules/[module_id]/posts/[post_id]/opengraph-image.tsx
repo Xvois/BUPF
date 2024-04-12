@@ -12,7 +12,7 @@ export const size = {
 
 export const contentType = 'image/png'
 
-export async function GET(
+export default async function Image(
   request: Request,
   { params }: { params: { post_id: string, module_id: string } }
 ) {
