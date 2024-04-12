@@ -4,6 +4,14 @@ import {ImageResponse} from 'next/og'
 
 export const runtime = 'edge'
 
+export const alt = 'BUPF Post Image'
+export const size = {
+  width: 800,
+  height: 400,
+}
+
+export const contentType = 'image/png'
+
 export async function GET(
   request: Request,
   { params }: { params: { post_id: string, module_id: string } }
@@ -12,9 +20,8 @@ export async function GET(
     const { post_id, module_id } = params
     const url = new URL(request.url)
     const {data: post, postError} = await fetch(`${url.origin}/api/post/` + post_id).then(res => res.json())
-    const {data: module, error: moduleError} = await fetch(`${url.origin}/api/module/` + module_id).then(res => res.json())
 
-    if(postError || moduleError) {
+    if(postError) {
         return;
     }
 
@@ -35,7 +42,7 @@ export async function GET(
                         <path d="M18.5 8.5 22 12l-3.5 3.5L15 12l3.5-3.5Z"/>
                         <path d="m12 15 3.5 3.5L12 22l-3.5-3.5L12 15Z"/>
                     </svg>
-                    {module.id}
+                    {module_id}
                 </div>
                 <div tw="text-4xl font-black mb-2">
                     {post.heading}
