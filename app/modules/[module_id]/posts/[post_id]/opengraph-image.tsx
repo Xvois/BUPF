@@ -12,14 +12,11 @@ export const size = {
 
 export const contentType = 'image/png'
 
-export default async function Image(
-  request: Request,
-  { params }: { params: { post_id: string, module_id: string } }
-) {
+export default async function Image({ params }: { params: { post_id: string, module_id: string } }) {
 
     const { post_id, module_id } = params
-    const url = new URL(request.url)
-    const {data: post, postError} = await fetch(`${url.origin}/api/post/` + post_id).then(res => res.json())
+    //FIXME: This is a temporary fix for the URL issue
+    const {data: post, postError} = await fetch(`https://www.bupf.co.uk/api/post/` + post_id).then(res => res.json())
 
     if(postError) {
         return;
