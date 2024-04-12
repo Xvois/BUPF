@@ -6,7 +6,6 @@ import {Separator} from "@/components/ui/separator";
 import {Component} from "lucide-react";
 import Link from "next/link";
 
-
 export default async function PostPage({params}: { params: { post_id: string } }) {
 
 
@@ -16,7 +15,8 @@ export default async function PostPage({params}: { params: { post_id: string } }
     if (post) {
         return (
             <div className={"w-full space-y-4"}>
-                <header className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none">
+                <header
+                    className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none">
                     <Link href={`/modules/${post.target}`} className={"inline-flex gap-2"}>
                         <Component/>
                         <p>{post.target}</p>
@@ -35,8 +35,9 @@ export default async function PostPage({params}: { params: { post_id: string } }
                         </p>
                     </div>
                 </div>
-                <Separator />
-                <CommentSection className={"p-6"} marked_comment={post.marked_comment || undefined} post_type={post.type}
+                <Separator/>
+                <CommentSection className={"p-6"} marked_comment={post.marked_comment || undefined}
+                                post_type={post.type}
                                 post_id={params.post_id}/>
             </div>
         )

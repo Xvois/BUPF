@@ -12,6 +12,7 @@ type ConfirmButtonProps = {
 
 export default function ResendButton({ resendEmail, email, domain, sentAt }: ConfirmButtonProps) {
 
+
     const isBrowser = typeof window !== 'undefined';
     const localStorage = isBrowser ? window.localStorage : undefined;
     const [disabled, setDisabled] = React.useState(() => {
@@ -35,7 +36,7 @@ export default function ResendButton({ resendEmail, email, domain, sentAt }: Con
         setDisabled(true);
         const disableUntil = new Date().getTime() + 5 * 60 * 1000;
         localStorage.setItem('disableUntil', String(disableUntil));
-        await resendEmail(email, domain + "/auth/callback");
+        await resendEmail(email, `https://${domain}/auth/callback`);
         const timeoutId = setTimeout(() => {
             setDisabled(false);
             localStorage.removeItem('disableUntil');

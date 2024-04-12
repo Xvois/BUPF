@@ -12,22 +12,6 @@ export default async function Page() {
         const supabase = createClient()
         const origin = headers().get("origin");
 
-        console.log({
-            email: formData.email,
-            password: formData.password,
-            options: {
-                emailRedirectTo: `${origin}/auth/callback`,
-                data: {
-                    first_name: formData.firstName,
-                    last_name: formData.lastName,
-                    // selects use string values
-                    course: +formData.course,
-                    year: formData.yearOfStudy
-                }
-            }
-
-        })
-
         const data = {
             email: formData.email,
             password: formData.password,

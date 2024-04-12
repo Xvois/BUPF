@@ -15,10 +15,7 @@ type ExpectedParams = {
 }
 
 export default function Page({params, searchParams}: { params: {}, searchParams: ExpectedParams }) {
-    console.log(
-        searchParams
-    )
-    const isValid = searchParams.redirect && searchParams.token_hash && (searchParams.type === "signup");
+    const isValid = searchParams?.redirect && searchParams?.token_hash && (searchParams?.type === "signup");
     if (!isValid) {
         return <div>Invalid request</div>
     }
