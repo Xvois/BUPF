@@ -187,6 +187,7 @@ const UserDetailsInputs = () => {
 const CourseDetailsInputs = () => {
     const form = useFormContext<z.infer<typeof formSchema>>()
     const {data: courses, error, isLoading} = useSWR('courses', sbFetcher<Tables<"courses">>);
+    const [popoverOpen, setPopoverOpen] = React.useState<boolean>(false);
     return (
         <>
             <FormField
@@ -195,7 +196,7 @@ const CourseDetailsInputs = () => {
                 render={({field}) => (
                     <FormItem className="flex flex-col">
                         <FormLabel>Course</FormLabel>
-                        <Popover>
+                        <Popover open={popoverOpen}>
                             <PopoverTrigger asChild>
                                 <FormControl>
                                     <Button
@@ -205,6 +206,7 @@ const CourseDetailsInputs = () => {
                                             "w-full justify-between overflow-x-clip",
                                             !field.value && "text-muted-foreground"
                                         )}
+                                        onClick={() => setPopoverOpen((val) => !val)}
                                     >
                                         {field.value
                                             ? courses?.find(
@@ -217,7 +219,7 @@ const CourseDetailsInputs = () => {
                             </PopoverTrigger>
                             <PopoverContent className="max-w-[572px] w-screen p-0">
                                 <Command className={"max-h-96 w-full overflow-y-scroll pt-12"}>
-                                    <div className={"fixed z-10 bg-popover w-full rounded-md top-0 scale-95"}>
+                                    <div className={"fixed z-10 bg-popover w-full rounded-md top-[1px] scale-x-[99%]"}>
                                         <CommandInput placeholder="Search courses..."/>
                                     </div>
                                     <CommandEmpty>No course found.</CommandEmpty>
@@ -227,7 +229,8 @@ const CourseDetailsInputs = () => {
                                                 value={course.type + course.title}
                                                 key={course.id}
                                                 onSelect={() => {
-                                                    form.setValue("course", course.id.toString())
+                                                    setPopoverOpen(false);
+                                                    form.setValue("course", course.id.toString());
                                                 }}
                                             >
                                                 <p>{course.title} <span

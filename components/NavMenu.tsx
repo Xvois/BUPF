@@ -64,7 +64,9 @@ export default function NavMenu({modules, topics}: {
                                 ))}
                             </ul>
                             :
-                            <p>Loading...</p>
+                            <li className={"text-muted-foreground text-sm w-[300px] p-4 md:w-[500px] lg:w-[600px] list-none"}>
+                                No modules found for your enrolled course.
+                            </li>
                         }
                     </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -75,11 +77,11 @@ export default function NavMenu({modules, topics}: {
                             <NavigationMenuLink asChild>
                                 <a
                                     className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none transition-shadow hover:shadow-md focus:shadow-md"
-                                    href="/topics"
+                                    href="#"
                                 >
                                     <BookCopy/>
                                     <div className="mb-2 mt-4 text-lg font-medium">
-                                        Topics
+                                        Topics <span className={"text-sm text-muted-foreground"}>(Coming soon)</span>
                                     </div>
                                     <p className="inline-flex items-center text-sm leading-tight text-muted-foreground">
                                         Browse specific physics topics relating to and going beyond your modules
@@ -96,7 +98,7 @@ export default function NavMenu({modules, topics}: {
                                     <ListItem
                                         key={topic.id}
                                         title={topic.title}
-                                        href={`/topics/${topic.id}`}
+                                        href={`#`}
                                     >
                                         {topic.description}
                                     </ListItem>

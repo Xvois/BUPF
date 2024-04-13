@@ -4,6 +4,7 @@ import LinkBox from "@/components/LinkBox";
 import {Badge} from "@/components/ui/badge";
 import {Separator} from "@/components/ui/separator";
 import {Package} from "lucide-react";
+import {getUserModules} from "@/utils/getUserModules";
 
 
 export default async function Modules() {
@@ -12,12 +13,13 @@ export default async function Modules() {
     if (!user) {
         return redirect("/login");
     }
-    const {data: profile} = await supabase.from("profiles").select("*").eq("id", user.id).single();
+    const {data: profile} = await supabase.from("profiles").select("*, courses (*)").eq("id", user.id).single();
     if (!profile) {
         return redirect("/login");
     }
-    const {data: modules} = await supabase.from("modules").select("*").eq("year", profile.year);
 
+    const {data: modules, error: modulesError} = await getUserModules(supabase, profile)
+    console.log(modules, modulesError)
 
     return (
         <div className="space-y-4">
@@ -42,7 +44,7 @@ export default async function Modules() {
                     </p>
                 </div>
                 <div className={"flex flex-wrap gap-4"}>
-                    {modules?.filter(module => !module.optional).map(module => (
+                    {modules?.required.map(module => (
                         <LinkBox
                             key={module.id}
                             title={module.id.toUpperCase()}
@@ -69,8 +71,8 @@ export default async function Modules() {
                 </div>
                 <div>
                     {
-                        modules && modules?.filter(module => module.optional).length > 0 ?
-                            modules.filter(module => module.optional).map(module => (
+                        modules && modules?.optional.length > 0 ?
+                            modules.optional.map(module => (
                                 <LinkBox
                                     key={module.id}
                                     title={module.id.toUpperCase()}
