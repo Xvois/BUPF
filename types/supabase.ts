@@ -206,7 +206,7 @@ export type Database = {
           target: string | null
           target_type: string | null
           tl_comments: number[]
-          type: "article" | "discussion" | "question"
+          type: "question" | "article" | "discussion"
         }
         Insert: {
           anonymous?: boolean
@@ -221,7 +221,7 @@ export type Database = {
           target?: string | null
           target_type?: string | null
           tl_comments?: number[]
-          type?: "article" | "discussion" | "question"
+          type?: "question" | "article" | "discussion"
         }
         Update: {
           anonymous?: boolean
@@ -236,7 +236,7 @@ export type Database = {
           target?: string | null
           target_type?: string | null
           tl_comments?: number[]
-          type?: "article" | "discussion" | "question"
+          type?: "question" | "article" | "discussion"
         }
         Relationships: [
           {
@@ -258,27 +258,27 @@ export type Database = {
       profiles: {
         Row: {
           course: number | null
+          entry_date: string | null
           first_name: string
           id: string
           last_name: string
           profile_picture: string | null
-          year: number
         }
         Insert: {
           course?: number | null
+          entry_date?: string | null
           first_name: string
           id: string
           last_name: string
           profile_picture?: string | null
-          year: number
         }
         Update: {
           course?: number | null
+          entry_date?: string | null
           first_name?: string
           id?: string
           last_name?: string
           profile_picture?: string | null
-          year?: number
         }
         Relationships: [
           {
@@ -301,19 +301,19 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
-          id: number
+          id: string
           title: string
         }
         Insert: {
           created_at?: string
           description?: string | null
-          id?: number
+          id?: string
           title: string
         }
         Update: {
           created_at?: string
           description?: string | null
-          id?: number
+          id?: string
           title?: string
         }
         Relationships: []

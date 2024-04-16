@@ -3,8 +3,6 @@
 import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
-import {Button} from "@/components/ui/button";
-import Link from "next/link";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import {Skeleton} from "@/components/ui/skeleton";
@@ -25,7 +23,7 @@ function calculateWeight(post: Tables<"posts">) {
     return commentsWeight - daysDifference; // adjust these values as needed
 }
 
-const QuestionsDisplay = (props: { target: string, tags: { key: string, value: string }[] }) => {
+const PostsDisplay = (props: { target: string, tags: { key: string, value: string }[] }) => {
 
     const scrollRef = React.useRef<HTMLDivElement>(null);
     const [displayScrollHelper, setDisplayScrollHelper] = React.useState(true);
@@ -110,29 +108,33 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
                             </SelectContent>
                         </Select>
                     </div>
-                    <div>
-                        <Label>Filter</Label>
-                        <ToggleGroup onValueChange={(e) => {
-                            setParams((prevParams) => ({...prevParams, chosenTag: e}))
-                        }} className={"flex flex-wrap justify-start gap-2"} type={"single"}>
-                            {props.tags.map(tag =>
-                                <ToggleGroupItem className={"hover:bg-background data-[state=on]:bg-background p-0"}
-                                                 key={tag.key} value={tag.key}>
-                                    <Badge variant={params.chosenTag === tag.key ? 'default' : 'outline'}>
-                                        {tag.value}
-                                    </Badge>
-                                </ToggleGroupItem>
-                            )}
-                        </ToggleGroup>
-                    </div>
+                    {
+                        props.tags.length > 0 &&
+                        <div>
+                            <Label>Filter</Label>
+                            <ToggleGroup onValueChange={(e) => {
+                                setParams((prevParams) => ({...prevParams, chosenTag: e}))
+                            }} className={"flex flex-wrap justify-start gap-2"} type={"single"}>
+                                {props.tags.map(tag =>
+                                    <ToggleGroupItem className={"hover:bg-background data-[state=on]:bg-background p-0"}
+                                                     key={tag.key} value={tag.key}>
+                                        <Badge variant={params.chosenTag === tag.key ? 'default' : 'outline'}>
+                                            {tag.value}
+                                        </Badge>
+                                    </ToggleGroupItem>
+                                )}
+                            </ToggleGroup>
+                        </div>
+                    }
                 </div>
-                <div className={"flex-grow space-y-8 md:max-w-[350px] p-4 border rounded-md hidden md:block max-h-full"}>
+                <div
+                    className={"flex-grow space-y-8 md:max-w-[350px] p-4 border rounded-md hidden md:block max-h-full"}>
                     <div>
                         <h3 className={"text-xl font-bold"}>
                             Details
                         </h3>
                         <p className={"text-sm text-muted-foreground"}>
-                            Details about this modules questions.
+                            Details about this section's posts.
                         </p>
                     </div>
                     <div>
@@ -144,7 +146,7 @@ const QuestionsDisplay = (props: { target: string, tags: { key: string, value: s
             </div>
             <div className={"relative md:w-3/4 overflow-y-scroll"}>
                 <ServerError>
-                    {error?.message}
+                {error?.message}
                 </ServerError>
                 <div ref={scrollRef} className={"h-full overflow-y-scroll"}>
                     <div className={"flex flex-col space-y-4 items-end h-fit"}>
@@ -190,7 +192,7 @@ function PostsList({isLoading, posts, error, target}: {
                     <LinkBox title={"Start a conversation."}
                              href={`/posts/new?type=question&target=${target}`}
                              className={"w-full"}
-                             description={"Questions are a little dry right now. Why not start a conversation by asking a question?"}/>
+                             description={"Questions are a little dry right now. Why not start a conversation by making a post?"}/>
                 }
             </>
         );
@@ -200,8 +202,8 @@ function PostsList({isLoading, posts, error, target}: {
         <LinkBox title={"Start a conversation."}
                  href={`/posts/new?type=question&target=${target}`}
                  className={"w-full"}
-                 description={"Questions are a little dry right now. Why not start a conversation by asking a question?"}/>
+                 description={"Questions are a little dry right now. Why not start a conversation by making a post?"}/>
     );
 }
 
-export default QuestionsDisplay;
+export default PostsDisplay;

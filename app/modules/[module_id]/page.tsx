@@ -1,7 +1,7 @@
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import {Separator} from "@/components/ui/separator";
-import QuestionsDisplay from "@/components/QuestionsDisplay";
+import PostsDisplay from "@/components/PostsDisplay";
 import {Component} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
@@ -41,7 +41,6 @@ export default async function ModulePage({params}: { params: { module_id: string
                         <Link href={`/posts/new?type=question&target=${module.id}`}>Ask a question</Link>
                     </Button>
                 </div>
-
             </header>
             <Separator/>
             <section className={"flex flex-col p-6 space-y-4 max-h-[1000px] md:h-[750px]"}>
@@ -52,7 +51,7 @@ export default async function ModulePage({params}: { params: { module_id: string
                         want.
                     </p>
                 </div>
-                <QuestionsDisplay target={module.id} tags={formattedTags || []}/>
+                <PostsDisplay target={module.id} tags={formattedTags || []}/>
             </section>
             <Separator/>
             <section className={"p-6 space-y-4"}>

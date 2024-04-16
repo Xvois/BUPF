@@ -14,7 +14,7 @@ export default async function PostPage({params}: { params: { post_id: string } }
 
     if (post) {
         return (
-            <div className={"w-full space-y-4"}>
+            <article className={"w-full space-y-4"}>
                 <header
                     className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none">
                     <Link href={`/modules/${post.target}`} className={"inline-flex gap-2"}>
@@ -39,7 +39,7 @@ export default async function PostPage({params}: { params: { post_id: string } }
                 <CommentSection className={"p-6"} marked_comment={post.marked_comment || undefined}
                                 post_type={post.type}
                                 post_id={params.post_id}/>
-            </div>
+            </article>
         )
     }
 }

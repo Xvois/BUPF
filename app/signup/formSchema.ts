@@ -8,7 +8,7 @@ export const formSchema = z.object({
     password: z.string().min(8, {message: "Password must be at least 8 characters long"}),
     confirmPassword: z.string(),
     course: z.string(),
-    yearOfStudy: z.coerce.number().min(1, {message: "Year of study must be at least 1"}).max(5, {message: "Year of study must be at most 5"}),
+    yearOfStudy: z.coerce.number().min(2000, {message: "Enter a valid start year for your course."}).max(new Date().getFullYear(), {message: "This forum only supports enrolled students."}).optional(),
 }).refine(data => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"]

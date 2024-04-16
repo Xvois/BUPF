@@ -27,7 +27,10 @@ import Link from "next/link";
 import {ServerError} from "@/components/ServerError";
 import {sbFetcher} from "@/utils/fetcher";
 import {Tables} from "@/types/supabase";
-import {ExternalLink} from "lucide-react";
+import {CheckIcon, ExternalLink} from "lucide-react";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {cn} from "@/lib/utils";
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
 
 
 export default function PostForm(
@@ -73,10 +76,16 @@ export default function PostForm(
         }
     }
 
+    // Reset form values when tab changes
+    function onTabChange() {
+        console.log("Resetting");
+        form.setValue("target", "");
+    }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className={""}>
-                <Tabs defaultValue={form.formState.defaultValues?.type}>
+                <Tabs onValueChange={onTabChange} defaultValue={form.formState.defaultValues?.type}>
                     <TabsList className="flex flex-row w-full flex-wrap-reverse justify-around h-fit">
                         <TabsTrigger className={"flex-grow min-w-32"} value="question">Question</TabsTrigger>
                         <TabsTrigger className={"flex-grow min-w-32"} value="discussion">Discussion</TabsTrigger>
@@ -88,7 +97,9 @@ export default function PostForm(
                         }}/>
                     </TabsContent>
                     <TabsContent value={"discussion"}>
-                        <Discussion/>
+                        <Discussion defaultStates={{
+                            target: props.defaultParams?.target
+                        }}/>
                     </TabsContent>
                     <TabsContent value={"article"}>
                         <Article/>
@@ -104,14 +115,24 @@ export default function PostForm(
     )
 }
 
-function Discussion() {
+function Discussion(props: { defaultStates: { target: string | undefined } }) {
+    const {defaultStates} = props;
 
     const form = useFormContext();
+    const {data: topics} = useSWR('topics', sbFetcher<Tables<"topics">>);
+
+    const {isSubmitting} = form.formState;
 
     useEffect(() => {
         form.setValue("type", "discussion");
         form.setValue("targetType", "topic");
     }, [])
+
+    useEffect(() => {
+        if (topics && defaultStates.target && topics.some(t => t.id === defaultStates.target)) {
+            form.setValue("target", defaultStates.target);
+        }
+    }, [topics]);
 
     return (
         <Card className="w-full">
@@ -119,7 +140,7 @@ function Discussion() {
                 <CardTitle>Start a discussion</CardTitle>
                 <CardDescription>Start a discussion with your peers and lecturers.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="grid gap-6">
                 <FormField
                     control={form.control}
                     name={"heading"}
@@ -142,12 +163,82 @@ function Discussion() {
                                 <RichTextArea {...field} id="content"
                                               placeholder={"# My discussion \n Hello there..."}/>
                             </FormControl>
+                            <FormDescription>
+                                Use markdown & LaTeX to format your question. Need help? Check out this <a
+                                className={"underline inline-flex items-center gap-1"}
+                                href={"https://ashki23.github.io/markdown-latex.html"}>markdown guide <ExternalLink
+                                className={"w-3 h-3"}/></a>.
+                            </FormDescription>
                             <FormMessage/>
                         </FormItem>
                     )}/>
+                <FormField
+                    control={form.control}
+                    name={"target"}
+                    render={({field}) => (
+                        <FormItem className="flex flex-col">
+                            <FormLabel>Topic</FormLabel>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <FormControl>
+                                        <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            isLoading={!topics}
+                                            className={cn(
+                                                "w-[200px] justify-between",
+                                                !field.value && "text-muted-foreground"
+                                            )}
+                                        >
+                                            {field.value
+                                                ? topics?.find(
+                                                    (topic) => topic.id === field.value
+                                                )?.title
+                                                : "Select topic"}
+                                        </Button>
+                                    </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-[200px] p-0">
+                                    <Command>
+                                        <CommandInput
+                                            placeholder="Search topic..."
+                                            className="h-9"
+                                        />
+                                        <CommandEmpty>No framework found.</CommandEmpty>
+                                        <CommandGroup>
+                                            {topics?.map((topic) => (
+                                                <CommandItem
+                                                    value={topic.id}
+                                                    key={topic.id}
+                                                    onSelect={() => {
+                                                        form.setValue("target", topic.id)
+                                                    }}
+                                                >
+                                                    {topic.title}
+                                                    <CheckIcon
+                                                        className={cn(
+                                                            "ml-auto h-4 w-4",
+                                                            topic.id === field.value
+                                                                ? "opacity-100"
+                                                                : "opacity-0"
+                                                        )}
+                                                    />
+                                                </CommandItem>
+                                            ))}
+                                        </CommandGroup>
+                                    </Command>
+                                </PopoverContent>
+                            </Popover>
+                            <FormDescription>
+                                This designates which topic your discussion will be posted in.
+                            </FormDescription>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
             </CardContent>
             <CardFooter>
-                <Button size="lg" type={"submit"}>Submit</Button>
+                <Button isLoading={isSubmitting} size="lg" type={"submit"}>Submit</Button>
             </CardFooter>
         </Card>
     )
@@ -206,7 +297,9 @@ function Question(props: { defaultStates: { target: string | undefined } }) {
                             </FormControl>
                             <FormDescription>
                                 Use markdown & LaTeX to format your question. Need help? Check out this <Link
-                                className={"underline inline-flex items-center gap-1"} href={"https://ashki23.github.io/markdown-latex.html"}>markdown guide <ExternalLink className={"w-3 h-3"} /></Link>.
+                                className={"underline inline-flex items-center gap-1"}
+                                href={"https://ashki23.github.io/markdown-latex.html"}>markdown guide <ExternalLink
+                                className={"w-3 h-3"}/></Link>.
                             </FormDescription>
                             <FormMessage/>
                         </FormItem>
@@ -218,8 +311,8 @@ function Question(props: { defaultStates: { target: string | undefined } }) {
                         <FormItem>
                             <FormLabel>Module</FormLabel>
                             <FormControl>
-                                <Select disabled {...field} onValueChange={(target) => form.setValue("target", target)}>
-                                    <SelectTrigger>
+                                <Select {...field} onValueChange={(target) => form.setValue("target", target)}>
+                                    <SelectTrigger className={"w-64"}>
                                         <SelectValue className={"uppercase"} placeholder="Select a module"/>
                                     </SelectTrigger>
                                     <SelectContent>

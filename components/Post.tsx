@@ -1,7 +1,7 @@
 import {Tables} from "@/types/supabase";
 import {cn} from "@/lib/utils";
 import Profile from "@/components/Profile";
-import {CheckCircle, Component} from "lucide-react";
+import {BookCopy, CheckCircle, Component} from "lucide-react";
 import React from "react";
 import Link, {LinkProps} from "next/link";
 
@@ -22,7 +22,7 @@ export default function Post(props: PostProps & Omit<LinkProps,'href'> & { class
             targetIdentifier = <Component className={"h-3 w-3"}/>;
             break;
         case "topic":
-            targetIdentifier = <Component className={"h-3 w-3"}/>;
+            targetIdentifier = <BookCopy className={"h-3 w-3"}/>;
             break;
         default:
             break;

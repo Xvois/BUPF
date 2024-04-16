@@ -15,15 +15,18 @@ export const getUserModules = async (supabase: SupabaseClient<Database>, user: T
     courses: Tables<"courses"> | null
 }): Promise<{ data: CourseModules | null, error: PostgrestError | Error | null }> => {
     try {
-        const year = user.year;
+        const entry = user.entry_date;
+        const YEAR_IN_MS = 1000 * 60 * 60 * 24 * 365;
         const courses = user.courses;
 
         // If they are not enrolled in a course, show them all modules
-        if(courses === null) {
+        if(courses === null || entry === null) {
             const {data: modules, error: modulesError} = await supabase.from("modules").select("*");
             if(modulesError) return {data: null, error: modulesError}
             return {data: {required: [], optional: modules}, error: null}
         }
+
+        const year = Math.ceil((Date.now() - new Date(entry).getTime()) / YEAR_IN_MS);
 
         if (courses.modules === null) {
             return {data: null, error: new Error("Course modules not found")};

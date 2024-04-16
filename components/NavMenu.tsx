@@ -77,7 +77,7 @@ export default function NavMenu({modules, topics}: {
                             <NavigationMenuLink asChild>
                                 <a
                                     className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none transition-shadow hover:shadow-md focus:shadow-md"
-                                    href="#"
+                                    href="/topics"
                                 >
                                     <BookCopy/>
                                     <div className="mb-2 mt-4 text-lg font-medium">
@@ -98,7 +98,7 @@ export default function NavMenu({modules, topics}: {
                                     <ListItem
                                         key={topic.id}
                                         title={topic.title}
-                                        href={`#`}
+                                        href={`/topics/${topic.id}`}
                                     >
                                         {topic.description}
                                     </ListItem>
@@ -108,6 +108,13 @@ export default function NavMenu({modules, topics}: {
                             <p>Loading...</p>
                         }
                     </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <Link href="/about" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            About
+                        </NavigationMenuLink>
+                    </Link>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>

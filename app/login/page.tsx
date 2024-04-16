@@ -24,11 +24,12 @@ export default function Login() {
     };
 
     return (
-        <div className="w-96 rounded-xl border p-8 mx-auto my-auto space-y-8">
+        <div className="w-full max-w-screen-sm rounded-xl space-y-8 p-8 border mx-auto my-auto bg-popover shadow">
             <div>
                 <h1 className={"text-3xl font-bold"}>BUPF</h1>
                 <p>The Bath University Physics Forum</p>
             </div>
+            <Separator/>
             <LoginForm {...{signIn}} />
             <Separator/>
             <div className={"inline-flex gap-2 text-sm text-muted-foreground"}>

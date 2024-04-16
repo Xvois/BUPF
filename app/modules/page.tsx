@@ -22,7 +22,7 @@ export default async function Modules() {
     console.log(modules, modulesError)
 
     return (
-        <div className="space-y-4">
+        <div className="w-full space-y-4">
             <header
                 className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none"
             >
@@ -44,21 +44,30 @@ export default async function Modules() {
                     </p>
                 </div>
                 <div className={"flex flex-wrap gap-4"}>
-                    {modules?.required.map(module => (
-                        <LinkBox
-                            key={module.id}
-                            title={module.id.toUpperCase()}
-                            href={`/modules/${module.id}`}
-                            className={"max-w-screen-sm flex-grow"}
-                            description={module.description || undefined}
-                        >
-                            <div className={"flex w-full gap-2 flex-wrap mt-1"}>
-                                {module.tags?.map(tag => (
-                                    <Badge key={tag} variant={"outline"}>{tag}</Badge>
-                                ))}
+                    {
+                        modules && modules?.required.length > 0 ?
+                            modules.required.map(module => (
+                                <LinkBox
+                                    key={module.id}
+                                    title={module.id.toUpperCase()}
+                                    href={`/modules/${module.id}`}
+                                    className={"max-w-screen-sm flex-grow"}
+                                    description={module.description || undefined}
+                                >
+                                    <div className={"flex w-full gap-2 flex-wrap mt-1"}>
+                                        {module.tags?.map(tag => (
+                                            <Badge key={tag} variant={"outline"}>{tag}</Badge>
+                                        ))}
+                                    </div>
+                                </LinkBox>
+                            ))
+                            :
+                            <div className={"p-4 border rounded-md text-center"}>
+                                <p>No required modules available.</p>
+                                <p className={"text-sm text-muted-foreground"}>Think this is a mistake? Contact a site
+                                    admin.</p>
                             </div>
-                        </LinkBox>
-                    ))}
+                    }
                 </div>
             </section>
             <Separator/>
@@ -69,7 +78,7 @@ export default async function Modules() {
                         These are optional modules that not all students will take.
                     </p>
                 </div>
-                <div>
+                <div className={"flex flex-wrap gap-4"}>
                     {
                         modules && modules?.optional.length > 0 ?
                             modules.optional.map(module => (

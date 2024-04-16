@@ -52,7 +52,9 @@ export default async function UserDropdown() {
                     <Link href={`/posts/${user.id}`}>My Posts</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>Followed Posts</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link href={`/settings`}>Settings</Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                     <Link href={'/signout'}>Sign out</Link>

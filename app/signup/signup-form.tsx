@@ -40,6 +40,7 @@ export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSche
             password: "",
             confirmPassword: ""
         },
+        mode: "onBlur"
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -286,11 +287,13 @@ const CourseDetailsInputs = () => {
                 name="yearOfStudy"
                 render={({field}) => (
                     <FormItem className={"w-full"}>
-                        <FormLabel>Year</FormLabel>
+                        <FormLabel>
+                            Start of studies
+                        </FormLabel>
                         <FormControl>
                             <Input type={"number"} {...field} />
                         </FormControl>
-                        <FormDescription>Your current year of study. (1, 2, 3...)</FormDescription>
+                        <FormDescription>The year your studies started. Not a student? You can ignore this field.</FormDescription>
                         <FormMessage/>
                     </FormItem>
                 )}
