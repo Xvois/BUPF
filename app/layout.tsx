@@ -4,6 +4,9 @@ import TopBar from "@/components/TopBar";
 import {cn} from "@/lib/utils";
 import {Metadata} from "next";
 import React from "react";
+import {Analytics} from "@vercel/analytics/react"
+import {SpeedInsights} from "@vercel/speed-insights/next"
+
 
 export const metadata: Metadata = {
     title: "BUPF",
@@ -49,6 +52,8 @@ export default function RootLayout({
           {children}
         </main>
       </body>
+      <Analytics/>
+      <SpeedInsights/>
     </html>
   );
 }
