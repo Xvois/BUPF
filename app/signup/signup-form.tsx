@@ -197,7 +197,7 @@ const CourseDetailsInputs = () => {
                 render={({field}) => (
                     <FormItem className="flex flex-col">
                         <FormLabel>Course</FormLabel>
-                        <Popover open={popoverOpen}>
+                        <Popover open={popoverOpen} onOpenChange={(e) => setPopoverOpen(e)}>
                             <PopoverTrigger asChild>
                                 <FormControl>
                                     <Button
@@ -207,7 +207,6 @@ const CourseDetailsInputs = () => {
                                             "w-full justify-between overflow-x-clip",
                                             !field.value && "text-muted-foreground"
                                         )}
-                                        onClick={() => setPopoverOpen((val) => !val)}
                                     >
                                         {field.value
                                             ? courses?.find(
@@ -246,6 +245,7 @@ const CourseDetailsInputs = () => {
                                                 value={course.type + course.title}
                                                 key={course.id}
                                                 onSelect={() => {
+                                                    setPopoverOpen(false);
                                                     form.setValue("course", course.id.toString())
                                                 }}
                                             >
@@ -261,6 +261,7 @@ const CourseDetailsInputs = () => {
                                                 value={course.type + course.title}
                                                 key={course.id}
                                                 onSelect={() => {
+                                                    setPopoverOpen(false);
                                                     form.setValue("course", course.id.toString())
                                                 }}
                                             >

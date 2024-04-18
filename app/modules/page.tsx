@@ -18,8 +18,7 @@ export default async function Modules() {
         return redirect("/login");
     }
 
-    const {data: modules, error: modulesError} = await getUserModules(supabase, profile)
-    console.log(modules, modulesError)
+    const {data: modules} = await getUserModules(supabase, profile)
 
     return (
         <div className="w-full space-y-4">
@@ -78,7 +77,7 @@ export default async function Modules() {
                         These are optional modules that not all students will take.
                     </p>
                 </div>
-                <div className={"flex flex-wrap gap-4"}>
+                <div className={"grid grid-cols-3 gap-4"}>
                     {
                         modules && modules?.optional.length > 0 ?
                             modules.optional.map(module => (
@@ -86,7 +85,6 @@ export default async function Modules() {
                                     key={module.id}
                                     title={module.id.toUpperCase()}
                                     href={`/modules/${module.id}`}
-                                    className={"max-w-screen-sm flex-grow"}
                                     description={module.description || undefined}
                                 >
                                     <div className={"flex w-full gap-2 flex-wrap"}>

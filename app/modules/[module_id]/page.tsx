@@ -26,7 +26,7 @@ export default async function ModulePage({params}: { params: { module_id: string
     return (
         <div className="w-full grid space-y-4">
             <header
-                className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none"
+                className="flex h-full w-full select-none flex-col justify-end p-6 no-underline outline-none"
             >
                 <div className={"inline-flex gap-2"}>
                     <Component/>

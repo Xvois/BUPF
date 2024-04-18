@@ -1,7 +1,6 @@
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import LinkBox from "@/components/LinkBox";
-import {Badge} from "@/components/ui/badge";
 import {Separator} from "@/components/ui/separator";
 import {Package} from "lucide-react";
 
@@ -36,18 +35,17 @@ export default async function Modules() {
             <Separator/>
             <section className={"space-y-4 p-6"}>
                 <div>
-                    <h2 className={"text-2xl font-bold"}>Some topics</h2>
+                    <h2 className={"text-2xl font-bold"}>All topics</h2>
                     <p className={"text-sm text-muted-foreground"}>
-                        Don't take this seriously just yet, not sure how to order these.
+                        Explore the topics that are available to you.
                     </p>
                 </div>
-                <div className={"flex flex-wrap gap-4"}>
+                <div className={"grid grid-cols-3 gap-4"}>
                     {topics?.map(topic => (
                         <LinkBox
                             key={topic.id}
                             title={topic.title}
                             href={`/topics/${topic.id}`}
-                            className={"max-w-screen-sm flex-grow"}
                             description={topic.description || undefined}
                         >
                         </LinkBox>

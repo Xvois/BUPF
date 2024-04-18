@@ -84,8 +84,8 @@ const PostsDisplay = (props: { target: string, tags: { key: string, value: strin
     return (
         <div className={"flex md:flex-row flex-col md:space-x-4 space-y-4 md:space-y-0 flex-grow overflow-hidden"}>
             <div className={"space-y-4 flex flex-col"}>
-                <div className={"flex-grow min-w-40 md:max-w-[350px] space-y-8 p-4 border rounded-md"}>
-                    <div>
+                <div className={"flex-grow min-w-40 md:max-w-[350px] border rounded-md"}>
+                    <div className="p-4 border-b border-border">
                         <h3 className={"text-xl font-bold"}>
                             Filters
                         </h3>
@@ -93,55 +93,44 @@ const PostsDisplay = (props: { target: string, tags: { key: string, value: strin
                             Filter posts by tag or sort them by relevance or date posted.
                         </p>
                     </div>
-                    <div>
-                        <Label>Sort by</Label>
-                        <Select onValueChange={(e) => {
-                            setParams((prevParams) => ({...prevParams, sort: e}))
-                        }} defaultValue={"rel"}>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder={"Relevance"}/>
-                            </SelectTrigger>
-                            <SelectContent className={"w-full"}>
-                                <SelectItem value="rel">Relevance</SelectItem>
-                                <SelectItem value="asc">Date posted (Asc)</SelectItem>
-                                <SelectItem value="desc">Date posted (Desc)</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    {
-                        props.tags.length > 0 &&
+                    <div className="p-4 space-y-4">
                         <div>
-                            <Label>Filter</Label>
-                            <ToggleGroup onValueChange={(e) => {
-                                setParams((prevParams) => ({...prevParams, chosenTag: e}))
-                            }} className={"flex flex-wrap justify-start gap-2"} type={"single"}>
-                                {props.tags.map(tag =>
-                                    <ToggleGroupItem className={"hover:bg-background data-[state=on]:bg-background p-0"}
-                                                     key={tag.key} value={tag.key}>
-                                        <Badge variant={params.chosenTag === tag.key ? 'default' : 'outline'}>
-                                            {tag.value}
-                                        </Badge>
-                                    </ToggleGroupItem>
-                                )}
-                            </ToggleGroup>
+                            <Label className="font-semibold">Sort by</Label>
+                            <Select onValueChange={(e) => {
+                                setParams((prevParams) => ({...prevParams, sort: e}))
+                            }} defaultValue={"rel"}>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder={"Relevance"}/>
+                                </SelectTrigger>
+                                <SelectContent className={"w-full"}>
+                                    <SelectItem value="rel">Relevance</SelectItem>
+                                    <SelectItem value="asc">Date posted (Asc)</SelectItem>
+                                    <SelectItem value="desc">Date posted (Desc)</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
-                    }
-                </div>
-                <div
-                    className={"flex-grow space-y-8 md:max-w-[350px] p-4 border rounded-md hidden md:block max-h-full"}>
-                    <div>
-                        <h3 className={"text-xl font-bold"}>
-                            Details
-                        </h3>
-                        <p className={"text-sm text-muted-foreground"}>
-                            Details about this section's posts.
-                        </p>
+                        {
+                            props.tags.length > 0 &&
+                            <div>
+                                <Label className="font-semibold">Filter</Label>
+                                <ToggleGroup onValueChange={(e) => {
+                                    setParams((prevParams) => ({...prevParams, chosenTag: e}))
+                                }} className={"flex flex-wrap justify-start gap-2"} type={"single"}>
+                                    {props.tags.map((tag, i) =>
+                                        <ToggleGroupItem
+                                            className={"hover:bg-background data-[state=on]:bg-background p-0 h-fit"}
+                                            key={tag.key} value={tag.key}>
+                                            <Badge className="rounded-md"
+                                                   variant={params.chosenTag === tag.key ? 'default' : 'outline'}>
+                                                {tag.value}
+                                            </Badge>
+                                        </ToggleGroupItem>
+                                    )}
+                                </ToggleGroup>
+                            </div>
+                        }
                     </div>
-                    <div>
-                        <p className={"text-sm text-muted-foreground"}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac nunc nec odio ultricies
-                        </p>
-                    </div>
+
                 </div>
             </div>
             <div className={"relative md:w-3/4 overflow-y-scroll"}>
@@ -192,7 +181,7 @@ function PostsList({isLoading, posts, error, target}: {
                     <LinkBox title={"Start a conversation."}
                              href={`/posts/new?type=question&target=${target}`}
                              className={"w-full"}
-                             description={"Questions are a little dry right now. Why not start a conversation by making a post?"}/>
+                             description={"Posts are a little dry right now. Why not start a conversation by making a post?"}/>
                 }
             </>
         );
@@ -202,7 +191,7 @@ function PostsList({isLoading, posts, error, target}: {
         <LinkBox title={"Start a conversation."}
                  href={`/posts/new?type=question&target=${target}`}
                  className={"w-full"}
-                 description={"Questions are a little dry right now. Why not start a conversation by making a post?"}/>
+                 description={"Posts are a little dry right now. Why not start a conversation by making a post?"}/>
     );
 }
 

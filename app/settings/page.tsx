@@ -1,17 +1,10 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ChangeEmailButton } from "@/app/settings/ActionButtons";
+import {createClient} from "@/utils/supabase/server";
+import {redirect} from "next/navigation";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {ChangeEmailButton, DeleteAccountButton, ResetPasswordButton} from "@/app/settings/ActionButtons";
 
 export default async function Settings() {
   const supabase = createClient();
@@ -67,7 +60,7 @@ export default async function Settings() {
                 placeholder="Enter your email"
                 type="email"
               />
-              <ChangeEmailButton />
+                <ChangeEmailButton variant={"outline"} size={"sm"}/>
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Password</Label>
@@ -78,9 +71,7 @@ export default async function Settings() {
                 placeholder="Enter your email"
                 type="password"
               />
-              <Button variant={"outline"} size={"sm"}>
-                Change password
-              </Button>
+                <ResetPasswordButton variant={"outline"} size={"sm"}/>
             </div>
             <div className="space-y-2">
               <Label>Profile picture</Label>
@@ -107,12 +98,7 @@ export default async function Settings() {
         </div>
       </CardContent>
       <CardFooter className="flex items-center justify-between w-full">
-        <Button
-          variant="outline"
-          className={"text-destructive border-destructive"}
-        >
-          Delete account
-        </Button>
+          <DeleteAccountButton variant={"outline"} className="text-destructive border-destructive"/>
         <Button type="submit">Save</Button>
       </CardFooter>
     </Card>

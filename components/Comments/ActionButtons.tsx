@@ -3,15 +3,9 @@
 Client buttons that invoke server actions in the Comment component.
  */
 
-import { Button, ButtonProps } from "@/components/ui/button";
-import { Tables } from "@/types/supabase";
-import {
-  markComment,
-  postComment,
-  reportComment,
-  unMarkComment,
-  deleteComment,
-} from "@/components/Comments/actions";
+import {Button, ButtonProps} from "@/components/ui/button";
+import {Tables} from "@/types/supabase";
+import {deleteComment, markComment, postComment, reportComment, unMarkComment,} from "@/components/Comments/actions";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -22,20 +16,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import React, { useEffect } from "react";
-import { ServerError } from "@/components/ServerError";
+import React, {useEffect} from "react";
+import {ServerError} from "@/components/ServerError";
 import RichTextArea from "@/components/RichTextArea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useSearchParams } from "next/navigation";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import {Checkbox} from "@/components/ui/checkbox";
+import {useSearchParams} from "next/navigation";
+import {useMediaQuery} from "@/hooks/use-media-query";
+import {Dialog, DialogContent,} from "@/components/ui/dialog";
 
 type ReplyButtonProps = {
   comment: Tables<"comments">;

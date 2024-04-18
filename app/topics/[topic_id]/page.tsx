@@ -23,8 +23,6 @@ export default async function TopicPage({params}: { params: { topic_id: string }
         .order("created_at", {ascending: false})
         .limit(3);
 
-    console.log(topic, featuredDiscussions)
-
     if (!topic) {
         return redirect("/not-found");
     }
@@ -51,8 +49,8 @@ export default async function TopicPage({params}: { params: { topic_id: string }
 
             </header>
             <Separator/>
-            <section className={"flex flex-col p-6 space-y-8"}>
-                <div className={"space-y-4"}>
+            <div className={"flex flex-col p-6 space-y-8"}>
+                <section className={"space-y-4"}>
                     <div>
                         <h2 className={"text-2xl font-bold"}>Featured discussions</h2>
                         <p className={"text-muted-foreground"}>
@@ -66,8 +64,8 @@ export default async function TopicPage({params}: { params: { topic_id: string }
                             ))
                         }
                     </div>
-                </div>
-                <div className={"space-y-4 h-[1000px] md:h-[750px]"}>
+                </section>
+                <section className={"flex flex-col space-y-4 max-h-[1000px] md:h-[750px]"}>
                     <div>
                         <h2 className={"text-2xl font-bold"}>All discussions</h2>
                         <p className={"text-muted-foreground"}>
@@ -75,8 +73,8 @@ export default async function TopicPage({params}: { params: { topic_id: string }
                         </p>
                     </div>
                     <PostsDisplay target={params.topic_id} tags={[]}/>
-                </div>
-            </section>
+                </section>
+            </div>
             <Separator/>
             <section className={"p-6 space-y-4"}>
                 <div>

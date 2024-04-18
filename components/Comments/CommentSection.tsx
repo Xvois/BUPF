@@ -4,6 +4,7 @@ import CommentForm from "@/components/Comments/comment-form";
 import {Tables} from "@/types/supabase";
 import {PostgrestError} from "@supabase/supabase-js";
 import {cn} from "@/lib/utils";
+import React from "react";
 
 export type Comment = Tables<"comments"> & { profiles: Tables<"profiles"> | null } & { children: Comment[] }
 

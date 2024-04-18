@@ -12,4 +12,7 @@ export const formSchema = z.object({
 }).refine(data => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"]
+}).refine(data => data.course === "0" && data.yearOfStudy === undefined || data.course !== "0" && data.yearOfStudy !== undefined, {
+    message: "Please enter your year of study",
+    path: ["yearOfStudy"]
 })

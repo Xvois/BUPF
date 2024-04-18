@@ -17,8 +17,10 @@ export default async function Page() {
             <Separator/>
             <section className={"space-y-2 p-6"}>
                 <h2 className={"text-2xl font-bold"}>About the forum</h2>
+                <Separator/>
                 <p className={"text-muted-foreground"}>
-                    The Bath University Physics Forum is a student lead initiative to provide a platform for students to
+                    The Bath University Physics Forum is an unofficial student lead initiative to provide a platform for
+                    students to
                     discuss physics topics, ask questions, and share knowledge with their peers, all in one place.
                     The aim is to have a more accessible platform to engage with the course than the current Moodle and
                     other student platforms like group chats.
@@ -34,6 +36,7 @@ export default async function Page() {
             </section>
             <section className={"space-y-2 p-6"}>
                 <h2 className={"text-2xl font-bold"}>Courses & Modules</h2>
+                <Separator/>
                 <p className={"text-muted-foreground"}>
                     When you sign up, you select the course you are currently enrolled on and the year that continuous studies began,
                     which will give you access to the modules you are currently studying. The forum currently only supports modules
@@ -49,7 +52,8 @@ export default async function Page() {
                 </p>
             </section>
             <section className={"space-y-2 p-6"}>
-                <h2 className={"text-2xl font-bold"}>Our policy on data retention</h2>
+                <h2 className={"text-2xl font-bold"}>Data collection</h2>
+                <Separator/>
                 <p className={"text-muted-foreground"}>
                     The Bath University Physics Forum is committed to protecting your privacy and data. We do not
                     collect
@@ -67,6 +71,16 @@ export default async function Page() {
                     Deleting your account will remove all direct information about you from our database, but your posts
                     and some comments will remain with your profile
                     anonymised. We do this to keep the forum useful and informative for other users.
+                </p>
+                <p className="text-muted-foreground">
+                    The platform may, at times, use <a
+                    className={"underline inline-flex items-center gap-1"}
+                    href={"https://vercel.com/docs/analytics"}>Vercel Analytics <ExternalLink
+                    className={"w-3 h-3"}/></a> and <a
+                    className={"underline inline-flex items-center gap-1"}
+                    href={"https://vercel.com/docs/speed-insights"}>Vercel Speed Insights <ExternalLink
+                    className={"w-3 h-3"}/></a> which collects some data about your usage of the platform. This data is
+                    used to improve the platform and is not shared with any third parties.
                 </p>
             </section>
         </div>

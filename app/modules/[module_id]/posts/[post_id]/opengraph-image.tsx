@@ -1,4 +1,4 @@
-
+// noinspection HtmlUnknownAttribute
 
 import {ImageResponse} from 'next/og'
 

@@ -3,10 +3,10 @@
 Provides server actions for the ActionButtons, used in the comment component.
  */
 
-import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
-import { Tables } from "@/types/supabase";
-import { redirect } from "next/navigation";
+import {createClient} from "@/utils/supabase/server";
+import {revalidatePath} from "next/cache";
+import {Tables} from "@/types/supabase";
+import {redirect} from "next/navigation";
 
 export const markComment = async (
   comment: Tables<"comments">,
@@ -33,7 +33,7 @@ export const unMarkComment = async (
   postID: number,
 ) => {
   const client = createClient();
-  const { data, error } = await client
+    const {error} = await client
     .from("posts")
     .update({
       marked_comment: null,
@@ -50,12 +50,10 @@ export const unMarkComment = async (
 
 export const reportComment = async (
   comment: Tables<"comments">,
-  postID: number,
 ) => {
   const client = createClient();
   const {
     data: { user: user },
-    error: authError,
   } = await client.auth.getUser();
   if (user) {
     /*
@@ -209,9 +207,6 @@ export async function postComment(
 
 export async function deleteComment(commentID: number, postID: number) {
   const supabase = createClient();
-  const {
-    data: { user: user },
-  } = await supabase.auth.getUser();
 
   const { data: commentChildren } = await supabase
     .from("comment_children")

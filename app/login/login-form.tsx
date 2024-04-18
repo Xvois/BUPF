@@ -25,7 +25,7 @@ export default function LoginForm(props: { signIn: (fd: z.infer<typeof formSchem
         },
     })
 
-    const {isDirty, isValid, isSubmitting} = form.formState;
+    const {isValid, isSubmitting} = form.formState;
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         /*

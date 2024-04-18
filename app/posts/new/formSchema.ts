@@ -1,5 +1,4 @@
 import {z} from "zod";
-import {UseFormReturn} from "react-hook-form";
 
 export const formSchema = z.object({
     heading: z.string().min(5).max(100),
@@ -10,4 +9,3 @@ export const formSchema = z.object({
     targetType: z.enum(["module", "topic"]),
 })
 
-export type formType = UseFormReturn<z.infer<typeof formSchema>, any, undefined>;

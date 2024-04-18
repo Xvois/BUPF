@@ -1,26 +1,30 @@
-import { Inter } from "next/font/google";
+import {Inter} from "next/font/google";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
 import {cn} from "@/lib/utils";
 import {Metadata} from "next";
+import React from "react";
 
 export const metadata: Metadata = {
     title: "BUPF",
-    description: "Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.",
+    description:
+        "Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.",
     openGraph: {
         title: "BUPF",
-        description: "Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.",
+        description:
+            "Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.",
         type: "website",
         url: "https://bupf.co.uk",
     },
     twitter: {
         title: "BUPF",
-        description: "Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.",
+        description:
+            "Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.",
         card: "summary_large_image",
-    }
+    },
 };
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({subsets: ["latin"]});
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -32,7 +36,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn(inter.className, "px-2 sm:px-8 w-full max-w-screen-2xl mx-auto")}>
+      <html
+          lang="en"
+          className={cn(
+              inter.className,
+              "w-full max-w-screen-2xl mx-auto",
+          )}
+      >
       <body className="flex flex-col bg-background text-foreground items-center min-h-screen">
         <TopBar />
         <main className="flex-grow flex flex-col w-full items-center ">

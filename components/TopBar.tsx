@@ -13,16 +13,15 @@ export default async function TopBar() {
     const {data: profile} = user ? await supabase.from('profiles').select('*, courses (*)').eq('id', user.id).single() : {data: null}
     const {data: modules} = profile ? await getUserModules(supabase, profile) : {data: null}
 
-    const {data: topics} = await supabase.from('topics').select('*')
+    const {data: topics} = await supabase.from('topics').select('*').limit(4)
 
 
     return (
-        <div className={"inline-flex w-full flex-col-reverse sm:flex-row items-center justify-center gap-x-10 my-4"}>
+        <div
+            className={"sticky top-0 left-0 backdrop-blur-sm bg-secondary/50 border-b border-border inline-flex w-full flex-row justify-between gap-x-10 px-4 py-4 z-50 mb-4"}>
             <NavMenu modules={modules?.required || null} topics={topics}  />
             <UserDropdown />
         </div>
 
     )
 }
-
-

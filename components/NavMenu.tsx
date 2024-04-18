@@ -1,3 +1,5 @@
+// noinspection HtmlUnknownTarget
+
 'use client'
 
 import {
@@ -13,10 +15,138 @@ import Link from "next/link";
 import * as React from "react";
 import {cn} from "@/lib/utils";
 import {Tables} from "@/types/supabase";
-import {ArrowRight, BookCopy, Component} from "lucide-react";
+import {ArrowRight, BookCopy, Component, Menu} from "lucide-react";
+import {useMediaQuery} from "@/hooks/use-media-query";
+import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from "./ui/sheet";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "./ui/accordion";
 
 
 export default function NavMenu({modules, topics}: {
+    modules: Tables<"modules">[] | null,
+    topics: Tables<"topics">[] | null
+}) {
+    const isDesktop = useMediaQuery("(min-width: 768px)");
+    const [isSheetOpen, setIsSheetOpen] = React.useState(false);
+
+    if (!isDesktop) {
+        return (
+            <Sheet open={isSheetOpen} onOpenChange={(e) => setIsSheetOpen(e)}>
+                <SheetTrigger><Menu/></SheetTrigger>
+                <SheetContent className="overflow-scroll">
+                    <SheetHeader>
+                        <SheetTitle>Navigation</SheetTitle>
+                    </SheetHeader>
+                    <Accordion type="multiple">
+                        <AccordionItem value="item-1">
+                            <div className="py-4 font-medium flex">
+                                <Link onClick={() => setIsSheetOpen(false)} className="w-full h-full"
+                                      href="/">Home</Link>
+                            </div>
+                        </AccordionItem>
+                        <AccordionItem value="item-2">
+                            <AccordionTrigger>Modules</AccordionTrigger>
+                            <AccordionContent>
+                                <ul>
+                                    {
+                                        modules ?
+                                            modules.map((module) => (
+                                                <li key={module.id}>
+                                                    <Link
+                                                        onClick={() => setIsSheetOpen(false)}
+                                                        href={`/modules/${module.id}`}
+                                                        className={
+                                                            "block h-full space-y-1 rounded-md py-3 leading-none focus:outline-foreground transition-colors"
+                                                        }
+                                                    >
+                                                        <div
+                                                            className="capitalize text-sm font-medium leading-none">{module.id}</div>
+                                                        <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+                                                            {module.description}
+                                                        </p>
+                                                    </Link>
+                                                </li>
+                                            ))
+                                            :
+                                            <p>Loading...</p>
+                                    }
+                                    <li>
+                                        <Link
+                                            onClick={() => setIsSheetOpen(false)}
+                                            href="/modules"
+                                            className={
+                                                "block h-full space-y-1 rounded-md py-3 leading-none focus:outline-foreground transition-colors"
+                                            }
+                                        >
+                                            <div className="capitalize text-sm font-medium leading-none">See all</div>
+                                            <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+                                                Browse your core and optional modules for your enrolled course
+                                            </p>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="item-3">
+                            <AccordionTrigger>Topics</AccordionTrigger>
+                            <AccordionContent>
+                                <ul>
+                                    {
+                                        topics ?
+                                            topics.map((topic) => (
+                                                <li key={topic.id}>
+                                                    <Link
+                                                        onClick={() => setIsSheetOpen(false)}
+                                                        href={`/topics/${topic.id}`}
+                                                        className={
+                                                            "block h-full space-y-1 rounded-md py-3 leading-none focus:outline-foreground transition-colors"
+                                                        }
+                                                    >
+                                                        <div
+                                                            className="capitalize text-sm font-medium leading-none">{topic.title}</div>
+                                                        <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+                                                            {topic.description}
+                                                        </p>
+                                                    </Link>
+                                                </li>
+                                            ))
+                                            :
+                                            <p>Loading...</p>
+                                    }
+                                    <li>
+                                        <Link
+                                            onClick={() => setIsSheetOpen(false)}
+                                            href="/topics"
+                                            className={
+                                                "block h-full space-y-1 rounded-md py-3 leading-none focus:outline-foreground transition-colors"
+                                            }
+                                        >
+                                            <div className="capitalize text-sm font-medium leading-none">See all</div>
+                                            <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+                                                Browse all topics for your enrolled course
+                                            </p>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="item-4">
+                            <div className="py-4 font-medium flex">
+                                <Link onClick={() => setIsSheetOpen(false)} className="w-full h-full"
+                                      href="/about">About</Link>
+                            </div>
+                        </AccordionItem>
+                    </Accordion>
+                </SheetContent>
+            </Sheet>
+        )
+    }
+
+    return (
+        <NavMenuContent modules={modules} topics={topics}/>
+    )
+}
+
+function NavMenuContent({modules, topics}: {
     modules: Tables<"modules">[] | null,
     topics: Tables<"topics">[] | null
 }) {
@@ -24,7 +154,7 @@ export default function NavMenu({modules, topics}: {
         <NavigationMenu>
             <NavigationMenuList className={"flex-wrap"}>
                 <NavigationMenuItem>
-                    <Link href="/" legacyBehavior passHref>
+                    <Link tabIndex={0} href="/" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Home
                         </NavigationMenuLink>
@@ -72,7 +202,7 @@ export default function NavMenu({modules, topics}: {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>Topics</NavigationMenuTrigger>
-                    <NavigationMenuContent>
+                    <NavigationMenuContent className="z-10">
                         <li className="row-span-3 list-none">
                             <NavigationMenuLink asChild>
                                 <a

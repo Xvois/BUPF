@@ -1,10 +1,8 @@
 import {createClient} from "@/utils/supabase/client";
-import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
 import {headers} from "next/headers";
 import ResendButton from "@/app/auth/confirm/ResendButton";
 import AuthWatcher from "@/components/AuthWatcher";
-import {Session} from "@supabase/gotrue-js";
 import {redirect} from "next/navigation";
 
 type ExpectedParams = {

@@ -68,7 +68,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
 
     return (
         <div className={"w-full space-y-8"}>
-            <header>
+            <header className="p-6">
                 <p className={"text-3xl leading-none"}>{profile.first_name}'s</p>
                 <h1 className={"font-black text-4xl"}>Questions, Discussions & Articles</h1>
                 <p>
@@ -76,19 +76,19 @@ export default async function UserPosts({params}: { params: { user_id: string } 
                 </p>
             </header>
             <Separator/>
-            <section className={"space-y-4"}>
+            <section className={"space-y-4 p-6"}>
                 <div>
                     <h2 className={"text-2xl font-bold"}>Questions</h2>
                     <p className={"text-sm text-muted-foreground"}>
                         These are questions that you have asked. You can view them here.
                     </p>
                 </div>
-                <div>
+                <div className="space-y-4">
                     {groupedQuestions.length > 0 ?
                         <PaginationWrapper>
                             {
                                 groupedQuestions.map((group, index) => (
-                                    <div key={index} className={"flex flex-col gap-4 w-full h-[525px]"}>
+                                    <div key={index} className={"flex flex-col gap-4 w-full max-h-[525px]"}>
                                         {
                                             group.map((post) => (
                                                 <Post post={post} key={post.id}/>
@@ -106,7 +106,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
                 </div>
             </section>
             <Separator/>
-            <section className={"space-y-4"}>
+            <section className={"space-y-4 p-6"}>
                 <div>
                     <h2 className={"text-2xl font-bold"}>Discussions</h2>
                     <p className={"text-sm text-muted-foreground"}>
@@ -136,19 +136,19 @@ export default async function UserPosts({params}: { params: { user_id: string } 
                 </div>
             </section>
             <Separator/>
-            <section className={"space-y-4"}>
+            <section className={"space-y-4 p-6"}>
                 <div>
                     <h2 className={"text-2xl font-bold"}>Articles</h2>
                     <p className={"text-sm text-muted-foreground"}>
                         These are all the articles you hav written. You can view them here.
                     </p>
                 </div>
-                <div>
+                <div className="space-y-4">
                     {groupedArticles.length > 0 ?
                         <PaginationWrapper>
                             {
                                 groupedArticles.map((group, index) => (
-                                    <div key={index} className={"flex flex-col gap-4 w-full h-[500px]"}>
+                                    <div key={index} className={"flex flex-col gap-4 w-full max-h-[500px]"}>
                                         {
                                             group.map((post) => (
                                                 <Post post={post} key={post.id}/>
