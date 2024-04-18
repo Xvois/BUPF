@@ -152,7 +152,7 @@ export const ReportButton = (props: ReportButtonProps & ButtonProps) => {
 
   const onClick = () => {
     setIsReporting(true);
-    reportComment(comment, postID)
+    reportComment(comment)
       .then(() => {
         setOpen(false);
         setIsReporting(false);
