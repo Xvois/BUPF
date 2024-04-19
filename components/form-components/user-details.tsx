@@ -47,11 +47,12 @@ const UserDetailsInputs = () => {
                 name="email"
                 render={({field}) => (
                     <FormItem className={"w-full"}>
-                        <FormLabel>Bath Email</FormLabel>
+                        <FormLabel>Personal Email</FormLabel>
                         <FormControl>
                             <Input type={"email"} {...field} />
                         </FormControl>
-                        <FormDescription>Your university assigned email address.</FormDescription>
+                        <FormDescription>Your personal email address; @bath.ac.uk emails do not at this
+                            time.</FormDescription>
                         <FormMessage/>
                     </FormItem>
                 )}
