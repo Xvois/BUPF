@@ -7,8 +7,6 @@ import {Component} from "lucide-react";
 import Link from "next/link";
 
 export default async function PostPage({params}: { params: { post_id: string } }) {
-
-
     const supabse = createClient();
     const {data: post} = await supabse.from("posts").select("*, profiles (*)").eq("id", params.post_id).single();
 
@@ -30,7 +28,7 @@ export default async function PostPage({params}: { params: { post_id: string } }
                 <div className={"p-6"}>
                     <MarkdownRender markdown={post.content}/>
                     <div className={"w-fit ml-auto"}>
-                        <p className={"w-fit text-sm text-muted-foreground"}>
+                        <p className={"w-fit text-sm text-muted-foreground"} suppressHydrationWarning>
                             Posted {new Date(post.created_at).toDateString()}
                         </p>
                     </div>

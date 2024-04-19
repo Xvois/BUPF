@@ -5,6 +5,14 @@ import ResendButton from "@/app/auth/confirm/ResendButton";
 import AuthWatcher from "@/components/AuthWatcher";
 import {redirect} from "next/navigation";
 
+/*
+    * ConfirmPage
+    * This page is responsible for confirming the user's email address.
+    * It will display a message to the user to check their email inbox for a confirmation email.
+    * If the user hasn't received the email, they can click the resend button to resend the email.
+    * The user can only resend the email every 5 minutes.
+*/
+
 type ExpectedParams = {
     email?: string,
     sent_at?: string
@@ -66,6 +74,7 @@ export default function ConfirmPage({params, searchParams}: { params: {}, search
                     You can only resend the email every 5 minutes.
                 </p>
             </div>
+            {/* AuthWatcher will watch for the user to sign in and redirect them to the home page */}
             <AuthWatcher onSignedIn={onSignedIn} />
         </div>
     )

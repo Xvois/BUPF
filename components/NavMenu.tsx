@@ -211,7 +211,7 @@ function NavMenuContent({modules, topics}: {
                                 >
                                     <BookCopy/>
                                     <div className="mb-2 mt-4 text-lg font-medium">
-                                        Topics <span className={"text-sm text-muted-foreground"}>(Coming soon)</span>
+                                        Topics
                                     </div>
                                     <p className="inline-flex items-center text-sm leading-tight text-muted-foreground">
                                         Browse specific physics topics relating to and going beyond your modules

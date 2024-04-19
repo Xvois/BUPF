@@ -1,6 +1,10 @@
 import {createClient} from "@/utils/supabase/server";
 
 /*
+A server route that returns posts that meet the filter and sort criteria.
+*/
+
+/*
 A helper function that returns and deletes all arrays from an object.
  */
 function extractArrays(obj: any) {

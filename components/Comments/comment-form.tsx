@@ -7,21 +7,18 @@ import RichTextArea from "@/components/RichTextArea";
 import {postComment} from "@/components/Comments/actions";
 import {ServerError} from "@/components/ServerError";
 import {Checkbox} from "@/components/ui/checkbox";
+import {useSearchParams} from "next/navigation";
 
 export default function CommentForm({postID}: { postID: number }) {
+    const searchParams = useSearchParams();
+
     const [comment, setComment] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
-    const [submissionError, setSubmissionError] = useState<string | null>(null);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (comment) {
-            try {
-                await postComment(comment, isAnonymous, postID);
-            } catch (e) {
-                const error = e as Error;
-                setSubmissionError(error.message);
-            }
+            await postComment(comment, isAnonymous, postID);
             setComment(''); // clear the text area after submitting
         }
     }
@@ -57,7 +54,7 @@ export default function CommentForm({postID}: { postID: number }) {
                 <Button className={"w-fit"} variant={"secondary"} type="submit">Submit</Button>
             </div>
             <ServerError>
-                {submissionError}
+                {searchParams.get("error")}
             </ServerError>
         </form>
     )

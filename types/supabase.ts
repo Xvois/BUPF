@@ -9,32 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      comment_children: {
-        Row: {
-          children: number[]
-          created_at: string
-          id: number
-        }
-        Insert: {
-          children: number[]
-          created_at?: string
-          id?: number
-        }
-        Update: {
-          children?: number[]
-          created_at?: string
-          id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_comment_children_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "comments"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       comment_reports: {
         Row: {
           comment: number
@@ -81,6 +55,7 @@ export type Database = {
           created_at: string
           id: number
           owner: string | null
+          parent: number | null
         }
         Insert: {
           anonymous?: boolean
@@ -88,6 +63,7 @@ export type Database = {
           created_at?: string
           id?: number
           owner?: string | null
+          parent?: number | null
         }
         Update: {
           anonymous?: boolean
@@ -95,6 +71,7 @@ export type Database = {
           created_at?: string
           id?: number
           owner?: string | null
+          parent?: number | null
         }
         Relationships: [
           {
@@ -102,6 +79,13 @@ export type Database = {
             columns: ["owner"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_comments_parent_fkey"
+            columns: ["parent"]
+            isOneToOne: false
+            referencedRelation: "comments"
             referencedColumns: ["id"]
           },
         ]
@@ -177,24 +161,28 @@ export type Database = {
           description: string | null
           id: string
           tags: string[] | null
+          title: string | null
         }
         Insert: {
           created_at?: string
           description?: string | null
           id: string
           tags?: string[] | null
+          title?: string | null
         }
         Update: {
           created_at?: string
           description?: string | null
           id?: string
           tags?: string[] | null
+          title?: string | null
         }
         Relationships: []
       }
       posts: {
         Row: {
           anonymous: boolean
+          attached_comments: number[]
           content: string
           created_at: string
           header_picture: string | null
@@ -205,11 +193,11 @@ export type Database = {
           tags: string[]
           target: string | null
           target_type: string | null
-          tl_comments: number[]
-          type: "question" | "article" | "discussion"
+          type: "question" | "discussion" | "article"
         }
         Insert: {
           anonymous?: boolean
+          attached_comments?: number[]
           content: string
           created_at?: string
           header_picture?: string | null
@@ -220,11 +208,11 @@ export type Database = {
           tags?: string[]
           target?: string | null
           target_type?: string | null
-          tl_comments?: number[]
-          type?: "question" | "article" | "discussion"
+          type?: "question" | "discussion" | "article"
         }
         Update: {
           anonymous?: boolean
+          attached_comments?: number[]
           content?: string
           created_at?: string
           header_picture?: string | null
@@ -235,8 +223,7 @@ export type Database = {
           tags?: string[]
           target?: string | null
           target_type?: string | null
-          tl_comments?: number[]
-          type?: "question" | "article" | "discussion"
+          type?: "question" | "discussion" | "article"
         }
         Relationships: [
           {
@@ -255,9 +242,10 @@ export type Database = {
           },
         ]
       }
+      // Date is valid for entry_date
       profiles: {
         Row: {
-          course: number | null
+          course: number
           entry_date: string | null
           first_name: string
           id: string
@@ -265,16 +253,16 @@ export type Database = {
           profile_picture: string | null
         }
         Insert: {
-          course?: number | null
-          entry_date?: string | null
+          course: number
+          entry_date?: Date | null
           first_name: string
           id: string
           last_name: string
           profile_picture?: string | null
         }
         Update: {
-          course?: number | null
-          entry_date?: string | null
+          course?: number
+          entry_date?: Date | null
           first_name?: string
           id?: string
           last_name?: string
@@ -307,7 +295,7 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
-          id?: string
+          id: string
           title: string
         }
         Update: {

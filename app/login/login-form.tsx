@@ -1,80 +1,59 @@
 'use client'
 
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {useForm} from "react-hook-form";
-import {z} from "zod"
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {formSchema} from "@/app/login/formSchema";
 import React from "react";
 import {ServerError} from "@/components/ServerError";
 import Link from "next/link";
 import {useSearchParams} from "next/navigation";
+import logIn from "@/app/login/actions";
+
+/*
+    * LoginForm
+    * A form for logging in to the application
+    * @return: A form for logging in to the application
+*/
 
 
-export default function LoginForm(props: { signIn: (fd: z.infer<typeof formSchema>) => Promise<void> }) {
-
+export default function LoginForm() {
     const searchParams = useSearchParams();
+    const [isLoading, setIsLoading] = React.useState(false);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        mode: "onBlur",
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            email: "",
-        },
-    })
-
-    const {isValid, isSubmitting} = form.formState;
-
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        /*
-        This pattern is so stupid: react-hook-form wants to invoke
-        a client function and onSubmit must be used for validation.
-        This leads to this mess where a server action is invoked
-        through this function.
-         */
-        await props.signIn(values);
+    async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const target = event.target as typeof event.target & {
+            email: { value: string };
+            password: { value: string };
+        };
+        const email = target.email.value;
+        const password = target.password.value;
+        setIsLoading(true)
+        await logIn({email, password});
+        setIsLoading(false)
     }
 
     return (
-        <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className={"flex flex-col items-end space-y-8"}>
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({field}) => (
-                        <FormItem className={"w-full"}>
-                            <FormLabel>Bath Email</FormLabel>
-                            <FormControl>
-                                <Input type={"email"} {...field} />
-                            </FormControl>
-                            <FormDescription>Your university assigned email address.</FormDescription>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({field}) => (
-                        <FormItem className={"w-full"}>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                                <Input type={"password"} {...field} />
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                />
-                <Button isLoading={isSubmitting} disabled={!isValid} className={"w-32"}
-                        type={"submit"}>Login</Button>
-                <Link className={"underline text-sm text-muted-foreground"} href={"/forgot"}>Forgotten
-                    password</Link>
-                <ServerError className={"w-full"}>
-                    {searchParams.get("error")}
-                </ServerError>
-            </form>
-        </Form>
+        <form onSubmit={onSubmit} className={"flex flex-col items-end space-y-8"}>
+            <div className={"w-full space-y-2"}>
+                <label htmlFor="email"
+                       className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Email</label>
+                <input id="email"
+                       className={"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}
+                       name={"email"}
+                       type={"email"}></input>
+            </div>
+            <div className={"w-full space-y-2"}>
+                <label htmlFor="password"
+                       className={"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"}>Password</label>
+                <input id="password"
+                       className={"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}
+                       name={"password"}
+                       type={"password"}></input>
+            </div>
+            <Button isLoading={isLoading} className={"w-32"} type={"submit"}>Login</Button>
+            <Link className={"underline text-sm text-muted-foreground"} href={"/forgot"}>Forgotten password</Link>
+            <ServerError className={"w-full"}>
+                {searchParams.get("error")}
+            </ServerError>
+        </form>
     )
 }

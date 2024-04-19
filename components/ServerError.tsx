@@ -9,8 +9,8 @@ export const ServerError = React.forwardRef((props: ServerErrorProps & React.HTM
     if(props.children) {
         return (
             <div {...props}
-                 className={cn("inline-flex gap-4 items-center border border-destructive rounded-md p-4", props.className)}>
-                <p className={"text-sm text-destructive"}>
+                 className={cn("inline-flex gap-4 items-center bg-destructive/10 border border-destructive/15 rounded-md p-4", props.className)}>
+                <p className={"text-sm text-destructive/75"}>
                     {props.children}
                 </p>
             </div>

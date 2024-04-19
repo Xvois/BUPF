@@ -2,6 +2,13 @@
 import {Button} from "@/components/ui/button";
 import React from "react";
 
+/*
+    * ResendButton
+    * A button that resends the email to the user
+    * It is disabled for 5 minutes after being clicked
+    * It is disabled if the user has already clicked it
+*/
+
 type ConfirmButtonProps = {
     // Is a server action
     resendEmail: (email: string, redirect: string) => Promise<void>,
@@ -10,7 +17,7 @@ type ConfirmButtonProps = {
     sentAt: string
 }
 
-export default function ResendButton({ resendEmail, email, domain, sentAt }: ConfirmButtonProps) {
+export default function ResendButton({resendEmail, email, domain}: ConfirmButtonProps) {
 
 
     const isBrowser = typeof window !== 'undefined';
@@ -19,6 +26,7 @@ export default function ResendButton({ resendEmail, email, domain, sentAt }: Con
         const disableUntil = localStorage ? localStorage.getItem('disableUntil') : null;
         return disableUntil ? new Date().getTime() < Number(disableUntil) : false;
     });
+
     React.useEffect(() => {
         if (!localStorage) return;
         const disableUntil = localStorage.getItem('disableUntil');

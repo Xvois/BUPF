@@ -5,6 +5,7 @@ import {z} from "zod";
 import {formSchema} from "@/app/signup/formSchema";
 import {headers} from "next/headers";
 import {Separator} from "@/components/ui/separator";
+import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 export default async function Page() {
   async function signUp(formData: z.infer<typeof formSchema>) {
@@ -46,14 +47,14 @@ export default async function Page() {
   }
 
   return (
-      <div
+      <Card
           className="w-full max-w-screen-sm rounded-xl space-y-8 p-8 mx-auto bg-popover sm:my-auto sm:shadow sm:border">
-        <div>
-          <h1 className={"text-3xl font-bold"}>BUPF</h1>
-          <p>The Bath University Physics Forum</p>
-        </div>
+          <CardHeader className={"p-0"}>
+              <CardTitle>BUPF</CardTitle>
+              <CardDescription>The Bath University Physics Forum</CardDescription>
+          </CardHeader>
         <Separator/>
         <SignupForm {...{signUp}} />
-      </div>
+      </Card>
   );
 }

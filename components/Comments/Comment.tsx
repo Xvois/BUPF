@@ -1,22 +1,12 @@
 import Profile from "@/components/Profile";
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
-import {
-  MarkButton,
-  ReplyButton,
-  ReportButton,
-  DeleteButton,
-} from "@/components/Comments/ActionButtons";
-import { CheckCircle } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Comment } from "@/components/Comments/CommentSection";
-import { User } from "@supabase/gotrue-js";
+import {DeleteButton, MarkButton, ReplyButton, ReportButton,} from "@/components/Comments/ActionButtons";
+import {CheckCircle} from "lucide-react";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip";
+import {Comment} from "@/components/Comments/CommentSection";
+import {User} from "@supabase/gotrue-js";
 
-export default async function Comment({
+export default function Comment({
   comment,
   user,
   postID,

@@ -1,27 +1,11 @@
-import { createClient } from "@/utils/supabase/server";
+import {createClient} from "@/utils/supabase/server";
 import {NextRequest, NextResponse} from "next/server";
 import {EmailOtpType} from "@supabase/gotrue-js";
 
-
 /*
-export async function GET(request: Request) {
-  // The `/auth/callback` route is required for the server-side auth flow implemented
-  // by the SSR package. It exchanges an auth code for the user's session.
-  // https://supabase.com/docs/guides/auth/server-side/nextjs
-  const requestUrl = new URL(request.url);
-  const code = requestUrl.searchParams.get("code");
-  const origin = requestUrl.origin;
-
-  if (code) {
-    const supabase = createClient();
-    await supabase.auth.exchangeCodeForSession(code);
-  }
-
-  // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/auth/confirm`);
-}
+The purpose of this route is to verify the OTP token and redirect the user to the next page.
+If the token is invalid, the user is redirected to an error page.
 */
-
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)

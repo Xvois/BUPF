@@ -1,9 +1,10 @@
 import * as React from "react"
 import {createClient} from "@/utils/supabase/server";
-import NavMenu from "@/components/NavMenu";
-import UserDropdown from "@/components/UserDropdown";
 import {getUserModules} from "@/utils/getUserModules";
+import dynamic from "next/dynamic";
 
+const DynamicNavMenu = dynamic(() => import('@/components/NavMenu'), {ssr: false})
+const DynamicUserDropdown = dynamic(() => import('@/components/UserDropdown'), {ssr: false})
 
 export default async function TopBar() {
 
@@ -16,12 +17,15 @@ export default async function TopBar() {
     const {data: topics} = await supabase.from('topics').select('*').limit(4)
 
 
+    if (!user) {
+        return <></>
+    }
+
     return (
         <div
-            className={"sticky top-0 left-0 backdrop-blur-sm bg-secondary/50 border-b border-border inline-flex w-full flex-row justify-between gap-x-10 px-4 py-4 z-50 mb-4"}>
-            <NavMenu modules={modules?.required || null} topics={topics}  />
-            <UserDropdown />
+            className={"sticky top-0 left-0 backdrop-blur-sm bg-background/50 border-b border-border inline-flex w-full flex-row justify-between gap-x-10 px-4 py-2 z-50 mb-4"}>
+            <DynamicNavMenu modules={modules?.required || null} topics={topics}/>
+            <DynamicUserDropdown/>
         </div>
-
     )
 }

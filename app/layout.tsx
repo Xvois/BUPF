@@ -43,7 +43,7 @@ export default function RootLayout({
           lang="en"
           className={cn(
               inter.className,
-              "w-full max-w-screen-2xl mx-auto",
+              "w-full mx-auto",
           )}
       >
       <body className="flex flex-col bg-background text-foreground items-center min-h-screen">
