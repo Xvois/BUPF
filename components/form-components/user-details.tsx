@@ -50,7 +50,7 @@ const UserDetailsInputs = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {
                         <FormControl>
                             <Input type={"email"} {...field} />
                         </FormControl>
-                        <FormDescription>Your personal email address; @bath.ac.uk emails do not at this
+                        <FormDescription>Your personal email address; @bath.ac.uk emails do not work at this
                             time.</FormDescription>
                         <FormMessage/>
                     </FormItem>
