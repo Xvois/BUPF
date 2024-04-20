@@ -9,12 +9,12 @@ export const ModulesSkeleton = () => {
             <Skeleton className={"w-1/4 h-6 rounded-md"}/>
             <Skeleton className={"w-1/3 h-4 rounded-md"}/>
             <Separator/>
-            <div className={"grid grid-cols-3 gap-4"}>
-                <LinkBoxSkeleton/>
-                <LinkBoxSkeleton/>
-                <LinkBoxSkeleton/>
-                <LinkBoxSkeleton/>
-                <LinkBoxSkeleton/>
+            <div className={"flex flex-row flex-wrap gap-4"}>
+                <LinkBoxSkeleton className={"min-w-full sm:min-w-72 flex-grow"}/>
+                <LinkBoxSkeleton className={"min-w-full sm:min-w-72 flex-grow"}/>
+                <LinkBoxSkeleton className={"min-w-full sm:min-w-72 flex-grow"}/>
+                <LinkBoxSkeleton className={"min-w-full sm:min-w-72 flex-grow"}/>
+                <LinkBoxSkeleton className={"min-w-full sm:min-w-72 flex-grow"}/>
             </div>
         </section>
     )

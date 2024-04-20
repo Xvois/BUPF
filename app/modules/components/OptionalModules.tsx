@@ -27,7 +27,7 @@ export async function OptionalModules() {
                     These are optional modules that not all students will take.
                 </p>
             </div>
-            <div className={"grid grid-cols-3 gap-4"}>
+            <div className={"flex flex-wrap gap-4"}>
                 {
                     modules && modules?.optional.length > 0 ?
                         modules.optional.map(module => (

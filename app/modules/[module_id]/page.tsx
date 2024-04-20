@@ -26,7 +26,8 @@ export default async function ModulePage({params, searchParams}: {
 
     return (
         <div className="w-full grid space-y-4">
-            <header className="flex h-full w-full select-none flex-col justify-end p-6 no-underline outline-none">
+            <header
+                className="flex h-full w-full select-none flex-col justify-end p-6 no-underline outline-none break-words overflow-hidden">
                 <div className="inline-flex gap-2">
                     <Component/>
                     <p>Module</p>

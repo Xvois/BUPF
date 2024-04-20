@@ -4,6 +4,7 @@ import React from "react";
 import {PostsList} from "@/components/PostsDisplay/PostsList";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
+import {TagIcon} from "lucide-react";
 
 export function PostsDisplay({
                                  type,
@@ -49,23 +50,35 @@ export function PostsDisplay({
                                 </SelectContent>
                             </SelectTrigger>
                         </Select>
-                        <ToggleGroup type="single" className={"group w-full flex flex-row flex-wrap"}
-                                     onValueChange={(e) =>
-                                         setParams((prevParams) => ({...prevParams, tag: e}))}
-                        >
-                            {
-                                tags.map((tag) => (
-                                    <ToggleGroupItem
-                                        className={`capitalize flex-grow border border-border rounded-md transition-all px-2 py-1 ${params.tag !== '' && tag !== params.tag && "opacity-50 scale-95"}`}
-                                        type={"button"}
-                                        key={tag}
-                                        value={tag}
-                                    >
-                                        {tag}
-                                    </ToggleGroupItem>
-                                ))
-                            }
-                        </ToggleGroup>
+                        {
+                            tags.length > 0 &&
+                            <>
+                                <div className={"rounded-md bg-gradient-to-b from-muted/50 to-muted p-6"}>
+                                    <p className={"inline-flex items-center gap-2 font-semibold"}><span><TagIcon
+                                        className={'h-4 w-4'}/></span> Tags</p>
+                                    <p className={"text-sm text-muted-foreground"}>Posts are automatically tagged
+                                        according to
+                                        their contents.</p>
+                                </div>
+                                <ToggleGroup type="single" className={"group w-full flex flex-row flex-wrap"}
+                                             onValueChange={(e) =>
+                                                 setParams((prevParams) => ({...prevParams, tag: e}))}
+                                >
+                                    {
+                                        tags.map((tag) => (
+                                            <ToggleGroupItem
+                                                className={`capitalize flex-grow border border-border rounded-md transition-all px-2 py-1 ${params.tag !== '' && tag !== params.tag && "opacity-50 scale-95"}`}
+                                                type={"button"}
+                                                key={tag}
+                                                value={tag}
+                                            >
+                                                {tag}
+                                            </ToggleGroupItem>
+                                        ))
+                                    }
+                                </ToggleGroup>
+                            </>
+                        }
                     </div>
                 </div>
             </div>

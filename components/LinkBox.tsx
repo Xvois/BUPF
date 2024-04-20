@@ -36,10 +36,11 @@ export default function LinkBox({title, description, href, className, ...props}:
     )
 }
 
-export const LinkBoxSkeleton = () => {
+export const LinkBoxSkeleton = ({className, ...props}: React.HTMLAttributes<HTMLDivElement>) => {
     return (
         <Skeleton
-            className={"flex flex-col border rounded-md p-4 transition-all focus:outline-foreground hover:bg-accent"}>
+            {...props}
+            className={cn("flex flex-col border rounded-md p-4 transition-all focus:outline-foreground hover:bg-accent", className)}>
             <Skeleton className={"space-y-4"}>
                 <h3 className={"text-xl font-bold"}>
                     <Skeleton className={"w-1/2 bg-background h-6 rounded-md"}/>

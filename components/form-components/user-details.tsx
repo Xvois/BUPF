@@ -1,12 +1,11 @@
 import {useFormContext} from "react-hook-form";
 import {z} from "zod";
-import {formSchema} from "@/app/signup/formSchema";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import React from "react";
 
 
-const UserDetailsInputs = () => {
+const UserDetailsInputs = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {
 
     const form = useFormContext<z.infer<typeof formSchema>>()
 

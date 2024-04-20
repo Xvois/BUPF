@@ -7,7 +7,7 @@ import {formSchema} from "@/app/posts/new/formSchema";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form} from "@/components/ui/form";
-import React from "react";
+import React, {Suspense} from "react";
 import {ServerError} from "@/components/ServerError";
 import dynamic from "next/dynamic";
 import SkeletonForm from "@/app/posts/new/components/skeleton-form";
@@ -75,21 +75,26 @@ export default function PostForm(
                         <TabsTrigger className={"flex-grow min-w-32"} value="article">Article</TabsTrigger>
                     </TabsList>
                     <TabsContent value="question">
-                        <LazyQuestion defaultStates={{
-                            target: props.defaultParams?.target
-                        }}/>
+                        <Suspense fallback={<SkeletonForm/>}>
+                            <LazyQuestion defaultStates={{
+                                target: props.defaultParams?.target
+                            }}/>
+                        </Suspense>
                     </TabsContent>
                     <TabsContent value={"discussion"}>
-                        <LazyDiscussion defaultStates={{
-                            target: props.defaultParams?.target
-                        }}/>
+                        <Suspense fallback={<SkeletonForm/>}>
+                            <LazyDiscussion defaultStates={{
+                                target: props.defaultParams?.target
+                            }}/>
+                        </Suspense>
                     </TabsContent>
                     <TabsContent value={"article"}>
-                        <LazyArticle/>
+                        <Suspense fallback={<SkeletonForm/>}>
+                            <LazyArticle/>
+                        </Suspense>
                     </TabsContent>
                 </Tabs>
             </form>
-            <SkeletonForm/>
             {postError &&
                 <ServerError className={"w-full mt-2 shadow"}>
                     <p>{postError}</p>

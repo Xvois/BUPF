@@ -23,7 +23,7 @@ export default async function TopBar() {
 
     return (
         <div
-            className={"sticky top-0 left-0 backdrop-blur-sm bg-background/50 border-b border-border inline-flex w-full flex-row justify-between gap-x-10 px-4 py-2 z-50 mb-4"}>
+            className={"sticky top-0 left-0 bg-gradient-to-b from-background to-background/50 backdrop-blur-sm bg-background/50 border-b border-border inline-flex w-full flex-row justify-between gap-x-10 px-4 py-2 z-50 mb-4"}>
             <DynamicNavMenu modules={modules?.required || null} topics={topics}/>
             <DynamicUserDropdown/>
         </div>

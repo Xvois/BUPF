@@ -40,9 +40,10 @@ export default async function Modules() {
                         Explore the topics that are available to you.
                     </p>
                 </div>
-                <div className={"grid grid-cols-3 gap-4"}>
+                <div className={"flex flex-row flex-wrap gap-4"}>
                     {topics?.map(topic => (
                         <LinkBox
+                            className={"flex-grow"}
                             key={topic.id}
                             title={topic.title}
                             href={`/topics/${topic.id}`}

@@ -3,7 +3,6 @@
 import {Button} from "@/components/ui/button";
 import React from "react";
 import {ServerError} from "@/components/ServerError";
-import Link from "next/link";
 import {useSearchParams} from "next/navigation";
 import logIn from "@/app/login/actions";
 
@@ -50,7 +49,6 @@ export default function LoginForm() {
                        type={"password"}></input>
             </div>
             <Button isLoading={isLoading} className={"w-32"} type={"submit"}>Login</Button>
-            <Link className={"underline text-sm text-muted-foreground"} href={"/forgot"}>Forgotten password</Link>
             <ServerError className={"w-full"}>
                 {searchParams.get("error")}
             </ServerError>

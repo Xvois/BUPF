@@ -58,25 +58,3 @@ export const changeEmail = async (newEmail: string) => {
   }
 };
 
-export const changePassword = async () => {
-  const supabase = createClient();
-  const {
-    data: {user},
-    error: userError,
-  } = await supabase.auth.getUser();
-  if (userError) {
-    return redirect("/settings?password_error=" + userError.message);
-  }
-  if (!user) {
-    return redirect("/settings?password_error=No user found");
-  }
-  if (!user.email) {
-    return redirect("/settings?password_error=No email found");
-  }
-
-  const {error} = await supabase.auth.resetPasswordForEmail(user.email);
-
-  if (error) {
-    return redirect("/settings?password_error=" + error.message);
-  }
-};

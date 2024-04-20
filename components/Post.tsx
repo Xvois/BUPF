@@ -31,7 +31,7 @@ export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { clas
 
     return (
         <Link {...linkProps} href={`/modules/${post.target}/posts/${post.id}`}
-              className={cn("flex flex-col border rounded-md p-4 transition-all hover:bg-accent focus:outline-foreground bg-popover w-full", linkProps.className)}>
+              className={cn("flex flex-col border rounded-md p-4 transition-all hover:bg-accent focus:outline-foreground bg-popover w-full break-words overflow-hidden", linkProps.className)}>
             <div>
                 <h3 className={"text-xl font-bold"}>{post.heading}</h3>
                 <p className={"text-sm text-muted-foreground text-ellipsis overflow-hidden max-h-10"}>{formattedContent}</p>

@@ -14,7 +14,7 @@ export default async function PostPage({params}: { params: { post_id: string } }
         return (
             <article className={"w-full space-y-4"}>
                 <header
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none">
+                    className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none break-words overflow-hidden">
                     <Link href={`/modules/${post.target}`} className={"inline-flex gap-2"}>
                         <Component/>
                         <p>{post.target}</p>

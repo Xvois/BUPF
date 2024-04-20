@@ -1,6 +1,5 @@
 import {useFormContext} from "react-hook-form";
 import {z} from "zod";
-import {formSchema} from "@/app/signup/formSchema";
 import useSWR from "swr";
 import {sbFetcher} from "@/utils/fetcher";
 import {Tables} from "@/types/supabase";
@@ -20,7 +19,7 @@ import {
 } from "@/components/ui/command";
 import {Input} from "@/components/ui/input";
 
-const CourseDetailsInputs = () => {
+const CourseDetailsInputs = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {
     const form = useFormContext<z.infer<typeof formSchema>>()
     const {data: courses, error, isLoading} = useSWR('courses', sbFetcher<Tables<"courses">>);
     const [popoverOpen, setPopoverOpen] = React.useState<boolean>(false);
@@ -39,7 +38,7 @@ const CourseDetailsInputs = () => {
                                         variant="outline"
                                         role="combobox"
                                         className={cn(
-                                            "w-full justify-between overflow-x-clip",
+                                            "w-64 sm:w-96 md:w-full justify-between overflow-x-clip",
                                             !field.value && "text-muted-foreground"
                                         )}
                                     >

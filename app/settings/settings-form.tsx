@@ -64,8 +64,8 @@ export default function SettingsForm({user, profile}: {
                     </CardHeader>
                     <CardContent className="space-y-8">
                         <div className="space-y-4">
-                            <UserDetailsInputs/>
-                            <CourseDetailsInputs/>
+                            <UserDetailsInputs formSchema={formSchema}/>
+                            <CourseDetailsInputs formSchema={formSchema}/>
                         </div>
                     </CardContent>
                     <CardFooter className="flex items-center justify-between w-full">
