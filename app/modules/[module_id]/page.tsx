@@ -27,12 +27,12 @@ export default async function ModulePage({params, searchParams}: {
     return (
         <div className="w-full grid space-y-4">
             <header
-                className="flex h-full w-full select-none flex-col justify-end p-6 no-underline outline-none break-words overflow-hidden">
+                className="flex h-full w-full select-none flex-col justify-end p-6 no-underline outline-none">
                 <div className="inline-flex gap-2">
                     <Component/>
                     <p>Module</p>
                 </div>
-                <h1 className="font-black text-4xl uppercase">{module.id}</h1>
+                <h1 className="font-black text-4xl uppercase break-words overflow-hidden">{module.id}</h1>
                 <p>{module.description}</p>
                 <div className="flex flex-row flex-wrap gap-2 mt-2">
                     <Button variant="secondary" className="w-fit" asChild>
