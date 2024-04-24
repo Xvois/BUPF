@@ -23,7 +23,8 @@ export async function GET(request: Request) {
 
     const params = new URL(request.url).searchParams;
 
-    let query = client.from("posts").select("*, profiles (*)");
+
+    let query = client.from("posts").select("*, profiles (*, courses (*))");
 
     const filter = params.get("filter");
     if (filter) {

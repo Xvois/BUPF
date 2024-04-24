@@ -82,7 +82,7 @@ export function PostsDisplay({
                     </div>
                 </div>
             </div>
-            <PostsList queryFilter={{target: id, tags: [params.tag]}} querySort={{ascending: false}}/>
+            <PostsList type={type} queryFilter={{target: id, tags: [params.tag]}} querySort={{ascending: false}}/>
         </div>
     )
 

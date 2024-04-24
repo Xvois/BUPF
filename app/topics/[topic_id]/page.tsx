@@ -7,7 +7,7 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 
-export default async function ModulePage({params, searchParams}: {
+export default async function TopicPage({params, searchParams}: {
     params: { topic_id: string },
     searchParams: { sort?: string, tag?: string }
 }) {
@@ -43,7 +43,7 @@ export default async function ModulePage({params, searchParams}: {
                         them if you want.
                     </p>
                 </div>
-                <PostsDisplay tags={[]} id={topic.id} type={"modules"} searchParams={searchParams}/>
+                <PostsDisplay tags={[]} id={topic.id} type={"topics"} searchParams={searchParams}/>
             </section>
         </div>
     )

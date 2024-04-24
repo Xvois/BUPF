@@ -3,39 +3,8 @@ import Profile from "@/components/Profile";
 import CommentSection from "@/components/Comments/CommentSection";
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {Separator} from "@/components/ui/separator";
-import {Component} from "lucide-react";
+import {BookCopy} from "lucide-react";
 import Link from "next/link";
-import {Metadata, ResolvingMetadata} from "next";
-
-export async function generateMetadata(
-    {params, searchParams}: { params: { post_id: string }, searchParams: { sort?: string, tag?: string } },
-    parent: ResolvingMetadata
-): Promise<Metadata> {
-    // read route params
-    const id = params.post_id
-
-    const defaultUrl = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
-
-
-    // fetch data
-    const post = await fetch(`${defaultUrl}/api/post/${id}`).then((res) => res.json())
-
-    // optionally access and extend (rather than replace) parent metadata
-    const previousImages = (await parent).openGraph?.images || []
-
-    return {
-        title: post.title,
-        description: post.description,
-        metadataBase: new URL(defaultUrl),
-        openGraph: {
-            title: post.title,
-            description: post.description,
-
-        },
-    }
-}
 
 export default async function PostPage({params}: { params: { post_id: string } }) {
     const supabse = createClient();
@@ -47,7 +16,7 @@ export default async function PostPage({params}: { params: { post_id: string } }
                 <header
                     className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none break-words overflow-hidden">
                     <Link href={`/modules/${post.target}`} className={"inline-flex gap-2"}>
-                        <Component/>
+                        <BookCopy/>
                         <p>{post.target}</p>
                     </Link>
                     <h1 className={"font-black text-4xl"}>{post.heading}</h1>

@@ -103,6 +103,3 @@ export default function PostForm(
         </Form>
     )
 }
-
-
-
