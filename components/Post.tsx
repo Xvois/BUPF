@@ -8,7 +8,7 @@ import {Skeleton} from "@/components/ui/skeleton";
 
 type PostProps = {
     post: Tables<'posts'> & {
-        profiles: Tables<'profiles'> & { courses: Tables<'courses'> | null } | null
+        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
     }
     type: "modules" | "topics"
 };
@@ -30,6 +30,7 @@ export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { clas
             break;
     }
 
+
     return (
         <Link {...linkProps} href={`/${props.type}/${post.target}/posts/${post.id}`}
               className={cn("flex flex-col border rounded-md p-4 transition-all hover:bg-accent focus:outline-foreground bg-popover w-full break-words overflow-hidden", linkProps.className)}>
@@ -40,7 +41,8 @@ export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { clas
 
             <div className={"inline-flex justify-between mt-2"}>
                 <p className={"text-sm"}>
-                    {!post.anonymous ? <Profile user={post.profiles}/> :
+                    {!post.anonymous ?
+                        <Profile user={post.profiles}/> :
                         'Anonymous'}
                 </p>
                 <div className={"inline-flex gap-2 "}>
