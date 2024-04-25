@@ -8,7 +8,9 @@ import {Skeleton} from "@/components/ui/skeleton";
 
 type PostProps = {
     post: Tables<'posts'> & {
-        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
+        profiles: Tables<'profiles'> & {
+            courses: Tables<'courses'> | null
+        } | null
     }
     type: "modules" | "topics"
 };
@@ -41,9 +43,13 @@ export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { clas
 
             <div className={"inline-flex justify-between mt-2"}>
                 <p className={"text-sm"}>
-                    {!post.anonymous ?
+                    {post.profiles ?
+                        !post.anonymous ?
                         <Profile user={post.profiles}/> :
-                        'Anonymous'}
+                            'Anonymous'
+                        :
+                        "Deleted User"
+                    }
                 </p>
                 <div className={"inline-flex gap-2 "}>
                     {
