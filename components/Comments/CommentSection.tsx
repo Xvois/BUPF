@@ -12,6 +12,7 @@ type CommentSectionProps = {
     post_id: string,
     post_type: "question" | "discussion" | "article",
     marked_comment?: number
+    owner: string | null
 }
 
 function organizeComments(comments: (Tables<"comments"> & { profiles: Tables<"profiles"> | null })[]): Comment[] {
@@ -77,7 +78,7 @@ export default async function CommentSection(props: CommentSectionProps & React.
                     <Comment
                         isDeletable={user ? user.id === comment.owner : false}
                         isReportable={(user && user.id !== comment.owner)}
-                        isMarkable={(props.post_type === "question" && user && user.id === comment.owner)}
+                        isMarkable={(props.post_type === "question" && user && user.id === props.owner)}
                         isMarked={comment.id === props.marked_comment}
                         postID={props.post_id}
                         key={comment.id}

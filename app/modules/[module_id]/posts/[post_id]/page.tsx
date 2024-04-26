@@ -36,7 +36,7 @@ export default async function PostPage({params}: { params: { post_id: string } }
                 <Separator/>
                 <CommentSection className={"p-6"} marked_comment={post.marked_comment || undefined}
                                 post_type={post.type}
-                                post_id={params.post_id}/>
+                                post_id={params.post_id} owner={post.owner}/>
             </article>
         )
     }
