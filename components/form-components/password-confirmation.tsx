@@ -4,7 +4,6 @@ import {useFormContext} from "react-hook-form";
 import {z} from "zod";
 import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import React from "react";
 
 
 const PasswordConfirmation = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {

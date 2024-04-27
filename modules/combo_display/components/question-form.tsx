@@ -2,7 +2,7 @@ import {useFormContext} from "react-hook-form";
 import useSWR from "swr";
 import {sbFetcher} from "@/utils/fetcher";
 import {Tables} from "@/types/supabase";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import RichTextArea from "@/components/RichTextArea";

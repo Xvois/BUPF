@@ -3,8 +3,6 @@ import {Badge} from "@/components/ui/badge";
 import {createClient} from "@/utils/supabase/server";
 import {getUserModules} from "@/utils/getUserModules";
 import {redirect} from "next/navigation";
-import React from "react";
-
 
 export async function CoreModules() {
     const supabase = createClient();

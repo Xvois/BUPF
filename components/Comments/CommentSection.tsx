@@ -3,8 +3,8 @@ import Comment from "@/components/Comments/Comment";
 import CommentForm from "@/components/Comments/comment-form";
 import {Tables} from "@/types/supabase";
 import {cn} from "@/lib/utils";
-import React from "react";
 import {ServerError} from "@/components/ServerError";
+import {HTMLAttributes} from "react";
 
 export type Comment = Tables<"comments"> & {
     profiles: Tables<"profiles"> & {
@@ -36,7 +36,7 @@ function organizeComments(comments: CommentWOChildren[]): Comment[] {
     return Object.values(commentsMap).filter(comment => !comment.parent);
 }
 
-export default async function CommentSection(props: CommentSectionProps & React.HTMLAttributes<HTMLDivElement>) {
+export default async function CommentSection(props: CommentSectionProps & HTMLAttributes<HTMLDivElement>) {
     const supabase = createClient();
     const {data: {user: user}, error: userError} = await supabase.auth.getUser();
     const {

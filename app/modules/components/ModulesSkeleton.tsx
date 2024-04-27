@@ -1,4 +1,3 @@
-import React from "react";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Separator} from "@/components/ui/separator";
 import {LinkBoxSkeleton} from "@/components/LinkBox";

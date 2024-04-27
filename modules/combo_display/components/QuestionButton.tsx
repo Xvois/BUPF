@@ -1,5 +1,5 @@
 'use client'
-import React, {Suspense} from "react";
+import {lazy, Suspense, useState} from "react";
 import {
     Dialog,
     DialogContent,
@@ -16,11 +16,12 @@ import post from "@/modules/combo_display/actions/post";
 import {Form} from "@/components/ui/form";
 import FormSkeleton from "@/modules/combo_display/components/FormSkeleton";
 import {Button} from "@/components/ui/button";
+import {CircleFadingPlus} from "lucide-react";
 
-const LazyQuestionForm = React.lazy(() => import("./question-form"));
+const LazyQuestionForm = lazy(() => import("./question-form"));
 
 export default function QuestionButton(props: { module_id: string }) {
-    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         mode: "onSubmit",
@@ -42,7 +43,10 @@ export default function QuestionButton(props: { module_id: string }) {
     return (
         <Dialog open={isDialogOpen} onOpenChange={(e) => setIsDialogOpen(e)}>
             <DialogTrigger>
-                <Button variant={"secondary"}>Ask a question</Button>
+                <Button variant={"default"} className={"space-x-2"}>
+                    <CircleFadingPlus className={"h-4 w-4"}/>
+                    <p>Ask a question</p>
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

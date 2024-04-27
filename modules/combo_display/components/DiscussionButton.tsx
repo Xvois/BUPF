@@ -1,5 +1,5 @@
 'use client'
-import React, {Suspense} from "react";
+import {lazy, Suspense, useState} from "react";
 import {
     Dialog,
     DialogContent,
@@ -16,11 +16,12 @@ import post from "@/modules/combo_display/actions/post";
 import {Form} from "@/components/ui/form";
 import FormSkeleton from "@/modules/combo_display/components/FormSkeleton";
 import {Button} from "@/components/ui/button";
+import {BookPlus} from "lucide-react";
 
-const LazyDiscussionForm = React.lazy(() => import("./discussion-form"));
+const LazyDiscussionForm = lazy(() => import("./discussion-form"));
 
 export default function DiscussionButton(props: { topic_id: string }) {
-    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         mode: "onSubmit",
@@ -42,7 +43,10 @@ export default function DiscussionButton(props: { topic_id: string }) {
     return (
         <Dialog open={isDialogOpen} onOpenChange={(e) => setIsDialogOpen(e)}>
             <DialogTrigger>
-                <Button variant={"secondary"}>Start a discussion</Button>
+                <Button variant={"default"} className={"space-x-2"}>
+                    <BookPlus className={"h-4 w-4"}/>
+                    <p>Start a discussion</p>
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

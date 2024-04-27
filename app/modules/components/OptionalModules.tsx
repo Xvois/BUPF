@@ -1,6 +1,5 @@
 import LinkBox from "@/components/LinkBox";
 import {Badge} from "@/components/ui/badge";
-import React from "react";
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import {getUserModules} from "@/utils/getUserModules";

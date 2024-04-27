@@ -1,6 +1,5 @@
 import {Separator} from "@/components/ui/separator";
 import {ExternalLink} from "lucide-react";
-import React from "react";
 
 
 export default async function Page() {

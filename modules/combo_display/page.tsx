@@ -3,10 +3,10 @@ import {redirect} from "next/navigation";
 import {Separator} from "@/components/ui/separator";
 import PostsDisplay from "@/components/PostsDisplay/PostsDisplay";
 import {BookCopy, Component} from "lucide-react";
-import React from "react";
 import LinkBox from "@/components/LinkBox";
 import DiscussionButton from "@/modules/combo_display/components/DiscussionButton";
 import QuestionButton from "@/modules/combo_display/components/QuestionButton";
+import {Fragment} from "react";
 
 type PageData = {
     created_at: string,
@@ -45,15 +45,15 @@ export default async function ComboDisplay({params, searchParams}: {
                 className="flex h-full w-full select-none flex-col justify-end p-6 no-underline outline-none">
                 <div className="inline-flex gap-2">
                     {isModule ?
-                        <React.Fragment>
+                        <Fragment>
                             <Component/>
                             <p>Module</p>
-                        </React.Fragment>
+                        </Fragment>
                         :
-                        <React.Fragment>
+                        <Fragment>
                             <BookCopy/>
                             <p>Topic</p>
-                        </React.Fragment>
+                        </Fragment>
                     }
                 </div>
                 <h1 className="font-black text-4xl uppercase break-words overflow-hidden">{pageData.title}</h1>

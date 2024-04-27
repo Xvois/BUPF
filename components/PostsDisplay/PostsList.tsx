@@ -1,6 +1,5 @@
 'use client'
 
-import React from "react";
 import {Tables} from "@/types/supabase";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
