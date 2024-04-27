@@ -1,7 +1,6 @@
 'use client'
 
 import {Button, ButtonProps} from "@/components/ui/button";
-import React from "react";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
 import {deleteAccount} from "@/app/settings/actions";
@@ -16,23 +15,24 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
+import {Fragment, useEffect, useState} from "react";
 
 export const DeleteAccountButton = (props: ButtonProps) => {
     const searchParams = useSearchParams();
-    const [alertIsOpen, setAlertIsOpen] = React.useState(false);
+    const [alertIsOpen, setAlertIsOpen] = useState(false);
 
     const performAction = async () => {
         await deleteAccount();
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (searchParams.has("delete_error")) {
             setAlertIsOpen(true);
         }
     }, [searchParams]);
 
     return (
-        <React.Fragment>
+        <Fragment>
             <AlertDialog open={alertIsOpen} onOpenChange={(e) => setAlertIsOpen(e)}>
                 <AlertDialogTrigger>
                     <Button {...props}>
@@ -59,7 +59,7 @@ export const DeleteAccountButton = (props: ButtonProps) => {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </React.Fragment>
+        </Fragment>
 
     )
 }

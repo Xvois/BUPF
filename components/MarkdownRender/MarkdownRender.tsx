@@ -1,8 +1,8 @@
 import ReactMarkdown from 'react-markdown';
-import remarkMath from 'remark-math'
-import rehypeKatex from 'rehype-katex'
 import 'katex/dist/katex.min.css'
 import "./markdown.css"
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
 import {cn} from "@/lib/utils";
 
 interface MarkdownRenderProps {
@@ -11,7 +11,8 @@ interface MarkdownRenderProps {
     [x: string]: any; // for additional props
 }
 
-const MarkdownRender = ({className, markdown, ...props}: MarkdownRenderProps) => {
+export default async function MarkdownRender({className, markdown, ...props}: MarkdownRenderProps) {
+
     return (
         <ReactMarkdown
             remarkPlugins={[remarkMath]}
@@ -27,5 +28,3 @@ const MarkdownRender = ({className, markdown, ...props}: MarkdownRenderProps) =>
         />
     );
 }
-
-export default MarkdownRender;

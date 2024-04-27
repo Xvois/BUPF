@@ -1,6 +1,6 @@
 "use client"
 import {Button} from "@/components/ui/button";
-import React from "react";
+import {useEffect, useState} from "react";
 
 /*
     * ResendButton
@@ -22,12 +22,12 @@ export default function ResendButton({resendEmail, email, domain}: ConfirmButton
 
     const isBrowser = typeof window !== 'undefined';
     const localStorage = isBrowser ? window.localStorage : undefined;
-    const [disabled, setDisabled] = React.useState(() => {
+    const [disabled, setDisabled] = useState(() => {
         const disableUntil = localStorage ? localStorage.getItem('disableUntil') : null;
         return disableUntil ? new Date().getTime() < Number(disableUntil) : false;
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!localStorage) return;
         const disableUntil = localStorage.getItem('disableUntil');
         if (disableUntil && new Date().getTime() < Number(disableUntil)) {

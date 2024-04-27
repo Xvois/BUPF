@@ -3,7 +3,6 @@ import {z} from "zod";
 import useSWR from "swr";
 import {sbFetcher} from "@/utils/fetcher";
 import {Tables} from "@/types/supabase";
-import React from "react";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
@@ -18,11 +17,12 @@ import {
     CommandSeparator
 } from "@/components/ui/command";
 import {Input} from "@/components/ui/input";
+import {useState} from "react";
 
 const CourseDetailsInputs = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {
     const form = useFormContext<z.infer<typeof formSchema>>()
     const {data: courses, error, isLoading} = useSWR('courses', sbFetcher<Tables<"courses">>);
-    const [popoverOpen, setPopoverOpen] = React.useState<boolean>(false);
+    const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
     return (
         <>
             <FormField

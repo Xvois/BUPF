@@ -17,26 +17,26 @@ export default async function UserPosts({params}: { params: { user_id: string } 
     const {
         data: posts,
         error: postsError
-    } = await supabase.from('posts').select('*, profiles (*)').eq('owner', user.id).order('created_at', {ascending: false});
+    } = await supabase.from('posts').select("*, profiles (*, courses (*))").eq('owner', user.id).order('created_at', {ascending: false});
 
     if (!posts || !profile) {
         return redirect("/login");
     }
 
-    const questions = posts.filter(post => post.type === "question") as (Tables<"posts"> & {
-        profiles: Tables<"profiles"> | null
+    const questions = posts.filter(post => post.type === "question") as (Tables<'posts'> & {
+        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
     })[];
-    const discussions = posts.filter(post => post.type === "discussion") as (Tables<"posts"> & {
-        profiles: Tables<"profiles"> | null
+    const discussions = posts.filter(post => post.type === "discussion") as (Tables<'posts'> & {
+        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
     })[];
-    const articles = posts.filter(post => post.type === "article") as (Tables<"posts"> & {
-        profiles: Tables<"profiles"> | null
+    const articles = posts.filter(post => post.type === "article") as (Tables<'posts'> & {
+        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
     })[];
 
     // Split posts into groups of at most 3
 
-    const groupedQuestions = questions.reduce((grouped: (Tables<"posts"> & {
-        profiles: Tables<"profiles"> | null
+    const groupedQuestions = questions.reduce((grouped: (Tables<'posts'> & {
+        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
     })[][], post, index) => {
         const groupIndex = Math.floor(index / 4);
         if (!grouped[groupIndex]) {
@@ -45,8 +45,9 @@ export default async function UserPosts({params}: { params: { user_id: string } 
         grouped[groupIndex].push(post);
         return grouped;
     }, []);
-    const groupedDiscussions = discussions.reduce((grouped: (Tables<"posts"> & {
-        profiles: Tables<"profiles"> | null
+
+    const groupedDiscussions = discussions.reduce((grouped: (Tables<'posts'> & {
+        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
     })[][], post, index) => {
         const groupIndex = Math.floor(index / 4);
         if (!grouped[groupIndex]) {
@@ -55,8 +56,8 @@ export default async function UserPosts({params}: { params: { user_id: string } 
         grouped[groupIndex].push(post);
         return grouped;
     }, []);
-    const groupedArticles = articles.reduce((grouped: (Tables<"posts"> & {
-        profiles: Tables<"profiles"> | null
+    const groupedArticles = articles.reduce((grouped: (Tables<'posts'> & {
+        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
     })[][], post, index) => {
         const groupIndex = Math.floor(index / 4);
         if (!grouped[groupIndex]) {
@@ -91,7 +92,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
                                     <div key={index} className={"flex flex-col gap-4 w-full max-h-[525px]"}>
                                         {
                                             group.map((post) => (
-                                                <Post post={post} key={post.id}/>
+                                                <Post type={"modules"} post={post} key={post.id}/>
                                             ))
                                         }
                                     </div>
@@ -121,7 +122,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
                                     <div key={index} className={"flex flex-col gap-4 w-full h-[525px]"}>
                                         {
                                             group.map((post) => (
-                                                <Post post={post} key={post.id}/>
+                                                <Post type={"topics"} post={post} key={post.id}/>
                                             ))
                                         }
                                     </div>
@@ -149,11 +150,6 @@ export default async function UserPosts({params}: { params: { user_id: string } 
                             {
                                 groupedArticles.map((group, index) => (
                                     <div key={index} className={"flex flex-col gap-4 w-full max-h-[500px]"}>
-                                        {
-                                            group.map((post) => (
-                                                <Post post={post} key={post.id}/>
-                                            ))
-                                        }
                                     </div>
                                 ))
                             }

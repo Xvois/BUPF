@@ -1,6 +1,5 @@
 'use client'
 
-import React from "react";
 import {Tables} from "@/types/supabase";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
@@ -18,12 +17,18 @@ function calculateWeight(post: Tables<"posts">) {
     return commentsWeight - daysDifference; // adjust these values as needed
 }
 
-export function PostsList({queryFilter, querySort}: { queryFilter: QueryFilter, querySort: QuerySort }) {
+export function PostsList({queryFilter, querySort, type}: {
+    queryFilter: QueryFilter,
+    querySort: QuerySort,
+    type: "modules" | "topics"
+}) {
 
     // Fetch posts data from the API using SWR
     let {data: posts, error, isLoading} = useSWR<(Tables<"posts"> & {
-        profiles: Tables<"profiles">
+        profiles: Tables<"profiles"> & { courses: Tables<"courses"> | null } | null
     })[]>(`/api/posts?filter=${JSON.stringify(queryFilter)}&sort=${JSON.stringify(querySort)}`, fetcher);
+
+    console.log(posts);
 
     if (isLoading) {
         return (
@@ -42,7 +47,7 @@ export function PostsList({queryFilter, querySort}: { queryFilter: QueryFilter, 
             {
                 posts && posts.length > 0 ?
                     posts.map(post => (
-                        <Post post={post} key={post.id}/>
+                        <Post type={type} post={post} key={post.id}/>
                     ))
                     :
                     <div className={"p-4 border rounded-md text-center"}>

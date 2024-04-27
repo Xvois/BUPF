@@ -1,7 +1,7 @@
 "use client"
 
 
-import React, {useState} from 'react';
+import {ChangeEvent, FormEvent, useState} from 'react';
 import {Button} from "@/components/ui/button";
 import RichTextArea from "@/components/RichTextArea";
 import {postComment} from "@/components/Comments/actions";
@@ -15,7 +15,7 @@ export default function CommentForm({postID}: { postID: number }) {
     const [comment, setComment] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (comment) {
             await postComment(comment, isAnonymous, postID);
@@ -23,7 +23,7 @@ export default function CommentForm({postID}: { postID: number }) {
         }
     }
 
-    const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setComment(e.target.value);
     }
 

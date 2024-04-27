@@ -3,8 +3,6 @@ import {Badge} from "@/components/ui/badge";
 import {createClient} from "@/utils/supabase/server";
 import {getUserModules} from "@/utils/getUserModules";
 import {redirect} from "next/navigation";
-import React from "react";
-
 
 export async function CoreModules() {
     const supabase = createClient();
@@ -33,7 +31,7 @@ export async function CoreModules() {
                         modules.required.map(module => (
                             <LinkBox
                                 key={module.id}
-                                title={`${module.id.toUpperCase()} / ${module.title}`}
+                                title={`${module.title} / ${module.id.toUpperCase()}`}
                                 href={`/modules/${module.id}`}
                                 className={"max-w-screen-sm flex-grow"}
                                 description={module.description || undefined}

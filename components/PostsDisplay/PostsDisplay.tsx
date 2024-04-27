@@ -1,10 +1,10 @@
 'use client'
 
-import React from "react";
 import {PostsList} from "@/components/PostsDisplay/PostsList";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
 import {TagIcon} from "lucide-react";
+import {useState} from "react";
 
 export function PostsDisplay({
                                  type,
@@ -18,7 +18,7 @@ export function PostsDisplay({
     tags: string[];
 }) {
 
-    const [params, setParams] = React.useState({
+    const [params, setParams] = useState({
         tag: '',
         sort: 'rel'
     })
@@ -82,7 +82,7 @@ export function PostsDisplay({
                     </div>
                 </div>
             </div>
-            <PostsList queryFilter={{target: id, tags: [params.tag]}} querySort={{ascending: false}}/>
+            <PostsList type={type} queryFilter={{target: id, tags: [params.tag]}} querySort={{ascending: false}}/>
         </div>
     )
 

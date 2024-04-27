@@ -16,7 +16,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import React, {useEffect} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {ServerError} from "@/components/ServerError";
 import RichTextArea from "@/components/RichTextArea";
 import {Checkbox} from "@/components/ui/checkbox";
@@ -40,11 +40,11 @@ type ReplyButtonProps = {
 export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
     const {comment, postID, ...buttonProps} = props;
     const searchParams = useSearchParams();
-    const [open, setOpen] = React.useState(false);
-    const [isSubmitting, setIsSubmitting] = React.useState(false);
-    const [reply, setReply] = React.useState("");
+    const [open, setOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [reply, setReply] = useState("");
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (reply) {
             setIsSubmitting(true);
@@ -151,9 +151,9 @@ type ReportButtonProps = {
 export const ReportButton = (props: ReportButtonProps & ButtonProps) => {
     const {comment, postID, ...buttonProps} = props;
 
-    const [open, setOpen] = React.useState(false);
-    const [isReporting, setIsReporting] = React.useState(false);
-    const [reportError, setReportError] = React.useState<string | null>(null);
+    const [open, setOpen] = useState(false);
+    const [isReporting, setIsReporting] = useState(false);
+    const [reportError, setReportError] = useState<string | null>(null);
 
     const onClick = () => {
         setIsReporting(true);
@@ -217,8 +217,8 @@ export const DeleteButton = (props: DeleteButtonProps & ButtonProps) => {
     const searchParams = useSearchParams();
     const {comment, postID, ...buttonProps} = props;
 
-    const [open, setOpen] = React.useState(false);
-    const [isDeleting, setIsDeleting] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const onClick = () => {
         setIsDeleting(true);

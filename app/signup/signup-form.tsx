@@ -6,12 +6,12 @@ import {z} from "zod"
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button} from "@/components/ui/button";
 import {formSchema} from "@/app/signup/formSchema";
-import React from "react";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
 import UserDetailsInputs from "@/components/form-components/user-details";
 import CourseDetailsInputs from "@/components/form-components/course-details";
 import PasswordConfirmation from "@/components/form-components/password-confirmation";
+import {ReactNode, useState} from "react";
 
 
 export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSchema>) => Promise<void> }) {
@@ -74,8 +74,8 @@ An optional custom page schema can be supplied to
 help provide more context to auth about errors
 on other pages.
  */
-const MultiStageForm = ({children, pageSchema}: { children: React.ReactNode[], pageSchema?: string[][] }) => {
-    const [progress, setProgress] = React.useState<number>(0);
+const MultiStageForm = ({children, pageSchema}: { children: ReactNode[], pageSchema?: string[][] }) => {
+    const [progress, setProgress] = useState<number>(0);
 
     const form = useFormContext<z.infer<typeof formSchema>>();
     if (!form) {

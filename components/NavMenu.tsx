@@ -59,7 +59,7 @@ export default function NavMenu({modules, topics}: {
                                                         }
                                                     >
                                                         <div
-                                                            className="capitalize text-sm font-medium leading-none">{module.id}</div>
+                                                            className="capitalize text-sm font-medium leading-none">{module.title}</div>
                                                         <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
                                                             {module.description}
                                                         </p>

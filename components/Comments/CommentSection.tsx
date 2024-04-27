@@ -3,10 +3,16 @@ import Comment from "@/components/Comments/Comment";
 import CommentForm from "@/components/Comments/comment-form";
 import {Tables} from "@/types/supabase";
 import {cn} from "@/lib/utils";
-import React from "react";
 import {ServerError} from "@/components/ServerError";
+import {HTMLAttributes} from "react";
 
-export type Comment = Tables<"comments"> & { profiles: Tables<"profiles"> | null } & { children: Comment[] }
+export type Comment = Tables<"comments"> & {
+    profiles: Tables<"profiles"> & {
+        courses: Tables<"courses"> | null
+    } | null
+} & { children: Comment[] }
+
+type CommentWOChildren = Omit<Comment, "children">;
 
 type CommentSectionProps = {
     post_id: string,
@@ -15,7 +21,7 @@ type CommentSectionProps = {
     owner: string | null
 }
 
-function organizeComments(comments: (Tables<"comments"> & { profiles: Tables<"profiles"> | null })[]): Comment[] {
+function organizeComments(comments: CommentWOChildren[]): Comment[] {
     const commentsMap: { [key: number]: Comment } = {};
 
     comments.forEach(comment => {
@@ -31,7 +37,7 @@ function organizeComments(comments: (Tables<"comments"> & { profiles: Tables<"pr
     return Object.values(commentsMap).filter(comment => !comment.parent);
 }
 
-export default async function CommentSection(props: CommentSectionProps & React.HTMLAttributes<HTMLDivElement>) {
+export default async function CommentSection(props: CommentSectionProps & HTMLAttributes<HTMLDivElement>) {
     const supabase = createClient();
     const {data: {user: user}, error: userError} = await supabase.auth.getUser();
     const {
@@ -58,7 +64,7 @@ export default async function CommentSection(props: CommentSectionProps & React.
     const {
         data: comments,
         error: commentsError
-    } = await supabase.from("comments").select("*, profiles (*)").in("id", postComments.attached_comments);
+    } = await supabase.from("comments").select("*, profiles (*, courses (*))").in("id", postComments.attached_comments);
 
     if (!comments) {
         return (
