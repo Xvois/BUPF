@@ -12,6 +12,8 @@ const defaultUrl = process.env.VERCEL_URL
     : "http://localhost:3000";
 
 export const metadata = {
+    title: 'BUPF',
+    description: 'BUPF is a platform for students to ask questions and get answers from their peers and teachers.',
     openGraph: {
         title: 'BUPF',
         description: 'BUPF is a platform for students to ask questions and get answers from their peers and teachers.',

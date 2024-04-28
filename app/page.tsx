@@ -2,23 +2,26 @@ import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import LinkBox from "@/components/LinkBox";
 import {Separator} from "@/components/ui/separator";
+import {cookies} from "next/headers";
 
 export default async function ProtectedPage() {
-    const supabase = createClient();
 
-    const {
-        data: {user},
-    } = await supabase.auth.getUser();
+    // Quick check that does not involve a query
 
-    if (!user) {
+    const cookieStore = cookies();
+    const allCookies = cookieStore.getAll();
+    const sbCookies = allCookies.filter(cookie => cookie.name.startsWith('sb-'));
+    if (sbCookies.length === 0) {
         return redirect("/login");
     }
 
-    const {
-        data: profile,
-    } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+    // Full check that involves a query
 
-    if (!profile) {
+    const supabase = createClient();
+    const {
+        data: {user},
+    } = await supabase.auth.getUser();
+    if (!user) {
         return redirect("/login");
     }
 

@@ -1,3 +1,5 @@
+export const dynamic = 'force-static';
+
 import SignupForm from "@/app/signup/signup-form";
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
@@ -30,8 +32,6 @@ export default async function Page() {
         },
       },
     };
-
-    console.log(data);
 
     const {error} = await supabase.auth.signUp(data);
     if (error) {

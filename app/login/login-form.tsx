@@ -1,10 +1,10 @@
 'use client'
 
 import {Button} from "@/components/ui/button";
-import React from "react";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
 import logIn from "@/app/login/actions";
+import {FormEvent, useState} from "react";
 
 /*
     * LoginForm
@@ -15,9 +15,9 @@ import logIn from "@/app/login/actions";
 
 export default function LoginForm() {
     const searchParams = useSearchParams();
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const target = event.target as typeof event.target & {
             email: { value: string };

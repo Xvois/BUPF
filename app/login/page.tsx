@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import LoginForm from "@/app/login/login-form";
 import {Separator} from "@/components/ui/separator";
 import Link from "next/link";
