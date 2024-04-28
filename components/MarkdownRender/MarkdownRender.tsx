@@ -11,7 +11,7 @@ interface MarkdownRenderProps {
     [x: string]: any; // for additional props
 }
 
-export default async function MarkdownRender({className, markdown, ...props}: MarkdownRenderProps) {
+export default function MarkdownRender({className, markdown, ...props}: MarkdownRenderProps) {
 
     return (
         <ReactMarkdown
