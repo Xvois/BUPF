@@ -10,7 +10,6 @@ export default async function TopBar() {
 
     const supabase = createClient()
     const {data: {user}} = await supabase.auth.getUser();
-
     const {data: profile} = user ? await supabase.from('profiles').select('*, courses (*)').eq('id', user.id).single() : {data: null}
     const {data: modules} = profile ? await getUserModules(supabase, profile) : {data: null}
 

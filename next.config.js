@@ -3,6 +3,12 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+    logging: {
+        fetches: {
+            fullUrl: true,
+        },
+    },
+}
 
 module.exports = withBundleAnalyzer(nextConfig)
