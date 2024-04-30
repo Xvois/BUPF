@@ -11,8 +11,9 @@ import {
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
+import {Tables} from "@/types/supabase";
 
-export default async function UserDropdown() {
+export default async function UserDropdown({profile}: { profile: Tables<"profiles"> | null }) {
     const supabase = createClient();
     const {
         data: {user},
@@ -25,15 +26,8 @@ export default async function UserDropdown() {
             </Button>
         );
     }
-    const {data, error: profileError} = await supabase
-        .from("profiles")
-        .select()
-        .eq("id", user.id)
-        .single();
 
-    if (!data) {
-        return <span>Error fetching profile: {profileError?.message}</span>;
-    }
+    if (!profile) return <></>;
 
     return (
         <DropdownMenu>
@@ -41,12 +35,12 @@ export default async function UserDropdown() {
                 <div className="flex items-center space-x-4 ml-auto">
                     <Avatar>
                         <AvatarImage
-                            src={data.profile_picture || undefined}
-                            alt={data.first_name}
+                            src={profile.profile_picture || undefined}
+                            alt={profile.first_name}
                         />
                         <AvatarFallback>
-                            {data.first_name[0]}
-                            {data.last_name[0]}
+                            {profile.first_name[0]}
+                            {profile.last_name[0]}
                         </AvatarFallback>
                     </Avatar>
                 </div>

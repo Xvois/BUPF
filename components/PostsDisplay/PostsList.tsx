@@ -6,7 +6,6 @@ import {fetcher} from "@/utils/fetcher";
 import {QueryFilter, QuerySort} from "@/components/PostsDisplay/types";
 import Post, {PostSkeleton} from "@/components/Post";
 
-
 // Calculate the weight for a post
 function calculateWeight(post: Tables<"posts">) {
     const now = Date.now();
@@ -27,8 +26,6 @@ export function PostsList({queryFilter, querySort, type}: {
     let {data: posts, error, isLoading} = useSWR<(Tables<"posts"> & {
         profiles: Tables<"profiles"> & { courses: Tables<"courses"> | null } | null
     })[]>(`/api/posts?filter=${JSON.stringify(queryFilter)}&sort=${JSON.stringify(querySort)}`, fetcher);
-
-    console.log(posts);
 
     if (isLoading) {
         return (

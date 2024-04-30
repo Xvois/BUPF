@@ -1,5 +1,6 @@
 import {Database, Tables} from "@/types/supabase";
 import {PostgrestError, SupabaseClient} from "@supabase/supabase-js";
+import useCachedQuery from "@/utils/query/useCachedQuery";
 
 type CourseModulesJSON = {
     required: string[],
@@ -21,7 +22,7 @@ export const getUserModules = async (supabase: SupabaseClient<Database>, user: T
 
         // If they are not enrolled in a course, show them all modules
         if(courses === null || entry === null) {
-            const {data: modules, error: modulesError} = await supabase.from("modules").select("*");
+            const {data: modules, error: modulesError} = await useCachedQuery(supabase.from("modules").select("*"));
             if(modulesError) return {data: null, error: modulesError}
             return {data: {required: [], optional: modules}, error: null}
         }
@@ -68,8 +69,14 @@ export const getUserModules = async (supabase: SupabaseClient<Database>, user: T
                 return {data: null, error: new Error("Invalid year")};
         }
 
-        const {data: requiredModules, error: requiredModulesError} = await supabase.from("modules").select("*").in("id", requiredModuleIDs);
-        const {data: optionalModules, error: optionalModulesError} = await supabase.from("modules").select("*").in("id", optionalModuleIDs);
+        const {
+            data: requiredModules,
+            error: requiredModulesError
+        } = await useCachedQuery(supabase.from("modules").select("*").in("id", requiredModuleIDs));
+        const {
+            data: optionalModules,
+            error: optionalModulesError
+        } = await useCachedQuery(supabase.from("modules").select("*").in("id", optionalModuleIDs));
 
         if(requiredModulesError) return {data: null, error: requiredModulesError}
         if(optionalModulesError) return {data: null, error: optionalModulesError}

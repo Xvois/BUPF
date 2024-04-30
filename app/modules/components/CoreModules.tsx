@@ -38,7 +38,7 @@ export async function CoreModules() {
                             >
                                 <div className={"flex w-full gap-2 flex-wrap mt-1"}>
                                     {module.tags?.map(tag => (
-                                        <Badge key={tag} variant={"outline"}>{tag}</Badge>
+                                        <Badge key={tag} className={"rounded-md"} variant={"outline"}>{tag}</Badge>
                                     ))}
                                 </div>
                             </LinkBox>

@@ -7,6 +7,7 @@ import LinkBox from "@/components/LinkBox";
 import DiscussionButton from "@/modules/combo_display/components/DiscussionButton";
 import QuestionButton from "@/modules/combo_display/components/QuestionButton";
 import {Fragment} from "react";
+import useCachedQuery from "@/utils/query/useCachedQuery";
 
 type PageData = {
     created_at: string,
@@ -30,14 +31,13 @@ export default async function ComboDisplay({params, searchParams}: {
 
     let id = params.module_id || params.topic_id as string;
 
-    let {data} = await supabase.from(params.module_id ? "modules" : "topics").select("*").eq("id", id).single();
-
+    let {data} = await useCachedQuery(supabase.from(params.module_id ? "modules" : "topics").select("*").eq("id", id));
     if (!data) {
         return redirect("/not-found");
     }
 
     // A valid type assertion as it **only** combines the two types to make tags optional
-    const pageData = data as PageData;
+    const pageData = data[0] as PageData;
 
     return (
         <div className="w-full grid space-y-4">
@@ -78,7 +78,7 @@ export default async function ComboDisplay({params, searchParams}: {
                         want.
                     </p>
                 </div>
-                <PostsDisplay tags={pageData.tags || []} id={data.id} type={params.module_id ? "modules" : "topics"}
+                <PostsDisplay tags={pageData.tags || []} id={pageData.id} type={params.module_id ? "modules" : "topics"}
                               searchParams={searchParams}/>
             </section>
             <Separator/>
