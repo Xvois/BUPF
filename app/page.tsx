@@ -53,23 +53,6 @@ export default async function ProtectedPage() {
                 </div>
             </section>
             <Separator/>
-            <section className={"space-y-4 p-6"}>
-                <div>
-                    <h2 className={"text-2xl font-bold"}>Contribute</h2>
-                    <p className={"text-sm text-muted-foreground"}>
-                        Got an idea for an article? Want to ask a question? Want to share your knowledge? Click below to
-                        get
-                        started.
-                    </p>
-                </div>
-                <div className={"flex flex-row flex-wrap gap-4"}>
-                    <LinkBox title={"Start a discussion"} href={"#"} className={"flex-grow"}
-                             description={"Discuss any topics in physics and engage with your peers to share ideas."}/>
-                    <LinkBox title={"Write an article"} href={"#"} className={"flex-grow"} disabled
-                             description={"Write an article about something that interests you for your peers to read."}/>
-                </div>
-            </section>
-            <Separator/>
         </div>
     );
 }
