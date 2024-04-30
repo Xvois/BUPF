@@ -12,13 +12,14 @@ const defaultUrl = process.env.VERCEL_URL
     : "http://localhost:3000";
 
 export const metadata = {
-    title: 'BUPF',
-    description: 'BUPF is a platform for students to ask questions and get answers from their peers and teachers.',
+    metadataBase: new URL(defaultUrl),
+    title: 'BUPF - Bath University Physics Forum',
+    description: 'BUPF is a platform for Bath University students to ask physics-related questions and get answers from their peers and teachers.',
     openGraph: {
-        title: 'BUPF',
-        description: 'BUPF is a platform for students to ask questions and get answers from their peers and teachers.',
+        title: 'BUPF - Bath University Physics Forum',
+        description: 'Join BUPF to discuss physics topics, ask questions, and share knowledge with your Bath University peers.',
         url: 'https://www.bupf.co.uk/',
-        siteName: 'BUFP',
+        siteName: 'BUPF - Bath University Physics Forum',
         locale: 'en_UK',
         type: 'website',
     },

@@ -20,17 +20,11 @@ export async function generateMetadata(
 
 
     // fetch data
-    const post = await fetch(`${defaultUrl}/api/post/${id}`).then((res) => res.json())
-
-    const previousImages = (await parent).openGraph?.images || []
+    const post = await fetch(`api/post/${id}`).then((res) => res.json())
 
     return {
         title: post.heading,
-        metadataBase: new URL(defaultUrl),
-        openGraph: {
-            title: post.heading,
-            images: [...previousImages]
-        },
+        description: post.content,
     }
 }
 
