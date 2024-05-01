@@ -1,8 +1,10 @@
+export const dynamic = "force-static"
+
 import {Separator} from "@/components/ui/separator";
 import {ExternalLink} from "lucide-react";
 
 
-export default async function Page() {
+export default function Page() {
 
     return (
         <div className="space-y-4 w-full">

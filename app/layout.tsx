@@ -5,6 +5,7 @@ import {cn} from "@/lib/utils";
 import React from "react";
 import {Analytics} from "@vercel/analytics/react"
 import {SpeedInsights} from "@vercel/speed-insights/next"
+import {Return} from "@/components/ui/return";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -44,6 +45,9 @@ export default function RootLayout({
         <body className="flex flex-col bg-background text-foreground items-center min-h-screen">
         <TopBar/>
         <main className="flex-grow flex flex-col w-full items-center ">
+            <div className={"mr-auto ml-6"}>
+                <Return/>
+            </div>
             {children}
         </main>
         </body>
