@@ -1,5 +1,3 @@
-export const dynamic = "force-static"
-
 import {Separator} from "@/components/ui/separator";
 import {ExternalLink} from "lucide-react";
 
