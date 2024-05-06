@@ -1,9 +1,7 @@
 import LinkBox from "@/components/LinkBox";
-import {Badge} from "@/components/ui/badge";
 import {createClient} from "@/utils/supabase/server";
-import {redirect} from "next/navigation";
 import {getUserModules} from "@/utils/getUserModules";
-
+import {redirect} from "next/navigation";
 
 export async function OptionalModules() {
     const supabase = createClient();
@@ -17,13 +15,33 @@ export async function OptionalModules() {
     }
 
     const {data: modules} = await getUserModules(supabase, profile)
+    if (modules === null) {
+        return redirect("/login");
+    }
+
+    const postsCount = Object.fromEntries(await Promise.all(modules.optional.map(async (module) => {
+        const answeredPosts = await supabase.from("posts").select("id", {
+            count: 'exact',
+            head: true
+        }).eq("target", module.id).not("marked_comment", 'is', null);
+
+        const unansweredPosts = await supabase.from("posts").select("id", {
+            count: 'exact',
+            head: true
+        }).eq("target", module.id).is("marked_comment", null);
+
+        return [module.id, {
+            answered: answeredPosts.count,
+            unanswered: unansweredPosts.count
+        }];
+    })));
 
     return (
         <section className={"space-y-4 p-6"}>
             <div>
-                <h2 className={"text-2xl font-bold"}>Optional modules</h2>
+                <h2 className={"text-2xl font-bold"}>Core modules</h2>
                 <p className={"text-sm text-muted-foreground"}>
-                    These are optional modules that not all students will take.
+                    These modules are mandatory for your course.
                 </p>
             </div>
             <div className={"flex flex-wrap gap-4"}>
@@ -32,14 +50,15 @@ export async function OptionalModules() {
                         modules.optional.map(module => (
                             <LinkBox
                                 key={module.id}
-                                title={module.id.toUpperCase()}
+                                title={`${module.title} / ${module.id.toUpperCase()}`}
                                 href={`/modules/${module.id}`}
+                                className={"max-w-screen-sm flex-grow"}
                                 description={module.description || undefined}
                             >
-                                <div className={"flex w-full gap-2 flex-wrap"}>
-                                    {module.tags?.map(tag => (
-                                        <Badge key={tag} variant={"secondary"}>{tag}</Badge>
-                                    ))}
+                                <div className={"inline-flex gap-1 items-center text-sm"}>
+                                    <p>{postsCount[module.id].unanswered || 0} open</p>
+                                    /
+                                    <p className={"text-green-600/90"}>{postsCount[module.id].answered || 0} answered</p>
                                 </div>
                             </LinkBox>
                         ))
@@ -53,6 +72,5 @@ export async function OptionalModules() {
                 }
             </div>
         </section>
-
     )
 }

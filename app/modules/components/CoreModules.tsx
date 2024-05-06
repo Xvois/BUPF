@@ -1,5 +1,4 @@
 import LinkBox from "@/components/LinkBox";
-import {Badge} from "@/components/ui/badge";
 import {createClient} from "@/utils/supabase/server";
 import {getUserModules} from "@/utils/getUserModules";
 import {redirect} from "next/navigation";
@@ -16,6 +15,26 @@ export async function CoreModules() {
     }
 
     const {data: modules} = await getUserModules(supabase, profile)
+    if (modules === null) {
+        return redirect("/login");
+    }
+
+    const postsCount = Object.fromEntries(await Promise.all(modules.required.map(async (module) => {
+        const answeredPosts = await supabase.from("posts").select("id", {
+            count: 'exact',
+            head: true
+        }).eq("target", module.id).not("marked_comment", 'is', null);
+
+        const unansweredPosts = await supabase.from("posts").select("id", {
+            count: 'exact',
+            head: true
+        }).eq("target", module.id).is("marked_comment", null);
+
+        return [module.id, {
+            answered: answeredPosts.count,
+            unanswered: unansweredPosts.count
+        }];
+    })));
 
     return (
         <section className={"space-y-4 p-6"}>
@@ -36,10 +55,10 @@ export async function CoreModules() {
                                 className={"max-w-screen-sm flex-grow"}
                                 description={module.description || undefined}
                             >
-                                <div className={"flex w-full gap-2 flex-wrap mt-1"}>
-                                    {module.tags?.map(tag => (
-                                        <Badge key={tag} variant={"outline"}>{tag}</Badge>
-                                    ))}
+                                <div className={"inline-flex gap-1 items-center text-sm "}>
+                                    <p>{postsCount[module.id].unanswered || 0} open</p>
+                                    /
+                                    <p className={"text-green-600/90"}>{postsCount[module.id].answered || 0} answered</p>
                                 </div>
                             </LinkBox>
                         ))
