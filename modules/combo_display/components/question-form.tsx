@@ -61,7 +61,7 @@ export default function Question() {
                     <FormItem>
                         <FormLabel>Content</FormLabel>
                         <FormControl>
-                            <RichTextArea {...field} id="content"
+                            <RichTextArea {...field} id="content" className={"max-h-96 overflow-y-scroll"}
                                           placeholder="Enter the content of your question."/>
                         </FormControl>
                         <FormDescription>

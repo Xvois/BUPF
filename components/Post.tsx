@@ -35,10 +35,10 @@ export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { clas
 
     return (
         <Link {...linkProps} href={`/${props.type}/${post.target}/posts/${post.id}`}
-              className={cn("flex flex-col border rounded-md p-4 transition-all hover:bg-accent focus:outline-foreground bg-popover w-full break-words overflow-hidden", linkProps.className)}>
+              className={cn("flex flex-col border rounded-md p-4 transition-all hover:bg-accent focus:outline-foreground bg-popover", linkProps.className)}>
             <div>
-                <h3 className={"text-xl font-bold break-words overflow-hidden"}>{post.heading}</h3>
-                <p className={"text-sm text-muted-foreground text-ellipsis overflow-hidden max-h-10"}>{formattedContent}</p>
+                <h3 className={"text-xl font-bold text-ellipsis overflow-hidden break-words"}>{post.heading}</h3>
+                <p className={"text-sm text-muted-foreground text-ellipsis overflow-hidden break-all max-h-10"}>{formattedContent}</p>
             </div>
 
             <div className={"inline-flex justify-between mt-2"}>

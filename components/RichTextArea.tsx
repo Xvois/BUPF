@@ -19,7 +19,7 @@ interface RichTextAreaProps extends TextareaProps {
 const RichTextArea = forwardRef<HTMLTextAreaElement, RichTextAreaProps>(({className, id, value, ...props}, ref) => {
 
     return (
-        <Tabs className={className} defaultValue={"write"}>
+        <Tabs defaultValue={"write"}>
             <TabsList>
                 <TabsTrigger value={"write"}>Write</TabsTrigger>
                 <TabsTrigger value={"preview"}>Preview</TabsTrigger>

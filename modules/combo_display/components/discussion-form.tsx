@@ -52,7 +52,7 @@ export default function Discussion() {
                     <FormItem>
                         <FormLabel>Content</FormLabel>
                         <FormControl>
-                            <RichTextArea {...field} id="content"
+                            <RichTextArea {...field} id="content" className={"max-h-96 overflow-y-scroll"}
                                           placeholder={"# My discussion \n Hello there..."}/>
                         </FormControl>
                         <FormDescription>
