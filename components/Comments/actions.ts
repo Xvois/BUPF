@@ -157,12 +157,9 @@ export async function postComment(
 export async function deleteComment(commentID: number, postID: number) {
     const supabase = createClient();
 
-    const {data: commentChildren} = await supabase
-        .from("comment_children")
-        .select("children")
-        .eq("id", commentID)
-        .single();
-    if (commentChildren && commentChildren.children.length > 0) {
+    const {data: children} = await supabase.from("comments").select("*").eq("parent", commentID);
+
+    if (children && children.length > 0) {
         const {error: updateError} = await supabase
             .from("comments")
             .update({anonymous: true})

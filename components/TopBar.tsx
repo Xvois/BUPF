@@ -1,9 +1,15 @@
 import * as React from "react"
 import {createClient} from "@/utils/supabase/server";
-import {getUserModules} from "@/utils/getUserModules";
 import NavMenu from "@/components/NavMenu";
 import UserDropdown from "@/components/UserDropdown";
+import axios from "axios";
+import {PostgrestSingleResponse} from "@supabase/supabase-js";
+import {Tables} from "@/types/supabase";
+import {cookies} from "next/headers";
 
+const defaultUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
 
 export default async function TopBar() {
 
@@ -11,7 +17,17 @@ export default async function TopBar() {
     const {data: {user}} = await supabase.auth.getUser();
 
     const {data: profile} = user ? await supabase.from('profiles').select('*, courses (*)').eq('id', user.id).single() : {data: null}
-    const {data: modules} = profile ? await getUserModules(supabase, profile) : {data: null}
+    const {data: modules, error: modulesError} = profile ? await axios.get<PostgrestSingleResponse<{
+        required: Tables<"modules">[],
+        optional: Tables<"modules">[]
+    }>>(`${defaultUrl}/api/user/modules`, {headers: {Cookie: cookies().toString()},}).then(res => res.data) : {
+        data: null,
+        error: null
+    }
+
+    if (modulesError && process.env.NODE_ENV === "development") {
+        console.error(modulesError)
+    }
 
     const {data: topics} = await supabase.from('topics').select('*').limit(4)
 

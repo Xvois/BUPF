@@ -36,7 +36,7 @@
     }
 
     /*noinspection ALL*/
-    .dark {
+    [data-theme='dark'] {
         --background: 0 0% 3.9%;
         --foreground: 0 0% 98%;
 

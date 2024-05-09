@@ -53,7 +53,7 @@ export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSche
             <form onSubmit={form.handleSubmit(onSubmit)} className={"flex flex-col items-end space-y-8"}>
                 <MultiStageForm pageSchema={pageSchema}>
                     <UserDetailsInputs formSchema={formSchema}/>
-                    <CourseDetailsInputs formSchema={formSchema}/>
+                    <CourseDetailsInputs/>
                     <PasswordConfirmation formSchema={formSchema}/>
                 </MultiStageForm>
             </form>

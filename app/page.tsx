@@ -1,58 +1,137 @@
-import {createClient} from "@/utils/supabase/server";
-import {redirect} from "next/navigation";
-import LinkBox from "@/components/LinkBox";
 import {Separator} from "@/components/ui/separator";
-import {cookies} from "next/headers";
+import React, {Fragment} from "react";
+import {BookPlus, CircleFadingPlus} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import Link from "next/link";
+import DynamicIconGrid from "@/components/DynamicIconGrid";
+import {createClient} from "@/utils/supabase/server";
+import CoursesShowcase from "@/components/CoursesShowcase/CoursesShowcase";
 
-export default async function ProtectedPage() {
+const defaultUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
 
-    // Quick check that does not involve a query
-
-    const cookieStore = cookies();
-    const allCookies = cookieStore.getAll();
-    const sbCookies = allCookies.filter(cookie => cookie.name.startsWith('sb-'));
-    if (sbCookies.length === 0) {
-        return redirect("/login");
-    }
-
-    // Full check that involves a query
+export default async function Landing() {
 
     const supabase = createClient();
-    const {
-        data: {user},
-    } = await supabase.auth.getUser();
+    const {data: {user}} = await supabase.auth.getUser();
     if (!user) {
-        return redirect("/login");
+        await supabase.auth.signInAnonymously();
     }
 
-
     return (
-        <div className="space-y-4">
-            <header className={"p-6"}>
-                <p className={"text-3xl leading-none"}>Welcome to the</p>
-                <h1 className={"font-black text-4xl"}>Bath University Physics Forum</h1>
-                <p>
-                    Discuss physics topics, ask questions, and share knowledge with your peers, all in one place.
-                </p>
-            </header>
+        <div className={"space-y-8 w-full"}>
+            <div className={" text-center overflow-hidden"}>
+                <div className={"relative flex flex-col h-96 items-center align-middle justify-center space-y-8"}>
+                    <div className={"absolute left-0 top-0 w-full h-full opacity-15 z-[-1]"}>
+                        <DynamicIconGrid/>
+                    </div>
+                    <div className={"p-6"}>
+                        <h1 className={"font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl"}>
+                            By students, For students
+                        </h1>
+                        <p className={"text-muted-foreground"}>
+                            The Bath University Physics Forum is the student run forum for all things physics at the
+                            University
+                            of Bath.
+                        </p>
+                    </div>
+                    <div className={"inline-flex flex-row gap-4 mx-auto"}>
+                        {
+                            user ?
+                                <Button asChild>
+                                    <Link href={"/home"}>
+                                        Go to dashboard
+                                    </Link>
+                                </Button>
+                                :
+                                <Fragment>
+                                    <Button variant={"outline"} asChild>
+                                        <Link href={"/login"}>
+                                            I am an academic
+                                        </Link>
+                                    </Button>
+                                    <Button asChild>
+                                        <Link href={"/login"}>
+                                            Join now
+                                        </Link>
+                                    </Button>
+                                </Fragment>
+                        }
+
+                    </div>
+                </div>
+            </div>
             <Separator/>
-            <section className={"space-y-4 p-6"}>
+            <section className={"p-6 space-y-8"}>
                 <div>
-                    <h2 className={"text-2xl font-bold"}>Forum sections</h2>
-                    <p className={"text-sm text-muted-foreground"}>
-                        Choose an area of the forum to view. Subsections within each area are available.
+                    <h2 className={"font-black text-4xl"}>
+                        Your course, Your modules
+                    </h2>
+                    <p>
+                        All you need to do is select your course and your modules will automatically be updated,
+                        allowing
+                        you
+                        to interact with other students and academics taking the same modules as you.
+                    </p>
+                    <p>
+                        Try it out here by selecting a course and start year.
                     </p>
                 </div>
-                <div className={"flex flex-row flex-wrap gap-4"}>
-                    <LinkBox title={"Modules"} href={"/modules"} className={"flex-grow"}
-                             description={"View your modules, see what's coming up, and discuss with your peers."}/>
-                    <LinkBox title={"Topics"} href={"/topics"} className={"flex-grow"}
-                             description={"Discuss physics topics with your peers, ask questions, and share knowledge."}/>
-                    <LinkBox title={"Articles"} href={"#"} className={"flex-grow"} disabled
-                             description={"Write and read articles on physics topics, share your knowledge and learn from others."}/>
+                <div className={"border-t p-6"}>
+                    <CoursesShowcase/>
                 </div>
             </section>
             <Separator/>
+            <section className={"flex flex-col p-6 space-y-4 text-right w-fit ml-auto"}>
+                <div>
+                    <h2 className={"font-black text-4xl"}>
+                        Tailor your posts
+                    </h2>
+                    <p>
+                        The Bath University Physics Forum is a place where you can ask questions, read articles and
+                        spark
+                        discussions about physics topics that matter to you.
+                    </p>
+                </div>
+                <div className={"flex flex-row justify-evenly gap-8 flex-wrap"}>
+                    <DisplayCard>
+                        <h2 className={"font-bold text-xl inline-flex gap-1"}>
+                            Articles
+                        </h2>
+                        <p>
+                            Read articles written by students and staff at the University of Bath.
+                        </p>
+                    </DisplayCard>
+                    <DisplayCard>
+                        <h2 className={"font-bold text-xl inline-flex gap-1 items-center"}>
+                            <CircleFadingPlus className={"h-5 w-5"}/>
+                            Questions
+                        </h2>
+                        <p>
+                            Ask questions and get answers from a community of students and academics.
+                        </p>
+                    </DisplayCard>
+                    <DisplayCard>
+                        <h2 className={"font-bold text-xl inline-flex gap-1 items-center"}>
+                            <BookPlus className={"h-5 w-5"}/>
+                            Discussions
+                        </h2>
+                        <p>
+                            Spark discussion about physics topics that matter to you.
+                        </p>
+                    </DisplayCard>
+                </div>
+            </section>
         </div>
-    );
+    )
+}
+
+
+const DisplayCard = ({children}: { children: React.ReactElement[] }) => {
+    return (
+        <div className={"rounded-md border p-4 flex flex-col gap-4 max-w-96 hover:bg-secondary"}>
+            {children}
+        </div>
+    )
 }

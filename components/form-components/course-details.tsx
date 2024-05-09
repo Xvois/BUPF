@@ -1,5 +1,4 @@
 import {useFormContext} from "react-hook-form";
-import {z} from "zod";
 import useSWR from "swr";
 import {sbFetcher} from "@/utils/fetcher";
 import {Tables} from "@/types/supabase";
@@ -19,8 +18,8 @@ import {
 import {Input} from "@/components/ui/input";
 import {useState} from "react";
 
-const CourseDetailsInputs = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {
-    const form = useFormContext<z.infer<typeof formSchema>>()
+const CourseDetailsInputs = () => {
+    const form = useFormContext()
     const {data: courses, error, isLoading} = useSWR('courses', sbFetcher<Tables<"courses">>);
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
     return (

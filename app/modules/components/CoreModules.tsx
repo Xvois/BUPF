@@ -1,7 +1,14 @@
 import LinkBox from "@/components/LinkBox";
 import {createClient} from "@/utils/supabase/server";
-import {getUserModules} from "@/utils/getUserModules";
 import {redirect} from "next/navigation";
+import axios from "axios";
+import {cookies} from "next/headers";
+import {Tables} from "@/types/supabase";
+import {PostgrestSingleResponse} from "@supabase/supabase-js";
+
+const defaultUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
 
 export async function CoreModules() {
     const supabase = createClient();
@@ -14,7 +21,10 @@ export async function CoreModules() {
         return redirect("/login");
     }
 
-    const {data: modules} = await getUserModules(supabase, profile)
+    const {data: modules} = await axios.get<PostgrestSingleResponse<{
+        required: Tables<"modules">[],
+        optional: Tables<"modules">[]
+    }>>(`${defaultUrl}/api/user/modules`, {headers: {Cookie: cookies().toString()},}).then(res => res.data);
     if (modules === null) {
         return redirect("/login");
     }
