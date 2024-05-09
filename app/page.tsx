@@ -3,7 +3,7 @@ import React, {Fragment} from "react";
 import {BookPlus, CircleFadingPlus} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import DynamicIconGrid from "@/components/DynamicIconGrid";
+import DynamicIconGrid from "@/components/DynamicIconGrid/DynamicIconGrid";
 import {createClient} from "@/utils/supabase/server";
 import CoursesShowcase from "@/components/CoursesShowcase/CoursesShowcase";
 

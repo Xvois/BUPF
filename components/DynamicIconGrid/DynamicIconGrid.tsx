@@ -4,6 +4,7 @@ import React, {useEffect, useRef} from 'react';
 import useResizeObserver from "use-resize-observer";
 import {Atom, Book, Box, Compass, Diameter, Eclipse, Microscope, Orbit, Pi, Satellite} from "lucide-react";
 import {useMediaQuery} from "@/hooks/use-media-query";
+import "./scroll.css";
 
 
 export default function DynamicIconGrid() {
@@ -11,6 +12,7 @@ export default function DynamicIconGrid() {
     const {width, height} = useResizeObserver({ref});
     const isTouchScreen = useMediaQuery('(hover: none)');
     const isMobile = useMediaQuery('(max-width: 640px)');
+    const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
 
     const cellSize = 36; // Set the size of each cell
 
@@ -59,13 +61,21 @@ export default function DynamicIconGrid() {
 
     return (
         <div style={{position: 'relative'}} className={`w-full h-full ${isMobile ? 'opacity-50' : ''}`}>
-            <div ref={ref} className={`w-full h-full flex flex-row flex-wrap justify-evenly`}>
-                {Array.from({length: numCols * numRows}).map((_, i) => (
-                    <div key={i}
-                         className={`scale-eff flex items-center justify-center h-${cellSize / 4} w-${cellSize / 4}`}>
-                        {icons[i % icons.length]}
-                    </div>
-                ))}
+            <div ref={ref} className={`w-[200vw] h-full flex flex-wrap`}>
+                {Array.from({length: numRows}).map((_, rowIndex) => {
+                    const row = Array.from({length: numCols}).map((_, colIndex) => (
+                        <div key={colIndex}
+                             className={`scale-eff flex items-center justify-center h-${cellSize / 4} w-${cellSize / 4}`}>
+                            {icons[Math.floor(Math.random() * icons.length)]}
+                        </div>
+                    ))
+                    return (
+                        <div key={rowIndex} className={`flex flex-row justify-start items-center overflow-x-hidden whitespace-nowrap 
+                    ${!reducedMotion ? (rowIndex % 2 === 0 ? 'animate-scroll-left ml-[100$]' : 'animate-scroll-right') : ''}`}>
+                            {row}
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )
