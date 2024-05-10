@@ -5,8 +5,6 @@ import Link from "next/link";
 import {CircleHelp} from "lucide-react";
 import DynamicIconGrid from "@/components/DynamicIconGrid/DynamicIconGrid";
 
-export const dynamic = "force-static";
-
 export default function Login() {
 
     return (
