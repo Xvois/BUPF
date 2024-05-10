@@ -76,22 +76,22 @@ export async function GET(
 
     if (courseError) {
         console.error("Error fetching course data:", courseError); // Log the error
-        return Response.json({error: courseError.message}, {status: 500});
+        return Response.json({data: null, error: courseError.message}, {status: 200});
     }
 
     if (!course.modules) {
-        return Response.json({error: "No modules found for course"}, {status: 404});
+        return Response.json({data: null, error: "No modules found for course"}, {status: 200});
     }
 
     const {data: courseModules, error: courseModulesError} = await fetchCourseModules(supabase, course.modules);
 
     if (!courseModules && !courseModulesError) {
-        return Response.json({error: "No modules found for course"}, {status: 404});
+        return Response.json({data: null, error: "No modules found for course"}, {status: 200});
     }
 
     if (courseModulesError) {
         console.error("Error fetching course modules:", courseModulesError); // Log the error
-        return Response.json({error: courseModulesError.message}, {status: 500});
+        return Response.json({data: null, error: courseModulesError.message}, {status: 200});
     }
 
     let moduleIDs: Tables<"modules">[] = []
