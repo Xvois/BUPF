@@ -11,6 +11,7 @@ import {PostgrestSingleResponse} from "@supabase/supabase-js";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import LinkBox from "@/components/LinkBox";
+import {ServerError} from "@/components/ServerError";
 
 type LooseObject = {
     [key: string]: any
@@ -25,12 +26,20 @@ export default function CoursesShowcase() {
     });
     const [modules, setModules] = useState<Tables<"course_modules"> | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
     const [targetYear, setTargetYear] = useState<number>(1);
 
     const onSubmit = async (fd: any) => {
         setIsLoading(true);
-        const {data} = await axios.get<PostgrestSingleResponse<Tables<"course_modules">>>(`/api/courses/${fd.course}/modules`).then(res => res.data);
+        const {
+            data,
+            error
+        } = await axios.get<PostgrestSingleResponse<Tables<"course_modules">>>(`/api/courses/${fd.course}/modules`).then(res => res.data);
         setIsLoading(false);
+        if (error) {
+            setError(error.message);
+            return;
+        }
         if (data) {
             setModules(data);
         }
@@ -62,6 +71,9 @@ export default function CoursesShowcase() {
                 </form>
             </Form>
             <div className={"flex flex-col"}>
+                <ServerError>
+                    {error}
+                </ServerError>
                 <ul className={"grid grid-cols-2 grid-rows-2 gap-4"}>
                     {
                         modules && yearData.required.map((module: Tables<"modules">) => (
