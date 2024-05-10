@@ -16,16 +16,12 @@ export default async function TopBar() {
     const supabase = createClient()
     const {data: {user}} = await supabase.auth.getUser();
 
-    const {data: profile} = user ? await supabase.from('profiles').select('*, courses (*)').eq('id', user.id).single() : {data: null}
-    const {data: modules, error: modulesError} = profile ? await axios.get<PostgrestSingleResponse<{
+    const {data: modules, error: modulesError} = await axios.get<PostgrestSingleResponse<{
         required: Tables<"modules">[],
         optional: Tables<"modules">[]
-    }>>(`${defaultUrl}/api/user/modules`, {headers: {Cookie: cookies().toString()},}).then(res => res.data) : {
-        data: null,
-        error: null
-    }
+    }>>(`${defaultUrl}/api/user/modules`, {headers: {Cookie: cookies().toString()},}).then(res => res.data)
 
-    if (modulesError && process.env.NODE_ENV === "development") {
+    if (modulesError && process.env.NODE_ENV === 'development') {
         console.error(modulesError)
     }
 

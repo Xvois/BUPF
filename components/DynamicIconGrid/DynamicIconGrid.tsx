@@ -7,10 +7,10 @@ import {useMediaQuery} from "@/hooks/use-media-query";
 import "./scroll.css";
 
 
-export default function DynamicIconGrid() {
+export default function DynamicIconGrid(props: { allowEngagement?: boolean | undefined }) {
+    const {allowEngagement = true} = props;
     const ref = useRef<HTMLDivElement>(null);
     const {width, height} = useResizeObserver({ref});
-    const isTouchScreen = useMediaQuery('(hover: none)');
     const isMobile = useMediaQuery('(max-width: 640px)');
     const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
 
@@ -36,26 +36,62 @@ export default function DynamicIconGrid() {
     ]
 
     useEffect(() => {
-        if (isTouchScreen) return;
-        window.addEventListener("mousemove", (e) => {
-            const scaleEffDivs = document.querySelectorAll('.scale-eff');
-            scaleEffDivs.forEach((div) => {
-                const rect = div.getBoundingClientRect();
-                const x = rect.left + rect.width / 2;
-                const y = rect.top + rect.height / 2;
-                const dx = x - e.clientX;
-                const dy = y - e.clientY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance > 250) {
-                    if ((div as HTMLElement).style.opacity === '0') return;
-                    (div as HTMLElement).style.opacity = `0`;
-                    return;
+        if (!allowEngagement) return;
+
+        let scaleEffDivs = new Set(document.querySelectorAll('.scale-eff'));
+
+        let animationFrameId: number | null = null;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            if (animationFrameId !== null) {
+                cancelAnimationFrame(animationFrameId);
+            }
+
+            animationFrameId = requestAnimationFrame(() => {
+                // Update the set if it's empty
+                if (scaleEffDivs.size === 0) {
+                    scaleEffDivs = new Set(document.querySelectorAll('.scale-eff'));
                 }
-                const scale = Math.max(0.75, 1.5 - distance / 300);
-                (div as HTMLElement).style.transform = `scale(${scale})`;
-                (div as HTMLElement).style.opacity = `${1 - distance / 300}`;
+
+                scaleEffDivs.forEach((div: Element) => {
+                    const rect = div.getBoundingClientRect();
+                    const parentRect = ref.current?.getBoundingClientRect();
+                    const x = rect.left + rect.width / 2;
+                    const y = rect.top + rect.height / 2;
+                    const dx = x - e.clientX;
+                    const dy = y - e.clientY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    const engaged = parentRect && e.clientX > parentRect.left && e.clientX < parentRect.right && e.clientY > parentRect.top && e.clientY < parentRect.bottom;
+
+                    if (engaged) {
+                        (div as HTMLElement).style.transition = `none`;
+                        if (distance > 250) {
+                            if ((div as HTMLElement).style.opacity !== '0') {
+                                (div as HTMLElement).style.opacity = `0`;
+                            }
+                        } else {
+                            const scale = Math.max(0.75, 1.5 - distance / 300);
+                            (div as HTMLElement).style.transform = `scale(${scale})`;
+                            (div as HTMLElement).style.opacity = `${1 - distance / 300}`;
+                        }
+                    } else {
+                        (div as HTMLElement).style.transition = `all 1s ease-in-out`;
+                        (div as HTMLElement).style.opacity = `1`;
+                        (div as HTMLElement).style.transform = `scale(1)`;
+                    }
+                });
             });
-        })
+        }
+
+        window.addEventListener("mousemove", handleMouseMove);
+
+        return () => {
+            if (animationFrameId !== null) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            window.removeEventListener("mousemove", handleMouseMove);
+        }
     }, [])
 
 

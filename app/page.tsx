@@ -7,10 +7,6 @@ import DynamicIconGrid from "@/components/DynamicIconGrid/DynamicIconGrid";
 import {createClient} from "@/utils/supabase/server";
 import CoursesShowcase from "@/components/CoursesShowcase/CoursesShowcase";
 
-const defaultUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
-
 export default async function Landing() {
 
     const supabase = createClient();
@@ -21,14 +17,14 @@ export default async function Landing() {
 
     return (
         <div className={"space-y-8 w-full"}>
-            <div className={" text-center overflow-hidden"}>
+            <header className={"text-center overflow-hidden pt-8 px-8"}>
                 <div className={"relative flex flex-col h-96 items-center align-middle justify-center space-y-8"}>
                     <div className={"absolute left-0 top-0 w-full h-full opacity-15 z-[-1]"}>
                         <DynamicIconGrid/>
                     </div>
-                    <div className={"p-6"}>
+                    <div>
                         <h1 className={"font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl"}>
-                            By students, For students
+                            For students, By students
                         </h1>
                         <p className={"text-muted-foreground"}>
                             The Bath University Physics Forum is the student run forum for all things physics at the
@@ -58,27 +54,28 @@ export default async function Landing() {
                                     </Button>
                                 </Fragment>
                         }
-
                     </div>
+                    <Button variant={"link"} asChild>
+                        <a href={"https://github.com/Xvois/BUPF"}>See the source</a>
+                    </Button>
                 </div>
-            </div>
+            </header>
             <Separator/>
             <section className={"p-6 space-y-8"}>
                 <div>
-                    <h2 className={"font-black text-4xl"}>
-                        Your course, Your modules
+                    <h2 className={"font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl"}>
+                        Your modules
                     </h2>
                     <p>
                         All you need to do is select your course and your modules will automatically be updated,
-                        allowing
-                        you
+                        allowing you
                         to interact with other students and academics taking the same modules as you.
                     </p>
                     <p>
                         Try it out here by selecting a course and start year.
                     </p>
                 </div>
-                <div className={"border-t p-6"}>
+                <div className={"border-t py-6"}>
                     <CoursesShowcase/>
                 </div>
             </section>
