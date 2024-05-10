@@ -9,7 +9,13 @@ const defaultUrl = process.env.VERCEL_URL
 
 // Fetch the course data
 async function fetchCourseData(id: string) {
-    return await axios.get<PostgrestSingleResponse<Tables<"courses">>>(`${defaultUrl}/api/courses/${id}`).then(res => res.data);
+    return await axios.get<PostgrestSingleResponse<Tables<"courses">>>(`${defaultUrl}/api/courses/${id}`, {
+        headers: {
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-GB,en;q=0.9',
+        },
+        withCredentials: true
+    }).then(res => res.data);
 }
 
 // Fetch the course modules
