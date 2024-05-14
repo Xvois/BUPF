@@ -1,6 +1,6 @@
 import {Tables} from "@/types/supabase";
 import {createClient} from "@/utils/supabase/server";
-import sbAxios from "@/utils/axios/sb-get";
+import sbAxios from "@/utils/axios/sbAxios";
 
 export async function GET(request: Request) {
 	const supabase = createClient();

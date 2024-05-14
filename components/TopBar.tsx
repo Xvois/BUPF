@@ -2,29 +2,15 @@ import * as React from "react"
 import {createClient} from "@/utils/supabase/server";
 import NavMenu from "@/components/NavMenu";
 import UserDropdown from "@/components/UserDropdown";
-import axios from "axios";
-import {PostgrestSingleResponse} from "@supabase/supabase-js";
-import {Tables} from "@/types/supabase";
 import {cookies} from "next/headers";
-
-const defaultUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+import sbAxios from "@/utils/axios/sbAxios";
 
 export default async function TopBar() {
 
     const supabase = createClient()
     const {data: {user}} = await supabase.auth.getUser();
 
-    const {data: modules, error: modulesError} = await axios.get<PostgrestSingleResponse<{
-        required: Tables<"modules">[],
-        optional: Tables<"modules">[]
-    }>>(`${defaultUrl}/api/user/modules`, {headers: {Cookie: cookies().toString()},}).then(res => res.data)
-
-    if (modulesError && process.env.NODE_ENV === 'development') {
-        console.error(modulesError)
-    }
-
+    const {data: modules} = await sbAxios.sbGet("/api/user/modules", {}, {headers: {Cookie: cookies().toString()}}).then(res => res.data);
     const {data: topics} = await supabase.from('topics').select('*').limit(4)
 
 

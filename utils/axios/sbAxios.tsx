@@ -6,6 +6,8 @@ import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {CourseModulesResponse, CourseResponse, CoursesResponse} from "@/types/api/courses/types";
 import {ModuleResponse, ModulesResponse} from "@/types/api/modules/types";
 import {PostResponse, PostsResponse} from "@/types/api/posts/types";
+import {ProfileResponse} from "@/types/api/profiles/types";
+import {UserModulesResponse} from "@/types/api/user/types";
 
 
 type RouteResponseMap = {
@@ -16,13 +18,18 @@ type RouteResponseMap = {
 	'/api/modules/[id]': ModuleResponse,
 	'/api/posts/[id]': PostResponse,
 	'/api/posts': PostsResponse,
-	'/api/user/modules': any
+	'/api/profiles/[id]': ProfileResponse,
+	'/api/user/modules': UserModulesResponse
 };
 
 type Params = {
 	searchParams?: string;
 	[key: string]: string | undefined;
 }
+
+const defaultUrl = process.env.VERCEL_URL
+	? `https://${process.env.VERCEL_URL}`
+	: "http://localhost:3000";
 
 class SBAxios extends axios.Axios {
 	constructor(config?: AxiosRequestConfig) {
@@ -58,13 +65,7 @@ class SBAxios extends axios.Axios {
 		config?: AxiosRequestConfig
 	): Promise<AxiosResponse<RouteResponseMap[Route]>> {
 
-		function isRelativeUrl(url: string) {
-			return !(/^(?:[a-z]+:)?\/\//i.test(url));
-		}
-
-		const defaultUrl = process.env.VERCEL_URL
-			? `https://${process.env.VERCEL_URL}`
-			: "http://localhost:3000";
+		const isRelativeUrl = (url: string) => {return !(/^(?:[a-z]+:)?\/\//i.test(url));}
 
 		if (!isRelativeUrl(route as string)) {
 			throw new Error('(sbFetch): Route must be a relative URL.');

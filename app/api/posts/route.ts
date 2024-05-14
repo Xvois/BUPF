@@ -1,5 +1,5 @@
-import {createAdminClient} from "@/utils/supabase/admin";
 import {PostsResponse} from "@/types/api/posts/types";
+import {createClient} from "@/utils/supabase/server";
 
 function toPostgresList(arr: string[]): string {
     let str = '(';
@@ -9,8 +9,7 @@ function toPostgresList(arr: string[]): string {
 }
 
 export async function GET(request: Request) {
-    // Why admin? See [id] route.
-    const client = createAdminClient();
+	const client = createClient();
 
     const params = new URL(request.url).searchParams;
 

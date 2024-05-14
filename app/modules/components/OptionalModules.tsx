@@ -1,10 +1,8 @@
 import LinkBox from "@/components/LinkBox";
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
-import axios from "axios";
-import {PostgrestSingleResponse} from "@supabase/supabase-js";
-import {Tables} from "@/types/supabase";
 import {cookies} from "next/headers";
+import sbAxios from "@/utils/axios/sbAxios";
 
 const defaultUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
@@ -16,15 +14,14 @@ export async function OptionalModules() {
     if (!user) {
         return redirect("/login");
     }
-    const {data: profile} = await supabase.from("profiles").select("*, courses (*)").eq("id", user.id).single();
+    const {data: profile} = await sbAxios.sbGet("/api/profiles/[id]", {id: user.id}).then(res => res.data);
+
     if (!profile) {
         return redirect("/login");
     }
 
-    const {data: modules} = await axios.get<PostgrestSingleResponse<{
-        required: Tables<"modules">[],
-        optional: Tables<"modules">[]
-    }>>(`${defaultUrl}/api/user/modules`, {headers: {Cookie: cookies().toString()},}).then(res => res.data);
+    const {data: modules} = await sbAxios.sbGet("/api/user/modules", {}, {headers: {Cookie: cookies().toString()}}).then(res => res.data);
+
     if (modules === null) {
         return redirect("/login");
     }

@@ -20,6 +20,5 @@ export async function GET(
 
 	const response: ModuleResponse = await supabase.from('modules').select('*').eq('id', params.id).single()
 
-
 	return Response.json(response);
 }

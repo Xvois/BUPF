@@ -102,13 +102,19 @@ export class AnimateGrid {
 			const parentRect = this.parentRef.current?.getBoundingClientRect();
 			const engaged = parentRect && this.mClientX > parentRect.left && this.mClientX < parentRect.right && this.mClientY > parentRect.top && this.mClientY < parentRect.bottom;
 
-			this.selectedDivs.forEach((div: Element) => {
+			// Batch reads
+			const divsData = Array.from(this.selectedDivs).map((div: Element) => {
 				const rect = div.getBoundingClientRect();
 				const x = rect.left + rect.width / 2;
 				const y = rect.top + rect.height / 2;
 				const dx = x - this.mClientX;
 				const dy = y - this.mClientY;
 				const distance = Math.sqrt(dx * dx + dy * dy);
+				return {div, distance};
+			});
+
+			// Batch writes
+			divsData.forEach(({div, distance}) => {
 				const element = div as HTMLElement;
 
 				if (engaged) {
@@ -131,7 +137,6 @@ export class AnimateGrid {
 					}
 
 				} else {
-					element.style.transition = `all 1s ease-in-out`;
 					element.style.opacity = `1`;
 					element.style.transform = `scale(1)`;
 				}

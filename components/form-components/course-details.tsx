@@ -36,6 +36,10 @@ const CourseDetailsInputs = () => {
                                     <Button
                                         variant="outline"
                                         role="combobox"
+                                        aria-haspopup="listbox"
+                                        aria-expanded={popoverOpen}
+                                        aria-controls="listbox"
+                                        aria-label={"Select course"}
                                         className={cn(
                                             "w-64 sm:w-96 md:w-full justify-between overflow-x-clip",
                                             !field.value && "text-muted-foreground"

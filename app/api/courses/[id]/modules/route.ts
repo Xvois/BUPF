@@ -1,5 +1,5 @@
 import {createAdminClient} from "@/utils/supabase/admin";
-import sbAxios from "@/utils/axios/sb-get";
+import sbAxios from "@/utils/axios/sbAxios";
 import {SupabaseClient} from "@supabase/supabase-js";
 import {Tables} from "@/types/supabase";
 
