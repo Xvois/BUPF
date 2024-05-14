@@ -1,53 +1,39 @@
-import {createClient} from "@/utils/supabase/server";
+import {createAdminClient} from "@/utils/supabase/admin";
+import {PostsResponse} from "@/types/api/posts/types";
 
-/*
-A server route that returns posts that meet the filter and sort criteria.
-*/
-
-/*
-A helper function that returns and deletes all arrays from an object.
- */
-function extractArrays(obj: any) {
-    const result: {[key: string]: any[]} = {};
-    for (const key in obj) {
-        if (Array.isArray(obj[key])) {
-            result[key] = obj[key];
-            delete obj[key];
-        }
-    }
-    return result;
+function toPostgresList(arr: string[]): string {
+    let str = '(';
+    str += arr.map(item => `"${item.replace(/"/g, '\\"')}"`).join(',');
+    str += ')';
+    return str;
 }
 
 export async function GET(request: Request) {
-    const client = createClient();
+    // Why admin? See [id] route.
+    const client = createAdminClient();
 
     const params = new URL(request.url).searchParams;
 
+    let query = client.from("posts").select("*");
 
-    let query = client.from("posts").select("*, profiles (*, courses (*))");
-
-    const filter = params.get("filter");
-    if (filter) {
-        const JSONFilter = await JSON.parse(filter);
-        const arrayValues = extractArrays(JSONFilter);
-
-        query = query.match(JSONFilter);
-        for (const key in arrayValues) {
-            query = query.contains(key, arrayValues[key]);
-        }
+    const filtersString = params.get("filters");
+    if (filtersString) {
+        const filters = JSON.parse(filtersString);
+        filters.forEach((filter: any) => {
+            if (Array.isArray(filter.value)) {
+                filter.value = toPostgresList(filter.value);
+            }
+            query.filter(filter.column, filter.operator, filter.value);
+        });
     }
 
     const sort = params.get("sort");
     if (sort) {
-        const JSONSort = await JSON.parse(sort);
-        query = query.order("created_at" ,JSONSort);
+        const JSONSort = JSON.parse(sort);
+        query = query.order("created_at", JSONSort);
     }
 
-    const {data, error} = await query;
+    const response: PostsResponse = await query;
 
-    if(error) {
-        return Response.json({error: error.message}, {status: 500})
-    }
-
-    return Response.json(data);
+    return Response.json(response);
 }

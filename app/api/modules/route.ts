@@ -1,4 +1,5 @@
 import {createAdminClient} from "@/utils/supabase/admin";
+import {ModulesResponse} from "@/types/api/modules/types";
 
 function toPostgresList(arr: string[]): string {
     let str = '(';
@@ -32,11 +33,7 @@ export async function GET(request: Request) {
         query = query.order("created_at", JSONSort);
     }
 
-    const {data, error} = await query;
+	const response: ModulesResponse = await query;
 
-    if (error) {
-        return Response.json({error: error.message}, {status: 500})
-    }
-
-    return Response.json({data, error});
+	return Response.json(response);
 }

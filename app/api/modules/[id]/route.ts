@@ -1,4 +1,5 @@
 import {createAdminClient} from "@/utils/supabase/admin";
+import {ModuleResponse} from "@/types/api/modules/types";
 
 /*
 IMPORTANT:
@@ -17,11 +18,8 @@ export async function GET(
 ) {
     const supabase = createAdminClient();
 
-    const {data, error} = await supabase.from('modules').select('*').eq('id', params.id).single()
+	const response: ModuleResponse = await supabase.from('modules').select('*').eq('id', params.id).single()
 
-    if (error) {
-        return Response.json({error: error.message}, {status: 500});
-    }
 
-    return Response.json(data);
+	return Response.json(response);
 }

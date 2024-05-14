@@ -1,21 +1,13 @@
 import {createAdminClient} from "@/utils/supabase/admin";
-import axios from "axios";
-import {PostgrestResponse, PostgrestSingleResponse, SupabaseClient} from "@supabase/supabase-js";
+import sbAxios from "@/utils/axios/sb-get";
+import {SupabaseClient} from "@supabase/supabase-js";
 import {Tables} from "@/types/supabase";
 
-const defaultUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+// TODO: Add types for the response data
 
 // Fetch the course data
 async function fetchCourseData(id: string) {
-    return await axios.get<PostgrestSingleResponse<Tables<"courses">>>(`${defaultUrl}/api/courses/${id}`, {
-        headers: {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'en-GB,en;q=0.9',
-        },
-        withCredentials: true
-    }).then(res => res.data);
+    return await sbAxios.sbGet(`/api/courses/[id]`, {id}).then(res => res.data);
 }
 
 // Fetch the course modules
@@ -35,8 +27,7 @@ async function fetchModules(moduleIDs: Tables<"modules">[]) {
 
     let searchParams = new URLSearchParams();
     searchParams.append('filters', JSON.stringify(modFilters));
-
-    return await axios.get<PostgrestResponse<Tables<"modules">>>(`${defaultUrl}/api/modules?${searchParams.toString()}`).then(res => res.data);
+    return await sbAxios.sbGet(`/api/modules`, {searchParams: searchParams.toString()}).then(res => res.data);
 }
 
 // Create a map of modules
@@ -81,7 +72,6 @@ export async function GET(
     const {data: course, error: courseError} = await fetchCourseData(params.id);
 
     if (courseError) {
-        console.error("Error fetching course data:", courseError); // Log the error
         return Response.json({data: null, error: courseError}, {status: 200});
     }
 

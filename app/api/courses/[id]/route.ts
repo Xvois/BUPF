@@ -1,4 +1,5 @@
 import {createAdminClient} from "@/utils/supabase/admin";
+import {CourseResponse} from "@/types/api/courses/types";
 
 /*
 IMPORTANT:
@@ -17,11 +18,7 @@ export async function GET(
 ) {
     const supabase = createAdminClient();
 
-    const {data, error} = await supabase.from('courses').select('*').eq('id', params.id).single()
+	const response: CourseResponse = await supabase.from('courses').select('*').eq('id', params.id).single()
 
-    if (error) {
-        return Response.json({data: null, error: error}, {status: 200});
-    }
-
-    return Response.json({data, error});
+	return Response.json(response);
 }

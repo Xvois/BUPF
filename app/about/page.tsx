@@ -1,7 +1,6 @@
 import {Separator} from "@/components/ui/separator";
 import {ExternalLink} from "lucide-react";
 
-
 export default function Page() {
 
     return (

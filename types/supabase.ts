@@ -6,10 +6,6 @@ export type Json =
     | { [key: string]: Json | undefined }
     | Json[]
 
-type CourseModules = {
-    required: Tables<"modules">[],
-    optional: Tables<"modules">[]
-}
 
 export type Database = {
     public: {
@@ -99,11 +95,11 @@ export type Database = {
                 Row: {
                     created_at: string
                     id: number
-                    year_1: CourseModules
-                    year_2: CourseModules
-                    year_3: CourseModules
-                    year_4: CourseModules | null
-                    year_5: CourseModules | null
+					year_1: Json
+					year_2: Json
+					year_3: Json
+					year_4: Json | null
+					year_5: Json | null
                 }
                 Insert: {
                     created_at?: string

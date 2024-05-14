@@ -6,12 +6,13 @@ import {Form} from "@/components/ui/form";
 import CourseDetails from "@/components/form-components/course-details";
 import {Button} from "@/components/ui/button";
 import {useEffect, useState} from "react";
-import axios from "axios";
+import sbAxios from "@/utils/axios/sb-get";
 import {PostgrestSingleResponse} from "@supabase/supabase-js";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import LinkBox from "@/components/LinkBox";
 import {ServerError} from "@/components/ServerError";
+import {ResolvedCourseModules} from "@/types/api/courses/types";
 
 type LooseObject = {
     [key: string]: any
@@ -24,7 +25,7 @@ export default function CoursesShowcase() {
             yearOfStudy: 2023
         }
     });
-    const [modules, setModules] = useState<Tables<"course_modules"> | null>(null);
+    const [modules, setModules] = useState<ResolvedCourseModules | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [targetYear, setTargetYear] = useState<number>(1);
@@ -34,7 +35,7 @@ export default function CoursesShowcase() {
         const {
             data,
             error
-        } = await axios.get<PostgrestSingleResponse<Tables<"course_modules">>>(`/api/courses/${fd.course}/modules`).then(res => res.data);
+        } = await sbAxios.sbGet(`/api/courses/[id]/modules`, {id: fd.course}).then(res => res.data);
         setIsLoading(false);
         if (error) {
             setError(error.message);
@@ -49,7 +50,7 @@ export default function CoursesShowcase() {
     const {
         data: initData,
         isLoading: swrLoading
-    } = useSWR<PostgrestSingleResponse<Tables<"course_modules">>>(`/api/courses/${form.formState.defaultValues?.course}/modules`, fetcher);
+    } = useSWR<PostgrestSingleResponse<ResolvedCourseModules>>(`/api/courses/${form.formState.defaultValues?.course}/modules`, fetcher);
     useEffect(() => {
         if (!initData) return;
         setModules(initData.data);
@@ -81,7 +82,7 @@ export default function CoursesShowcase() {
                                 key={module.id}
                                 title={`${module.title} / ${module.id.toUpperCase()}`}
                                 href={`/modules/${module.id}`}
-                                className={"max-w-screen-sm flex-grow h-fit"}
+                                className={"max-w-screen-sm flex-grow h-fit animate-fade"}
                                 description={module.description || undefined}
                             >
                             </LinkBox>
