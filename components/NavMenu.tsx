@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link, {LinkProps} from "next/link";
 import * as React from "react";
-import {cn} from "@/lib/utils";
+import {cn} from "@/utils/cn";
 import {Tables} from "@/types/supabase";
 import {ArrowRight, BookCopy, Component, Menu} from "lucide-react";
 import {useMediaQuery} from "@/hooks/use-media-query";
@@ -193,7 +193,7 @@ function NavMenuContent({modules, topics}: {
                                 {modules.slice(0, 4).map((module) => (
                                     <ListItem
                                         key={module.id}
-                                        title={module.id}
+										title={module.title}
                                         href={`/modules/${module.id}`}
                                     >
                                         {module.description}

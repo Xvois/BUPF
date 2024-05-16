@@ -36,17 +36,23 @@ export default function DynamicIconGrid(props: { allowEngagement?: boolean | und
 		<Satellite className={iconsClass}/>
 	]
 
+	const animator = new AnimateGrid(ref, '.dynamic-grid');
 	useEffect(() => {
-		if (!allowEngagement) return;
+		const shouldStop = (reducedMotion || !allowEngagement) && animator.isRunning();
+		const shouldStart = !reducedMotion && allowEngagement && !animator.isRunning();
 
-		const animator = new AnimateGrid(ref, '.dynamic-grid');
-		animator.start();
+		if (shouldStop) {
+			animator.stop();
+		} else if (shouldStart) {
+			animator.start();
+		}
 
 		return () => {
-			animator.stop();
+			if (animator.isRunning()) {
+				animator.stop();
+			}
 		}
-	}, [])
-
+	}, [reducedMotion, animator, allowEngagement])
 
 	return (
 		<div style={{position: 'relative'}}

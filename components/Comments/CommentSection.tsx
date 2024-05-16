@@ -2,7 +2,7 @@ import {createClient} from "@/utils/supabase/server";
 import Comment from "@/components/Comments/Comment";
 import CommentForm from "@/components/Comments/comment-form";
 import {Tables} from "@/types/supabase";
-import {cn} from "@/lib/utils";
+import {cn} from "@/utils/cn";
 import {ServerError} from "@/components/ServerError";
 import {HTMLAttributes} from "react";
 

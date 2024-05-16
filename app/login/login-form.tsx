@@ -55,7 +55,7 @@ function LoginContents() {
                        name={"password"}
                        type={"password"}></input>
             </div>
-            <Button isLoading={isLoading} className={"w-32"} type={"submit"}>Login</Button>
+			<Button isLoading={isLoading} type={"submit"} className={"w-full"}>Login</Button>
             <ServerError className={"w-full"}>
                 {searchParams.get("error")}
             </ServerError>

@@ -3,8 +3,9 @@
 import {Tables} from "@/types/supabase";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
-import {QueryFilter, QuerySort} from "@/components/PostsDisplay/types";
 import Post, {PostSkeleton} from "@/components/Post";
+import {QueryFilters} from "@/types/api/options";
+import {PostgrestResponse} from "@supabase/supabase-js";
 
 
 // Calculate the weight for a post
@@ -17,18 +18,20 @@ function calculateWeight(post: Tables<"posts">) {
     return commentsWeight - daysDifference; // adjust these values as needed
 }
 
-export function PostsList({queryFilter, querySort, type}: {
-    queryFilter: QueryFilter,
-    querySort: QuerySort,
+export function PostsList({queryFilters, type}: {
+	queryFilters: QueryFilters,
     type: "modules" | "topics"
 }) {
 
-    // Fetch posts data from the API using SWR
-    let {data: posts, error, isLoading} = useSWR<(Tables<"posts"> & {
-        profiles: Tables<"profiles"> & { courses: Tables<"courses"> | null } | null
-    })[]>(`/api/posts?filter=${JSON.stringify(queryFilter)}&sort=${JSON.stringify(querySort)}`, fetcher);
+	const searchParams = new URLSearchParams();
+	searchParams.set("filters", JSON.stringify(queryFilters));
 
-    console.log(posts);
+    // Fetch posts data from the API using SWR
+	let {data: response, error, isLoading} = useSWR<PostgrestResponse<(Tables<"posts"> & {
+        profiles: Tables<"profiles"> & { courses: Tables<"courses"> | null } | null
+	})>>(`/api/posts?${searchParams.toString()}`, fetcher);
+
+	const posts = response?.data;
 
     if (isLoading) {
         return (

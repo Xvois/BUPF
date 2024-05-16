@@ -1,6 +1,6 @@
 import {Tables} from "@/types/supabase";
 import {createClient} from "@/utils/supabase/server";
-import sbAxios from "@/utils/axios/sbAxios";
+import apiAxios from "@/utils/axios/apiAxios";
 
 export async function GET(request: Request) {
 	const supabase = createClient();
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 
 	// If the user is not enrolled in a course, return all modules
 	if (courses === null || entry === null) {
-		const modulesResponse = await sbAxios.sbGet("/api/modules").then(response => response.data);
+		const modulesResponse = await apiAxios.get("/api/modules").then(response => response.data);
 		if (modulesResponse.error) return Response.json(modulesResponse);
 		return Response.json({data: modulesResponse.data, error: null});
 	}
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
 	const year = Math.ceil((Date.now() - new Date(entry).getTime()) / YEAR_IN_MS);
 
 	// Get the modules for the courses the user is enrolled in
-	const courseModulesResponse = await sbAxios.sbGet(`/api/courses/[id]/modules`, {id: courses.id.toString()}).then(response => response.data);
+	const courseModulesResponse = await apiAxios.get(`/api/courses/[id]/modules`, {id: courses.id.toString()}).then(response => response.data);
 	if (courseModulesResponse.error) {return Response.json(courseModulesResponse);}
 	const courseModules = courseModulesResponse.data;
 

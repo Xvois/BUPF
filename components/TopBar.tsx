@@ -3,14 +3,14 @@ import {createClient} from "@/utils/supabase/server";
 import NavMenu from "@/components/NavMenu";
 import UserDropdown from "@/components/UserDropdown";
 import {cookies} from "next/headers";
-import sbAxios from "@/utils/axios/sbAxios";
+import apiAxios from "@/utils/axios/apiAxios";
 
 export default async function TopBar() {
 
     const supabase = createClient()
     const {data: {user}} = await supabase.auth.getUser();
 
-    const {data: modules} = await sbAxios.sbGet("/api/user/modules", {}, {headers: {Cookie: cookies().toString()}}).then(res => res.data);
+	const {data: modules} = await apiAxios.get("/api/user/modules", {}, {headers: {Cookie: cookies().toString()}}).then(res => res.data);
     const {data: topics} = await supabase.from('topics').select('*').limit(4)
 
 

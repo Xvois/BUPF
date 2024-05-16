@@ -2,7 +2,7 @@ import * as React from "react"
 import {Slot} from "@radix-ui/react-slot"
 import {cva, type VariantProps} from "class-variance-authority"
 
-import {cn} from "@/lib/utils"
+import {cn} from "@/utils/cn"
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 const buttonVariants = cva(
@@ -50,7 +50,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                     <div className={"opacity-0"}>
                         {props.children}
                     </div>
-                    <LoadingSpinner className={cn("absolute inset-0 m-auto", variant === "outline" || variant === "secondary" ? "fill-foreground" : "fill-white" )}/>
+                    <LoadingSpinner
+                        className={cn("absolute inset-0 m-auto", variant === "outline" || variant === "secondary" ? "fill-foreground" : "fill-background")}/>
                 </div>
             props.disabled = true;
             props["aria-disabled"] = true;

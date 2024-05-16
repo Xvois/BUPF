@@ -1,5 +1,5 @@
 import {Tables} from "@/types/supabase";
-import {cn} from "@/lib/utils";
+import {cn} from "@/utils/cn";
 import Profile from "@/components/Profile";
 import {BookCopy, CheckCircle, Component} from "lucide-react";
 import React from "react";

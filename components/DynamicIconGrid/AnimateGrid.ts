@@ -50,16 +50,17 @@ export class AnimateGrid {
 		[this.mClientX, this.mClientY] = [e.clientX, e.clientY];
 	}
 
+	public isRunning = () => {
+		return this.running;
+	}
+
 	/**
 	 * Starts the animation.
 	 */
 	public start = () => {
 		if (this.running) return;
 		this.running = true;
-		window.addEventListener("mousemove", (e) => {
-			this.updateMouse(e);
-			this.animate()
-		});
+		window.addEventListener("mousemove", this.mouseListener);
 	}
 
 	/**
@@ -75,10 +76,12 @@ export class AnimateGrid {
 			clearInterval(this.intervalId);
 			this.intervalId = null;
 		}
-		window.removeEventListener("mousemove", (e) => {
-			this.updateMouse(e);
-			this.animate()
-		});
+		window.removeEventListener("mousemove", this.mouseListener);
+	}
+
+	private mouseListener = (e: MouseEvent) => {
+		this.updateMouse(e);
+		this.animate()
 	}
 
 	/**

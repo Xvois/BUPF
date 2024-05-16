@@ -1,7 +1,7 @@
 import {Inter} from "next/font/google";
 import "./globals.css";
-import {cn} from "@/lib/utils";
-import React from "react";
+import {cn} from "@/utils/cn";
+import React, {StrictMode} from "react";
 import {Analytics} from "@vercel/analytics/react"
 import {SpeedInsights} from "@vercel/speed-insights/next"
 import TopBar from "@/components/TopBar";
@@ -52,12 +52,14 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 		<html lang="en" className={cn(inter.className, "w-full mx-auto",)}>
 		<body className="flex flex-col bg-background text-foreground items-center min-h-screen">
 		<script dangerouslySetInnerHTML={{__html: darkModeListener}}/>
-		<TopBar/>
-		<main className="flex-grow flex flex-col w-full items-center ">
-			{children}
-		</main>
-		<SpeedInsights/>
-		<Analytics/>
+		<StrictMode>
+			<TopBar/>
+			<main className="flex-grow flex flex-col w-full items-center ">
+				{children}
+			</main>
+			<SpeedInsights/>
+			<Analytics/>
+		</StrictMode>
 		</body>
 		</html>
 	);

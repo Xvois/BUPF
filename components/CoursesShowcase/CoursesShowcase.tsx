@@ -6,17 +6,18 @@ import {Form} from "@/components/ui/form";
 import CourseDetails from "@/components/form-components/course-details";
 import {Button} from "@/components/ui/button";
 import {useEffect, useState} from "react";
-import sbAxios from "@/utils/axios/sbAxios";
+import apiAxios from "@/utils/axios/apiAxios";
 import {PostgrestSingleResponse} from "@supabase/supabase-js";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import LinkBox from "@/components/LinkBox";
-import {ServerError} from "@/components/ServerError";
 import {ResolvedCourseModules} from "@/types/api/courses/types";
 
 type LooseObject = {
 	[key: string]: any
 };
+
+const YEAR_IN_MS = 1000 * 60 * 60 * 24 * 365;
 
 export default function CoursesShowcase() {
 	const form = useForm({
@@ -32,11 +33,18 @@ export default function CoursesShowcase() {
 
 	const onSubmit = async (fd: any) => {
 		setIsLoading(true);
+
 		const {
 			data,
 			error
-		} = await sbAxios.sbGet(`/api/courses/[id]/modules`, {id: fd.course}).then(res => res.data);
+		} = await apiAxios.get(`/api/courses/[id]/modules`, {id: fd.course}).then(res => res.data);
+
+		// Calculate the current year of the user based on their entry date
+		const year = Math.ceil((Date.now() - new Date(fd.yearOfStudy, 10, 1).getTime()) / YEAR_IN_MS);
+		setTargetYear(year);
+
 		setIsLoading(false);
+
 		if (error) {
 			setError(error.message);
 			return;
@@ -64,50 +72,42 @@ export default function CoursesShowcase() {
 
 
 	return (
-		<div className={"flex flex-col w-full lg:flex-row gap-4"}>
+		<div className={"flex flex-col w-full lg:flex-row gap-4 overflow-hidden"}>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-4 lg:w-96"}>
 					<CourseDetails/>
 					<Button type={"submit"} className={"w-full"}>Try it out</Button>
 				</form>
 			</Form>
-			<div className={"flex flex-col"}>
-				<ServerError>
-					{error}
-				</ServerError>
-				<ul className={"grid grid-cols-2 grid-rows-2 gap-4"}>
-					{
-						modules && yearData.required.map((module: Tables<"modules">) => (
-							<li>
-								<LinkBox
-									key={module.id}
-									title={`${module.title} / ${module.id.toUpperCase()}`}
-									href={`/modules/${module.id}`}
-									className={"max-w-screen-sm flex-grow h-fit animate-fade"}
-									description={module.description || undefined}
-								>
-								</LinkBox>
-							</li>
-						))
-					}
-				</ul>
-				<ul>
-					{
-						modules && yearData.optional.map((m: Tables<"modules">) => (
-							<li key={m.id}>
-								<p>
-									{m.title} <span
-									className={"text-xs text-muted-foreground uppercase"}>({m.id})</span>
-								</p>
-								<p className={"text-sm text-muted-foreground"}>
-									{m.description}
-								</p>
-							</li>
+			<ul className={"flex flex-col w-full h-full space-y-2 overflow-y-scroll"}>
+				{
+					modules && yearData && yearData.required.map((module: Tables<"modules">) => (
+						<li className={"flex w-full"} key={module.id}>
+							<LinkBox
+								key={module.id}
+								title={`${module.title}`}
+								href={`/modules/${module.id}`}
+								className={"max-w-screen-2xl flex-grow h-fit animate-fade"}
+								description={module.description || undefined}
+							/>
+						</li>
+					))
+				}
+				{
+					modules && yearData && yearData.optional.map((module: Tables<"modules">) => (
+						<li className={"flex w-full"} key={module.id}>
+							<LinkBox
+								key={module.id}
+								title={`${module.title}`}
+								href={`/modules/${module.id}`}
+								className={"max-w-screen-2xl flex-grow h-fit animate-fade"}
+								description={module.description || undefined}
+							/>
+						</li>
 
-						))
-					}
-				</ul>
-			</div>
+					))
+				}
+			</ul>
 		</div>
 	)
 

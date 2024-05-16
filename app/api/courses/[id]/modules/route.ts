@@ -1,5 +1,5 @@
 import {createAdminClient} from "@/utils/supabase/admin";
-import sbAxios from "@/utils/axios/sbAxios";
+import apiAxios from "@/utils/axios/apiAxios";
 import {SupabaseClient} from "@supabase/supabase-js";
 import {Tables} from "@/types/supabase";
 
@@ -7,7 +7,7 @@ import {Tables} from "@/types/supabase";
 
 // Fetch the course data
 async function fetchCourseData(id: string) {
-    return await sbAxios.sbGet(`/api/courses/[id]`, {id}).then(res => res.data);
+	return await apiAxios.get(`/api/courses/[id]`, {id}).then(res => res.data);
 }
 
 // Fetch the course modules
@@ -27,7 +27,7 @@ async function fetchModules(moduleIDs: Tables<"modules">[]) {
 
     let searchParams = new URLSearchParams();
     searchParams.append('filters', JSON.stringify(modFilters));
-    return await sbAxios.sbGet(`/api/modules`, {searchParams: searchParams.toString()}).then(res => res.data);
+	return await apiAxios.get(`/api/modules`, {searchParams: searchParams.toString()}).then(res => res.data);
 }
 
 // Create a map of modules
