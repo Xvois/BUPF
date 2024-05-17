@@ -6,7 +6,6 @@ import {CheckCircle, CircleSlash, Component, MessageSquareText, User} from "luci
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {Badge} from "@/components/ui/badge";
 
-
 export default function Page() {
 	return (
 		<div className={"space-y-8 w-full"}>

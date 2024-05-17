@@ -6,7 +6,7 @@ import Link from "next/link";
 import DynamicIconGrid from "@/components/DynamicIconGrid/DynamicIconGrid";
 import {createClient} from "@/utils/supabase/server";
 import CoursesShowcase from "@/components/CoursesShowcase/CoursesShowcase";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {cn} from "@/utils/cn";
 
@@ -89,8 +89,8 @@ export default async function Landing() {
 							discussions about physics topics that matter to you.
 						</p>
 					</div>
-					<div className={"flex flex-row gap-8 flex-wrap"}>
-						<Card className={"flex-grow w-96 flex flex-col hover:bg-gradient-to-br" +
+					<div className={"flex flex-row gap-8 flex-wrap align-bottom justify-end"}>
+						<Card className={"flex-grow max-w-96 flex flex-col hover:bg-gradient-to-br" +
 							" hover:from-muted/10 hover:to-muted/20"}>
 							<CardHeader>
 								<CardTitle className={"inline-flex"}>
@@ -105,12 +105,8 @@ export default async function Landing() {
 								The forum provides a platform for students and academics to write articles about physics
 								topics that interest them, and engage in meaningful discussions.
 							</CardContent>
-							<Separator className={"mb-6"}/>
-							<CardFooter className={"text-muted"}>
-								Read articles ->
-							</CardFooter>
 						</Card>
-						<Card className={"flex-grow w-96 flex flex-col hover:bg-gradient-to-br" +
+						<Card className={"flex-grow max-w-96 flex flex-col hover:bg-gradient-to-br" +
 							" hover:from-muted/10 hover:to-muted/20"}>
 							<CardHeader>
 								<CardTitle className={"inline-flex"}>
@@ -126,12 +122,8 @@ export default async function Landing() {
 								the module relevant. Easily find answers for common questions and pool together
 								knowledge to solve problems.
 							</CardContent>
-							<Separator className={"mb-6"}/>
-							<CardFooter>
-								Ask a question ->
-							</CardFooter>
 						</Card>
-						<Card className={"flex-grow w-96 flex flex-col hover:bg-gradient-to-br" +
+						<Card className={"flex-grow max-w-96 flex flex-col hover:bg-gradient-to-br" +
 							" hover:from-muted/10 hover:to-muted/20"}>
 							<CardHeader>
 								<CardTitle className={"inline-flex"}>
@@ -146,16 +138,12 @@ export default async function Landing() {
 								Engage in discussions about physics topics that interest you, and share your
 								knowledge with others.
 							</CardContent>
-							<Separator className={"mb-6"}/>
-							<CardFooter>
-								Start a discussion ->
-							</CardFooter>
 						</Card>
 					</div>
 				</section>
 			</div>
 			<Separator/>
-			<section className={"p-6"}>
+			<section className={"p-6 space-y-8"}>
 				<div className={"mx-auto max-w-screen-sm text-center"}>
 					<h2 className={"font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
 						Write <span className={"bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400" +
@@ -171,6 +159,19 @@ export default async function Landing() {
 					{
 						markdownComments.map((comment, i) => (
 							<FloatingComment key={i} index={i} content={comment}/>
+						))
+					}
+				</div>
+				<div className={"space-y-2 lg:hidden"}>
+					{
+						markdownComments.slice(5, 10).map((comment, i) => (
+							<div key={i} className={"p-4 border rounded-md bg-gradient-to-br from-muted/0 to-muted/50"}>
+								<div>
+									<p className={"text-sm"}>Anonymous</p>
+									<MarkdownRender
+										markdown={comment}/>
+								</div>
+							</div>
 						))
 					}
 				</div>
