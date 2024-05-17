@@ -5,6 +5,7 @@ import React, {StrictMode} from "react";
 import {Analytics} from "@vercel/analytics/react"
 import {SpeedInsights} from "@vercel/speed-insights/next"
 import TopBar from "@/components/TopBar";
+import {Footer} from "@/components/Footer";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -57,6 +58,7 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 			<main className="flex-grow flex flex-col w-full items-center ">
 				{children}
 			</main>
+			<Footer/>
 			<SpeedInsights/>
 			<Analytics/>
 		</StrictMode>

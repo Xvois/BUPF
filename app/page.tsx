@@ -46,7 +46,7 @@ export default async function Landing() {
 								:
 								<Fragment>
 									<Button variant={"outline"} asChild>
-										<Link href={"/login"}>
+										<Link href={"/academics"}>
 											I am an academic
 										</Link>
 									</Button>
@@ -90,7 +90,8 @@ export default async function Landing() {
 						</p>
 					</div>
 					<div className={"flex flex-row gap-8 flex-wrap"}>
-						<Card className={"flex-grow w-96 flex flex-col"}>
+						<Card className={"flex-grow w-96 flex flex-col hover:bg-gradient-to-br" +
+							" hover:from-muted/10 hover:to-muted/20"}>
 							<CardHeader>
 								<CardTitle className={"inline-flex"}>
 									Articles
@@ -109,7 +110,8 @@ export default async function Landing() {
 								Read articles ->
 							</CardFooter>
 						</Card>
-						<Card className={"flex-grow w-96 flex flex-col"}>
+						<Card className={"flex-grow w-96 flex flex-col hover:bg-gradient-to-br" +
+							" hover:from-muted/10 hover:to-muted/20"}>
 							<CardHeader>
 								<CardTitle className={"inline-flex"}>
 									Questions
@@ -129,7 +131,8 @@ export default async function Landing() {
 								Ask a question ->
 							</CardFooter>
 						</Card>
-						<Card className={"flex-grow w-96 flex flex-col"}>
+						<Card className={"flex-grow w-96 flex flex-col hover:bg-gradient-to-br" +
+							" hover:from-muted/10 hover:to-muted/20"}>
 							<CardHeader>
 								<CardTitle className={"inline-flex"}>
 									Discussions
@@ -155,7 +158,8 @@ export default async function Landing() {
 			<section className={"p-6"}>
 				<div className={"mx-auto max-w-screen-sm text-center"}>
 					<h2 className={"font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
-						Write <span className={"underline"}>meaningful</span> contributions
+						Write <span className={"bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400" +
+						" inline-block text-transparent bg-clip-text"}>meaningful</span> contributions
 					</h2>
 					<p>
 						BUPF allows you to write using Markdown and LaTeX, meaning you can easily convey
@@ -163,7 +167,7 @@ export default async function Landing() {
 						text explanations.
 					</p>
 				</div>
-				<div className={"relative hidden lg:block h-[400px] overflow-hidden"}>
+				<div className={"relative hidden lg:block h-[400px] overflow-x-hidden"}>
 					{
 						markdownComments.map((comment, i) => (
 							<FloatingComment key={i} index={i} content={comment}/>
@@ -178,7 +182,7 @@ export default async function Landing() {
 const markdownComments = [
 	"Does anyone known how to find $\\delta t$ for in this domain?",
 	"I *think* we can use $\\oint \\vec{E} \\cdot d\\vec{A} = \\frac{Q_{\\text{enc}}}{\\varepsilon_0}$ here?",
-	"Hopefully [this](https://www.bupf.co.uk/) helps!.",
+	"Hopefully [this](https://www.bupf.co.uk/) helps!",
 	"If we assume that $\\vec{E}$ is constant over the surface, so the dot product becomes a scalar product",
 	"The product $\\sum \\lambda_{i}$ for $\\underline{\\underline{A}}$ turns out to be $\\text{det}" +
 	" \\underline{\\underline{A}}$.",
@@ -208,7 +212,7 @@ const FloatingComment = (props: { content: string, index: number }) => {
 		"bottom-[80%] right-[10%] scale-50 text-foreground/50 -z-[50]",
 		"bottom-[0%] right-[65%] scale-[80%] text-foreground/80 -z-20",
 		"bottom-[70%] right-[70%] scale-90 text-foreground/90 -z-10",
-		"bottom-[43%] right-[60%] scale-100 text-foreground/100 z-0",
+		"bottom-[43%] left-[25%] scale-100 text-foreground/100 z-0",
 		"bottom-[20%] right-[10%] scale-50 text-foreground/50 -z-[50]",
 		"bottom-[10%] right-[60%] scale-50 text-foreground/50 -z-[50]",
 		"bottom-[60%] right-[70%] scale-[60%] text-foreground/60 -z-40",

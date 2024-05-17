@@ -20,5 +20,5 @@ export default async function logIn(props: { email: string; password: string }) 
         return redirect("/login?error=" + error.message);
     }
 
-    return redirect("/");
+    return redirect("/home");
 };
