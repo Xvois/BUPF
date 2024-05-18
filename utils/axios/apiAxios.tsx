@@ -10,7 +10,7 @@ import {UserModulesResponse} from "@/types/api/user/types";
 import axios, {Axios, AxiosRequestConfig, AxiosResponse} from "axios";
 
 
-type GetRouteResponseMap = {
+export type GetRouteResponseMap = {
 	'/api/courses': CoursesResponse,
 	'/api/courses/[id]': CourseResponse,
 	'/api/courses/[id]/modules': CourseModulesResponse,

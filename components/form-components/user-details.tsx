@@ -1,12 +1,11 @@
 import {useFormContext} from "react-hook-form";
-import {z} from "zod";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 
 
-const UserDetailsInputs = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {
+const UserDetailsInputs = () => {
 
-    const form = useFormContext<z.infer<typeof formSchema>>()
+    const form = useFormContext()
 
     return (
         <>
@@ -49,8 +48,7 @@ const UserDetailsInputs = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {
                         <FormControl>
                             <Input type={"email"} {...field} />
                         </FormControl>
-                        <FormDescription>Your personal email address; @bath.ac.uk emails do not work at this
-                            time.</FormDescription>
+                        <FormDescription>Your university email address.</FormDescription>
                         <FormMessage/>
                     </FormItem>
                 )}

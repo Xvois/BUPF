@@ -97,7 +97,7 @@ export default function SettingsForm({user, profile}: {
                     </CardHeader>
                     <CardContent className="space-y-8">
                         <div className="space-y-4">
-                            <UserDetailsInputs formSchema={formSchema}/>
+                            <UserDetailsInputs/>
                             <CourseDetailsInputs/>
                             <ProfilePictureUpload/>
                         </div>

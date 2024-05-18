@@ -7,6 +7,7 @@ import {SpeedInsights} from "@vercel/speed-insights/next"
 import TopBar from "@/components/TopBar";
 import {Footer} from "@/components/Footer";
 import NextTopLoader from "nextjs-toploader";
+import EmailPopup from "@/components/EmailPopup/EmailPopup";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -73,6 +74,7 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 			<main className="flex-grow flex flex-col w-full items-center ">
 				{children}
 			</main>
+			<EmailPopup/>
 			<Footer/>
 			<SpeedInsights/>
 			<Analytics/>

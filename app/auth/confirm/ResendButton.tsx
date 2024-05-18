@@ -1,6 +1,7 @@
 "use client"
 import {Button} from "@/components/ui/button";
 import {useEffect, useState} from "react";
+import {resendEmail} from "./resend";
 
 /*
     * ResendButton
@@ -10,31 +11,25 @@ import {useEffect, useState} from "react";
 */
 
 type ConfirmButtonProps = {
-    // Is a server action
-    resendEmail: (email: string, redirect: string) => Promise<void>,
     email: string,
-    domain: string
-    sentAt: string
 }
 
-export default function ResendButton({resendEmail, email, domain}: ConfirmButtonProps) {
-
-
+export default function ResendButton({email}: ConfirmButtonProps) {
     const isBrowser = typeof window !== 'undefined';
     const localStorage = isBrowser ? window.localStorage : undefined;
     const [disabled, setDisabled] = useState(() => {
-        const disableUntil = localStorage ? localStorage.getItem('disableUntil') : null;
-        return disableUntil ? new Date().getTime() < Number(disableUntil) : false;
+        const disableResendUntil = localStorage ? localStorage.getItem('disableResendUntil') : null;
+        return disableResendUntil ? new Date().getTime() < Number(disableResendUntil) : false;
     });
 
     useEffect(() => {
         if (!localStorage) return;
-        const disableUntil = localStorage.getItem('disableUntil');
-        if (disableUntil && new Date().getTime() < Number(disableUntil)) {
+        const disableResendUntil = localStorage.getItem('disableResendUntil');
+        if (disableResendUntil && new Date().getTime() < Number(disableResendUntil)) {
             const timeoutId = setTimeout(() => {
                 setDisabled(false);
-                localStorage.removeItem('disableUntil');
-            }, Number(disableUntil) - new Date().getTime());
+                localStorage.removeItem('disableResendUntil');
+            }, Number(disableResendUntil) - new Date().getTime());
             return () => clearTimeout(timeoutId);
         }
     }, []);
@@ -42,12 +37,13 @@ export default function ResendButton({resendEmail, email, domain}: ConfirmButton
     const handleClick = async () => {
         if (!localStorage) return;
         setDisabled(true);
-        const disableUntil = new Date().getTime() + 5 * 60 * 1000;
-        localStorage.setItem('disableUntil', String(disableUntil));
+        const disableResendUntil = new Date().getTime() + 5 * 60 * 1000;
+        localStorage.setItem('disableResendUntil', String(disableResendUntil));
+        const domain = window.location.hostname;
         await resendEmail(email, `https://${domain}/auth/callback`);
         const timeoutId = setTimeout(() => {
             setDisabled(false);
-            localStorage.removeItem('disableUntil');
+            localStorage.removeItem('disableResendUntil');
         }, 5 * 60 * 1000);
         return () => clearTimeout(timeoutId);
     }

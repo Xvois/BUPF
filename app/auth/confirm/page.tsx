@@ -1,9 +1,8 @@
-import {createClient} from "@/utils/supabase/client";
+'use client'
 import {Separator} from "@/components/ui/separator";
-import {headers} from "next/headers";
 import ResendButton from "@/app/auth/confirm/ResendButton";
-import AuthWatcher from "@/components/AuthWatcher";
-import {redirect} from "next/navigation";
+import {redirect, useSearchParams} from "next/navigation";
+import {useAuthWatcher} from "@/hooks/use-auth-watcher";
 
 /*
     * ConfirmPage
@@ -13,41 +12,20 @@ import {redirect} from "next/navigation";
     * The user can only resend the email every 5 minutes.
 */
 
-type ExpectedParams = {
-    email?: string,
-    sent_at?: string
 
-}
+export default function ConfirmPage() {
+    const searchParams = useSearchParams();
+    const email = searchParams.get('email');
+    const sentAt = searchParams.get('sent_at');
 
-export default function ConfirmPage({params, searchParams}: { params: {}, searchParams: ExpectedParams }) {
-    const headersList = headers();
-    const domain = headersList.get("host") || ""
-    const email = searchParams.email;
-    const sentAt = searchParams.sent_at;
+    useAuthWatcher({
+        onSignedIn: () => {
+            redirect("/home");
+        }
+    })
 
     if (!email || !sentAt) {
         return <div>Invalid request</div>
-    }
-
-    const resendEmail = async (email: string, redirect: string) => {
-        "use server"
-        const supabase = createClient();
-        const {error} = await supabase.auth.resend({
-            type: 'signup',
-            email: email,
-            options: {
-                emailRedirectTo: redirect
-            }
-        });
-
-        if (error) {
-            throw error;
-        }
-    }
-
-    const onSignedIn = async () => {
-        "use server"
-        return redirect("/")
     }
 
 
@@ -69,13 +47,11 @@ export default function ConfirmPage({params, searchParams}: { params: {}, search
                 </p>
             </div>
             <div className={"inline-flex flex-col gap-2"}>
-                <ResendButton resendEmail={resendEmail} email={email} domain={domain} sentAt={sentAt} />
+                <ResendButton email={email}/>
                 <p className={"text-sm text-muted-foreground"}>
                     You can only resend the email every 5 minutes.
                 </p>
             </div>
-            {/* AuthWatcher will watch for the user to sign in and redirect them to the home page */}
-            <AuthWatcher onSignedIn={onSignedIn} />
         </div>
     )
 }

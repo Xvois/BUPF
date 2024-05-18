@@ -1,13 +1,12 @@
 'use client'
 
 import {useFormContext} from "react-hook-form";
-import {z} from "zod";
 import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 
 
-const PasswordConfirmation = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {
-    const form = useFormContext<z.infer<typeof formSchema>>();
+const PasswordConfirmation = () => {
+    const form = useFormContext();
     return (<>
         <FormField
             control={form.control}

@@ -60,9 +60,9 @@ function SignupContents(props: { signUp: (fd: z.infer<typeof formSchema>) => Pro
         <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)} className={"flex flex-col items-end space-y-8"}>
                 <MultiStageForm pageSchema={pageSchema}>
-                    <UserDetailsInputs formSchema={formSchema}/>
+                    <UserDetailsInputs/>
                     <CourseDetailsInputs/>
-                    <PasswordConfirmation formSchema={formSchema}/>
+                    <PasswordConfirmation/>
                 </MultiStageForm>
             </form>
             <ServerError className={"w-full"}>
