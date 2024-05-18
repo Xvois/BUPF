@@ -2,7 +2,6 @@ import {Separator} from "@/components/ui/separator";
 import {ExternalLink} from "lucide-react";
 
 export default function Page() {
-
     return (
         <div className="space-y-4 w-full">
             <header className={"p-6"}>

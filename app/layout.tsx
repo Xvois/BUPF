@@ -6,6 +6,7 @@ import {Analytics} from "@vercel/analytics/react"
 import {SpeedInsights} from "@vercel/speed-insights/next"
 import TopBar from "@/components/TopBar";
 import {Footer} from "@/components/Footer";
+import NextTopLoader from "nextjs-toploader";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -54,6 +55,20 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 		<body className="flex flex-col bg-background text-foreground items-center min-h-screen">
 		<script dangerouslySetInnerHTML={{__html: darkModeListener}}/>
 		<StrictMode>
+			<NextTopLoader
+				color="hsl(var(--foreground))"
+				initialPosition={0.08}
+				crawlSpeed={200}
+				height={3}
+				crawl={true}
+				easing="ease"
+				speed={200}
+				shadow="0 0 10px #2299DD,0 0 5px #2299DD"
+				template='<div class="bar" role="bar"><div class="peg"></div></div>
+  <div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
+				zIndex={1600}
+				showAtBottom={false}
+			/>
 			<TopBar/>
 			<main className="flex-grow flex flex-col w-full items-center ">
 				{children}

@@ -6,13 +6,13 @@ import {cn} from "@/utils/cn";
 import {ServerError} from "@/components/ServerError";
 import {HTMLAttributes} from "react";
 
-export type Comment = Tables<"comments"> & {
+export type CommentType = Tables<"comments"> & {
     profiles: Tables<"profiles"> & {
         courses: Tables<"courses"> | null
     } | null
-} & { children: Comment[] }
+} & { children: CommentType[] }
 
-type CommentWOChildren = Omit<Comment, "children">;
+type CommentWOChildren = Omit<CommentType, "children">;
 
 type CommentSectionProps = {
     post_id: string,
@@ -21,8 +21,8 @@ type CommentSectionProps = {
     owner: string | null
 }
 
-function organizeComments(comments: CommentWOChildren[]): Comment[] {
-    const commentsMap: { [key: number]: Comment } = {};
+function organizeComments(comments: CommentWOChildren[]): CommentType[] {
+    const commentsMap: { [key: number]: CommentType } = {};
 
     comments.forEach(comment => {
         commentsMap[comment.id] = {...comment, children: []};

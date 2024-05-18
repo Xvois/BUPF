@@ -79,7 +79,7 @@ export default function CoursesShowcase() {
 					<Button type={"submit"} className={"w-full"}>Try it out</Button>
 				</form>
 			</Form>
-			<ul className={"flex flex-col w-full h-full space-y-2 overflow-y-scroll"}>
+			<ul className={"flex flex-col w-full h-full space-y-2"}>
 				{
 					modules && yearData && yearData.required.map((module: Tables<"modules">) => (
 						<li className={"flex w-full"} key={module.id}>
