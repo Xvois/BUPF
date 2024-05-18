@@ -40,8 +40,8 @@ export default function Page() {
 							better than before. No more poorly formatted Excel sheets or Moodle forums.
 						</p>
 					</div>
-					<div className={"grid grid-cols-2 gap-4"}>
-						<Card className={"col-span-2 border bg-gradient-to-br from-background to-green-500/10"}>
+					<div className={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
+						<Card className={"md:col-span-2 border bg-gradient-to-br from-background to-green-500/10"}>
 							<CardHeader>
 								<CardTitle className={"inline-flex gap-2"}>
 									BUPF <CheckCircle className={"text-green-500"}/>
@@ -147,15 +147,15 @@ export default function Page() {
 const FauxModules = [
 	{
 		title: "PH12002: Foundations of Physics 1",
-		tags: ["Thermodynamics", "States of Matter"]
+		tags: ["Thermodynamics", "QM"]
 	},
 	{
 		title: "PH12003: Mathematics for Physics 1",
-		tags: ["Ordinary Differential Equations", "Partial differentiation"]
+		tags: ["ODEs", "Differentiation"]
 	},
 	{
 		title: "PH12005: Dynamics and Relativity",
-		tags: ["Newtonian Mechanics", "Special Relativity"]
+		tags: ["Mechanics", "Relativity"]
 	}
 ]
 

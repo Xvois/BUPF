@@ -481,7 +481,7 @@ export default function Page() {
 
 const SectionWrapper = (props: { children: React.ReactNode[] }) => {
 	return (
-		<section className={"p-6 space-y-8 h-full w-[786px]"}>
+		<section className={"p-6 space-y-8 h-full max-w-screen-sm"}>
 			{props.children}
 		</section>
 	)
