@@ -9,7 +9,7 @@ import RichTextArea from "@/components/RichTextArea";
 import {CheckIcon, ExternalLink} from "lucide-react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
-import {cn} from "@/lib/utils";
+import {cn} from "@/utils/cn";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
 
 

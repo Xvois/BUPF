@@ -1,7 +1,12 @@
 import LinkBox from "@/components/LinkBox";
 import {createClient} from "@/utils/supabase/server";
-import {getUserModules} from "@/utils/getUserModules";
 import {redirect} from "next/navigation";
+import {cookies} from "next/headers";
+import apiAxios from "@/utils/axios/apiAxios";
+
+const defaultUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
 
 export async function OptionalModules() {
     const supabase = createClient();
@@ -9,12 +14,14 @@ export async function OptionalModules() {
     if (!user) {
         return redirect("/login");
     }
-    const {data: profile} = await supabase.from("profiles").select("*, courses (*)").eq("id", user.id).single();
+	const {data: profile} = await apiAxios.get("/api/profiles/[id]", {id: user.id}).then(res => res.data);
+
     if (!profile) {
         return redirect("/login");
     }
 
-    const {data: modules} = await getUserModules(supabase, profile)
+	const {data: modules} = await apiAxios.get("/api/user/modules", {}, {headers: {Cookie: cookies().toString()}}).then(res => res.data);
+
     if (modules === null) {
         return redirect("/login");
     }

@@ -1,18 +1,16 @@
 import * as React from "react"
 import {createClient} from "@/utils/supabase/server";
-import {getUserModules} from "@/utils/getUserModules";
 import NavMenu from "@/components/NavMenu";
 import UserDropdown from "@/components/UserDropdown";
-
+import {cookies} from "next/headers";
+import apiAxios from "@/utils/axios/apiAxios";
 
 export default async function TopBar() {
 
     const supabase = createClient()
     const {data: {user}} = await supabase.auth.getUser();
 
-    const {data: profile} = user ? await supabase.from('profiles').select('*, courses (*)').eq('id', user.id).single() : {data: null}
-    const {data: modules} = profile ? await getUserModules(supabase, profile) : {data: null}
-
+	const {data: modules} = await apiAxios.get("/api/user/modules", {}, {headers: {Cookie: cookies().toString()}}).then(res => res.data);
     const {data: topics} = await supabase.from('topics').select('*').limit(4)
 
 

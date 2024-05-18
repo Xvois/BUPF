@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link, {LinkProps} from "next/link";
 import * as React from "react";
-import {cn} from "@/lib/utils";
+import {cn} from "@/utils/cn";
 import {Tables} from "@/types/supabase";
 import {ArrowRight, BookCopy, Component, Menu} from "lucide-react";
 import {useMediaQuery} from "@/hooks/use-media-query";
@@ -40,7 +40,7 @@ export default function NavMenu({modules, topics}: {
                         <AccordionItem value="item-1">
                             <div className="py-4 font-medium flex">
                                 <Link onClick={() => setIsSheetOpen(false)} className="w-full h-full"
-                                      href="/">Home</Link>
+                                      href="home/">Home</Link>
                             </div>
                         </AccordionItem>
                         <AccordionItem value="item-2">
@@ -160,7 +160,7 @@ function NavMenuContent({modules, topics}: {
         <NavigationMenu>
             <NavigationMenuList className={"flex-wrap"}>
                 <NavigationMenuItem>
-                    <Link tabIndex={0} href="/" legacyBehavior passHref>
+                    <Link tabIndex={0} href="/home" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Home
                         </NavigationMenuLink>
@@ -193,7 +193,7 @@ function NavMenuContent({modules, topics}: {
                                 {modules.slice(0, 4).map((module) => (
                                     <ListItem
                                         key={module.id}
-                                        title={module.id}
+										title={module.title}
                                         href={`/modules/${module.id}`}
                                     >
                                         {module.description}

@@ -4,16 +4,23 @@ import {Button} from "@/components/ui/button";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
 import logIn from "@/app/login/actions";
-import {FormEvent, useState} from "react";
+import {FormEvent, Suspense, useState} from "react";
 
 /*
     * LoginForm
     * A form for logging in to the application
     * @return: A form for logging in to the application
 */
-
-
 export default function LoginForm() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <LoginContents/>
+        </Suspense>
+    )
+}
+
+
+function LoginContents() {
     const searchParams = useSearchParams();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -48,7 +55,7 @@ export default function LoginForm() {
                        name={"password"}
                        type={"password"}></input>
             </div>
-            <Button isLoading={isLoading} className={"w-32"} type={"submit"}>Login</Button>
+			<Button isLoading={isLoading} type={"submit"} className={"w-full"}>Login</Button>
             <ServerError className={"w-full"}>
                 {searchParams.get("error")}
             </ServerError>

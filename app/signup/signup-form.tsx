@@ -11,10 +11,18 @@ import {useSearchParams} from "next/navigation";
 import UserDetailsInputs from "@/components/form-components/user-details";
 import CourseDetailsInputs from "@/components/form-components/course-details";
 import PasswordConfirmation from "@/components/form-components/password-confirmation";
-import {ReactNode, useState} from "react";
+import {ReactNode, Suspense, useState} from "react";
 
 
 export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSchema>) => Promise<void> }) {
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<SignupContents {...props}/>
+		</Suspense>
+	)
+}
+
+function SignupContents(props: { signUp: (fd: z.infer<typeof formSchema>) => Promise<void> }) {
 
     const searchParams = useSearchParams();
 
@@ -53,7 +61,7 @@ export default function SignupForm(props: { signUp: (fd: z.infer<typeof formSche
             <form onSubmit={form.handleSubmit(onSubmit)} className={"flex flex-col items-end space-y-8"}>
                 <MultiStageForm pageSchema={pageSchema}>
                     <UserDetailsInputs formSchema={formSchema}/>
-                    <CourseDetailsInputs formSchema={formSchema}/>
+                    <CourseDetailsInputs/>
                     <PasswordConfirmation formSchema={formSchema}/>
                 </MultiStageForm>
             </form>

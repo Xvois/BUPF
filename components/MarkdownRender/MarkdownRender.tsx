@@ -3,7 +3,7 @@ import 'katex/dist/katex.min.css'
 import "./markdown.css"
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
-import {cn} from "@/lib/utils";
+import {cn} from "@/utils/cn";
 
 interface MarkdownRenderProps {
     markdown: string;

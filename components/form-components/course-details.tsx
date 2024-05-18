@@ -1,12 +1,11 @@
 import {useFormContext} from "react-hook-form";
-import {z} from "zod";
 import useSWR from "swr";
 import {sbFetcher} from "@/utils/fetcher";
 import {Tables} from "@/types/supabase";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
-import {cn} from "@/lib/utils";
+import {cn} from "@/utils/cn";
 import {ChevronsUpDown} from "lucide-react";
 import {
     Command,
@@ -19,8 +18,8 @@ import {
 import {Input} from "@/components/ui/input";
 import {useState} from "react";
 
-const CourseDetailsInputs = ({formSchema}: { formSchema: z.ZodEffects<any> }) => {
-    const form = useFormContext<z.infer<typeof formSchema>>()
+const CourseDetailsInputs = () => {
+    const form = useFormContext()
     const {data: courses, error, isLoading} = useSWR('courses', sbFetcher<Tables<"courses">>);
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
     return (
@@ -37,6 +36,10 @@ const CourseDetailsInputs = ({formSchema}: { formSchema: z.ZodEffects<any> }) =>
                                     <Button
                                         variant="outline"
                                         role="combobox"
+                                        aria-haspopup="listbox"
+                                        aria-expanded={popoverOpen}
+                                        aria-controls="listbox"
+                                        aria-label={"Select course"}
                                         className={cn(
                                             "w-64 sm:w-96 md:w-full justify-between overflow-x-clip",
                                             !field.value && "text-muted-foreground"

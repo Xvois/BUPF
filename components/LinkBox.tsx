@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {cn} from "@/lib/utils";
+import {cn} from "@/utils/cn";
 import React from "react";
 import {ArrowRight} from "lucide-react";
 import {Skeleton} from "@/components/ui/skeleton";
@@ -14,7 +14,7 @@ export default function LinkBox({title, description, href, className, ...props}:
     return (
         <Link
             className={
-                cn(cn("group flex flex-col border rounded-md p-4 transition-all focus:outline-foreground hover:bg-accent", className), `${props.disabled && "cursor-not-allowed opacity-50 pointer-events-none "}`)
+                cn(cn("group flex flex-col border rounded-md p-4 transition-all focus:outline-foreground hover:bg-gradient-to-br hover:from-muted/0 hover:to-muted/50", className), `${props.disabled && "cursor-not-allowed opacity-50 pointer-events-none "}`)
             }
             href={href}
             aria-disabled={props.disabled}

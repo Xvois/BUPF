@@ -2,7 +2,7 @@ import React, {forwardRef} from 'react';
 import {Textarea, TextareaProps} from "@/components/ui/textarea";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
-import {cn} from "@/lib/utils";
+import {cn} from "@/utils/cn";
 
 interface RichTextAreaProps extends TextareaProps {
     id: string;

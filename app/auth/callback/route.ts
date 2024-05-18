@@ -1,6 +1,6 @@
 import {createClient} from "@/utils/supabase/server";
 import {NextRequest, NextResponse} from "next/server";
-import {EmailOtpType} from "@supabase/gotrue-js";
+import {EmailOtpType} from "@supabase/auth-js";
 
 /*
 The purpose of this route is to verify the OTP token and redirect the user to the next page.

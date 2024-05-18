@@ -4,7 +4,7 @@ import {DeleteButton, MarkButton, ReplyButton, ReportButton,} from "@/components
 import {CheckCircle} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip";
 import {Comment} from "@/components/Comments/CommentSection";
-import {User} from "@supabase/gotrue-js";
+import {User} from "@supabase/auth-js";
 
 export default function Comment({
   comment,

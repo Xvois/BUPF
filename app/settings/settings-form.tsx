@@ -5,7 +5,6 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import {DeleteAccountButton} from "@/app/settings/ActionButtons";
 import {Button} from "@/components/ui/button";
 import {useForm} from "react-hook-form";
-import {User} from "@supabase/gotrue-js";
 import {Tables} from "@/types/supabase";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {formSchema} from "@/app/settings/formSchema";
@@ -17,6 +16,7 @@ import {ServerError} from "@/components/ServerError";
 import {redirect, useSearchParams} from "next/navigation";
 import ProfilePictureUpload from "@/components/form-components/picture-upload";
 import {createClient} from "@/utils/supabase/client";
+import {User} from "@supabase/auth-js";
 
 
 export default function SettingsForm({user, profile}: {
@@ -98,7 +98,7 @@ export default function SettingsForm({user, profile}: {
                     <CardContent className="space-y-8">
                         <div className="space-y-4">
                             <UserDetailsInputs formSchema={formSchema}/>
-                            <CourseDetailsInputs formSchema={formSchema}/>
+                            <CourseDetailsInputs/>
                             <ProfilePictureUpload/>
                         </div>
                     </CardContent>
