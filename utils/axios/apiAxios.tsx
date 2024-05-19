@@ -70,6 +70,12 @@ class APIAxios {
 		}
 
 		let defaultURL: string;
+
+		console.log({
+			VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL,
+			VERCEL_URL: process.env.VERCEL_URL
+		});
+
 		if (process.env.VERCEL_BRANCH_URL) {
 			defaultURL = `https://${process.env.VERCEL_BRANCH_URL}`;
 		} else if (process.env.VERCEL_URL) {
