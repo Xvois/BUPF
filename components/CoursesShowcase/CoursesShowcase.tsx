@@ -32,38 +32,31 @@ export default function CoursesShowcase() {
 	const [targetYear, setTargetYear] = useState<number>(1);
 
 	const onSubmit = async (fd: any) => {
-		console.log("onSubmit called with:", fd); // Log the input
-
 		try {
 			const response = await apiAxios.get(`/api/courses/[id]/modules`, {id: fd.course});
-			console.log("Response from apiAxios.get:", response); // Log the response
 
 			const {data, error} = response.data;
 
 			// Calculate the current year of the user based on their entry date
 			const year = Math.ceil((Date.now() - new Date(fd.yearOfStudy, 10, 1).getTime()) / YEAR_IN_MS);
-			console.log("Calculated year:", year); // Log the calculated year
 
 			setTargetYear(year);
 
 			if (error) {
-				console.error("Error from apiAxios.get:", error); // Log the error
 				setError(error.message);
 				return;
 			}
 			if (data) {
-				console.log("Data from apiAxios.get:", data); // Log the data
 				setModules(data);
 			}
 		} catch (err) {
-			console.error("Exception thrown in onSubmit:", err); // Log any exceptions
+			setError((err as Error).message);
 		}
 	}
 
 	// Prefetch the modules for the default course
 	const {
 		data: initData,
-		isLoading: swrLoading
 	} = useSWR<PostgrestSingleResponse<ResolvedCourseModules>>(`/api/courses/${form.formState.defaultValues?.course}/modules`, fetcher);
 	useEffect(() => {
 		if (!initData) return;
