@@ -4,7 +4,6 @@ import {redirect} from "next/navigation";
 import {z} from "zod";
 import {formSchema} from "@/app/signup/formSchema";
 import {headers} from "next/headers";
-import {Separator} from "@/components/ui/separator";
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 export default function Page() {
@@ -53,7 +52,6 @@ export default function Page() {
                 <CardTitle>BUPF</CardTitle>
                 <CardDescription>The Bath University Physics Forum</CardDescription>
             </CardHeader>
-            <Separator/>
             <SignupForm {...{signUp}} />
         </Card>
     );

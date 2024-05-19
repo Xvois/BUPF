@@ -51,7 +51,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         {props.children}
                     </div>
                     <LoadingSpinner
-                        className={cn("absolute inset-0 m-auto", variant === "outline" || variant === "secondary" ? "fill-foreground" : "fill-background")}/>
+                        className={cn("absolute inset-0 m-auto")}/>
                 </div>
             props.disabled = true;
             props["aria-disabled"] = true;

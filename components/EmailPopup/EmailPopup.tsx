@@ -20,32 +20,42 @@ import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
 import {SendHorizonal} from "lucide-react";
 import {useAuthWatcher} from "@/hooks/use-auth-watcher";
+import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/ui/form";
+import {useEffect} from "react";
 
 export default function EmailPopup() {
 
 	const searchParams = useSearchParams();
 	const isAwaitingEmail = window.localStorage.getItem('awaitingEmail');
 
-	// yikes
 	const {data: postgrestResponse} = useSWR("/api/auth", fetcher);
 	const userData = postgrestResponse?.data;
 	const user = userData?.user;
 	const email = user?.email;
-	const isValid = email?.endsWith("@bath.ac.uk");
+	const isInvalid = email ? !email.endsWith("@bath.ac.uk") : false;
 
 	// Form
-	const emailSchema = z.string().email().refine(email => email.endsWith('@bath.ac.uk'), {
-		message: 'Email must end with @bath.ac.uk',
+	const emailSchema = z.object({
+		email: z.string().email().refine(email => email.endsWith('@bath.ac.uk'), {
+			message: 'Email must end with @bath.ac.uk',
+		})
 	});
 	const form = useForm({
 		resolver: zodResolver(emailSchema),
 	});
 	const onSubmit = async (data: FieldValues) => {
+		console.log('submitting')
 		if (typeof data.email === 'string') {
 			window.localStorage.setItem("awaitingEmail", "true")
 			await handleEmailChange(data.email);
 		}
 	};
+
+	useEffect(() => {
+		if (searchParams.has("email_error")) {
+			window.localStorage.removeItem("awaitingEmail");
+		}
+	}, [searchParams])
 
 	// Await change
 	useAuthWatcher({
@@ -61,7 +71,7 @@ export default function EmailPopup() {
 	})
 
 	return (
-		<AlertDialog open={!isValid}>
+		<AlertDialog open={isInvalid}>
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
@@ -76,18 +86,34 @@ export default function EmailPopup() {
 				{
 					isAwaitingEmail ? (
 							<div>
-								We have sent an email with a link to confirm your email. Please check your inbox
+								We have sent an email with a link to confirm your email to both your new and old
+								address. Please check your inbox
 								and spam folder.
 							</div>
 						)
 						:
 						(
-							<form onSubmit={form.handleSubmit(onSubmit)} className={"flex space-x-4"}>
-								<Input type="email" {...form.register('email')} placeholder="Enter your Bath email"/>
-								<Button type="submit">
-									<SendHorizonal className={'h-4 w-4'}/>
-								</Button>
-							</form>
+							<Form {...form}>
+								<form id="emailForm" onSubmit={form.handleSubmit(onSubmit)}
+									  className={"flex space-x-4"}>
+									<FormField
+										control={form.control}
+										name="email"
+										render={({field}) => (
+											<FormItem className={"w-full"}>
+												<FormControl>
+													<Input type={"email"} {...field} />
+												</FormControl>
+												<FormMessage/>
+											</FormItem>
+										)}
+									/>
+									<Button form="emailForm" type="submit">
+										<SendHorizonal className={'h-4 w-4'}/>
+									</Button>
+								</form>
+							</Form>
+
 						)
 				}
 

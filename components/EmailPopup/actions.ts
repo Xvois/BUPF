@@ -1,13 +1,13 @@
 'use server'
 
 
-import {createAdminClient} from "@/utils/supabase/admin";
 import {redirect} from "next/navigation";
+import {createClient} from "@/utils/supabase/server";
 
 export const handleEmailChange = async (newEmail: string) => {
-	const admin = createAdminClient();
+	const admin = createClient();
 	const {error} = await admin.auth.updateUser({email: newEmail});
 	if (error) {
-		return redirect("/settings?email_error=" + error.message);
+		return redirect("?email_error=" + error.message);
 	}
 }
