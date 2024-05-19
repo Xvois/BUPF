@@ -8,6 +8,7 @@ import TopBar from "@/components/TopBar";
 import {Footer} from "@/components/Footer";
 import NextTopLoader from "nextjs-toploader";
 import EmailPopup from "@/components/EmailPopup/EmailPopup";
+import ThemeListener from "@/components/ThemeListener";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -28,25 +29,6 @@ export const metadata = {
 	},
 }
 
-const darkModeListener = `
-window.addEventListener('DOMContentLoaded', (event) => {
-	const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-	const applyDarkMode = (e) => {
-		if (e.matches) {
-			document.documentElement.classList.add('dark');
-		} else {
-			document.documentElement.classList.remove('dark');
-		}
-	};
-
-	// Apply dark mode if user preference is dark on page load
-	applyDarkMode(darkModeMediaQuery);
-
-	// Listen for changes in user's preference
-	darkModeMediaQuery.addEventListener('change', applyDarkMode);
-});
-`
-
 const inter = Inter({subsets: ["latin"]});
 
 
@@ -54,8 +36,8 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 	return (
 		<html lang="en" className={cn(inter.className, "w-full mx-auto",)}>
 		<body className="flex flex-col bg-background text-foreground items-center min-h-screen">
-		<script dangerouslySetInnerHTML={{__html: darkModeListener}}/>
 		<StrictMode>
+			{/* Loading UI */}
 			<NextTopLoader
 				color="hsl(var(--foreground))"
 				initialPosition={0.08}
@@ -71,14 +53,27 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 				zIndex={1600}
 				showAtBottom={false}
 			/>
+
+			{/* Top bar */}
 			<TopBar/>
+
+			{/* Main content */}
 			<main className="flex-grow flex flex-col w-full items-center ">
 				{children}
 			</main>
-			<EmailPopup/>
+
+			{/* Footer */}
 			<Footer/>
+
+			{/* Vercel Analytics */}
 			<SpeedInsights/>
 			<Analytics/>
+
+			{/* Email popup */}
+			<EmailPopup/>
+
+			{/* Theme listener */}
+			<ThemeListener/>
 		</StrictMode>
 		</body>
 		</html>
