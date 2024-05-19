@@ -8,8 +8,6 @@ import {z} from "zod";
 
 export const handleSubmit = async (fd: z.infer<typeof formSchema>) => {
 
-    console.log("Hello!!")
-
     const supabase = createClient();
     const {data: {user}} = await supabase.auth.getUser();
 

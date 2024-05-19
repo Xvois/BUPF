@@ -40,7 +40,7 @@ export default function NavMenu({modules, topics}: {
                         <AccordionItem value="item-1">
                             <div className="py-4 font-medium flex">
                                 <Link onClick={() => setIsSheetOpen(false)} className="w-full h-full"
-                                      href="home/">Home</Link>
+                                      href="/home">Home</Link>
                             </div>
                         </AccordionItem>
                         <AccordionItem value="item-2">

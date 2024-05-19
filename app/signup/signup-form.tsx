@@ -36,7 +36,7 @@ function SignupContents(props: { signUp: (fd: z.infer<typeof formSchema>) => Pro
             password: "",
             confirmPassword: ""
         },
-        mode: "onBlur"
+        mode: "onChange"
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -60,9 +60,9 @@ function SignupContents(props: { signUp: (fd: z.infer<typeof formSchema>) => Pro
         <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)} className={"flex flex-col items-end space-y-8"}>
                 <MultiStageForm pageSchema={pageSchema}>
-                    <UserDetailsInputs formSchema={formSchema}/>
+                    <UserDetailsInputs/>
                     <CourseDetailsInputs/>
-                    <PasswordConfirmation formSchema={formSchema}/>
+                    <PasswordConfirmation/>
                 </MultiStageForm>
             </form>
             <ServerError className={"w-full"}>
@@ -90,7 +90,7 @@ const MultiStageForm = ({children, pageSchema}: { children: ReactNode[], pageSch
         throw new Error("MultiStageForm must be used within a Form component.")
     }
 
-    const {errors, isDirty, isValid, isSubmitting} = form.formState;
+    const {errors, isValid, isSubmitting} = form.formState;
     const pagesWithErrors = pageSchema
         ?.map((page, pageIndex) => page.some(field => field in errors) ? pageIndex : -1)
         .filter(index => index !== -1);

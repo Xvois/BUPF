@@ -12,6 +12,7 @@ import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import LinkBox from "@/components/LinkBox";
 import {ResolvedCourseModules} from "@/types/api/courses/types";
+import {ServerError} from "@/components/ServerError";
 
 type LooseObject = {
 	[key: string]: any
@@ -27,45 +28,40 @@ export default function CoursesShowcase() {
 		}
 	});
 	const [modules, setModules] = useState<ResolvedCourseModules | null>(null);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 	const [targetYear, setTargetYear] = useState<number>(1);
 
 	const onSubmit = async (fd: any) => {
-		setIsLoading(true);
+		try {
+			const response = await apiAxios.get(`/api/courses/[id]/modules`, {id: fd.course});
 
-		const {
-			data,
-			error
-		} = await apiAxios.get(`/api/courses/[id]/modules`, {id: fd.course}).then(res => res.data);
+			const {data, error} = response.data;
 
-		// Calculate the current year of the user based on their entry date
-		const year = Math.ceil((Date.now() - new Date(fd.yearOfStudy, 10, 1).getTime()) / YEAR_IN_MS);
-		setTargetYear(year);
+			// Calculate the current year of the user based on their entry date
+			const year = Math.ceil((Date.now() - new Date(fd.yearOfStudy, 10, 1).getTime()) / YEAR_IN_MS);
 
-		setIsLoading(false);
+			setTargetYear(year);
 
-		if (error) {
-			setError(error.message);
-			return;
-		}
-		if (data) {
-			setModules(data);
+			if (error) {
+				setError(error.message);
+				return;
+			}
+			if (data) {
+				setModules(data);
+			}
+		} catch (err) {
+			setError((err as Error).message);
 		}
 	}
 
 	// Prefetch the modules for the default course
 	const {
 		data: initData,
-		isLoading: swrLoading
 	} = useSWR<PostgrestSingleResponse<ResolvedCourseModules>>(`/api/courses/${form.formState.defaultValues?.course}/modules`, fetcher);
 	useEffect(() => {
 		if (!initData) return;
 		setModules(initData.data);
 	}, [initData]);
-	useEffect(() => {
-		setIsLoading(swrLoading);
-	}, [swrLoading]);
 
 	// Use a type assertion to tell TypeScript that `modules` can be indexed with a string
 	let yearData = modules && (modules as LooseObject)[`year_${targetYear}`];
@@ -79,7 +75,7 @@ export default function CoursesShowcase() {
 					<Button type={"submit"} className={"w-full"}>Try it out</Button>
 				</form>
 			</Form>
-			<ul className={"flex flex-col w-full h-full space-y-2 overflow-y-scroll"}>
+			<ul className={"flex flex-col w-full h-full space-y-2"}>
 				{
 					modules && yearData && yearData.required.map((module: Tables<"modules">) => (
 						<li className={"flex w-full"} key={module.id}>
@@ -107,6 +103,11 @@ export default function CoursesShowcase() {
 
 					))
 				}
+				<li>
+					<ServerError>
+						{error}
+					</ServerError>
+				</li>
 			</ul>
 		</div>
 	)

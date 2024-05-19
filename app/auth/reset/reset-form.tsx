@@ -39,7 +39,7 @@ export default function ResetForm() {
             </CardHeader>
             <Form {...form}>
                 <form className={"p-6"} onSubmit={form.handleSubmit(onSubmit)}>
-                    <PasswordConfirmation formSchema={formSchema}/>
+                    <PasswordConfirmation/>
                 </form>
             </Form>
             <CardFooter>
