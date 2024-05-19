@@ -27,18 +27,19 @@ type Params = {
 	[key: string]: string | undefined;
 }
 
-let defaultUrl = "http://localhost:3000";
-if (process.env.VERCEL_BRANCH_URL) {
-	defaultUrl = `https://${process.env.VERCEL_BRANCH_URL}`;
-} else if (process.env.VERCEL_URL) {
-	defaultUrl = `https://${process.env.VERCEL_URL}`;
-}
-
 class APIAxios {
 	private axiosInstance: typeof Axios.prototype;
+	private readonly defaultURL: string;
 
 	constructor(config?: AxiosRequestConfig) {
 		this.axiosInstance = axios.create(config);
+		if (process.env.VERCEL_BRANCH_URL) {
+			this.defaultURL = `https://${process.env.VERCEL_BRANCH_URL}`;
+		} else if (process.env.VERCEL_URL) {
+			this.defaultURL = `https://${process.env.VERCEL_URL}`;
+		} else {
+			this.defaultURL = 'http://localhost:3000';
+		}
 	}
 
 	/**
@@ -77,7 +78,7 @@ class APIAxios {
 		}
 
 		// Replace all instances of something enclosed in square brackets with its corresponding string in the ids parameter
-		let url = `${defaultUrl}${route}`;
+		let url = `${this.defaultURL}${route}`;
 		for (const key in params) {
 			if (params[key] !== undefined && key !== 'searchParams') {
 				url = url.replace(`[${key}]`, params[key] as string);
