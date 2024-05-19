@@ -12,6 +12,7 @@ import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import LinkBox from "@/components/LinkBox";
 import {ResolvedCourseModules} from "@/types/api/courses/types";
+import {ServerError} from "@/components/ServerError";
 
 type LooseObject = {
 	[key: string]: any
@@ -107,6 +108,11 @@ export default function CoursesShowcase() {
 
 					))
 				}
+				<li>
+					<ServerError>
+						{error}
+					</ServerError>
+				</li>
 			</ul>
 		</div>
 	)
