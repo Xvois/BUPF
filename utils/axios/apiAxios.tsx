@@ -10,7 +10,7 @@ import {UserModulesResponse} from "@/types/api/user/types";
 import axios, {Axios, AxiosRequestConfig, AxiosResponse} from "axios";
 
 
-export type GetRouteResponseMap = {
+type GetRouteResponseMap = {
 	'/api/courses': CoursesResponse,
 	'/api/courses/[id]': CourseResponse,
 	'/api/courses/[id]/modules': CourseModulesResponse,
@@ -27,9 +27,12 @@ type Params = {
 	[key: string]: string | undefined;
 }
 
-const defaultUrl = process.env.VERCEL_URL
-	? `https://${process.env.VERCEL_URL}`
-	: "http://localhost:3000";
+let defaultUrl = "http://localhost:3000";
+if (process.env.VERCEL_BRANCH_URL) {
+	defaultUrl = `https://${process.env.VERCEL_BRANCH_URL}`;
+} else if (process.env.VERCEL_URL) {
+	defaultUrl = `https://${process.env.VERCEL_URL}`;
+}
 
 class APIAxios {
 	private axiosInstance: typeof Axios.prototype;

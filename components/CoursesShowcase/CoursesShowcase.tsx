@@ -28,30 +28,35 @@ export default function CoursesShowcase() {
 		}
 	});
 	const [modules, setModules] = useState<ResolvedCourseModules | null>(null);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 	const [targetYear, setTargetYear] = useState<number>(1);
 
 	const onSubmit = async (fd: any) => {
-		setIsLoading(true);
+		console.log("onSubmit called with:", fd); // Log the input
 
-		const {
-			data,
-			error
-		} = await apiAxios.get(`/api/courses/[id]/modules`, {id: fd.course}).then(res => res.data);
+		try {
+			const response = await apiAxios.get(`/api/courses/[id]/modules`, {id: fd.course});
+			console.log("Response from apiAxios.get:", response); // Log the response
 
-		// Calculate the current year of the user based on their entry date
-		const year = Math.ceil((Date.now() - new Date(fd.yearOfStudy, 10, 1).getTime()) / YEAR_IN_MS);
-		setTargetYear(year);
+			const {data, error} = response.data;
 
-		setIsLoading(false);
+			// Calculate the current year of the user based on their entry date
+			const year = Math.ceil((Date.now() - new Date(fd.yearOfStudy, 10, 1).getTime()) / YEAR_IN_MS);
+			console.log("Calculated year:", year); // Log the calculated year
 
-		if (error) {
-			setError(error.message);
-			return;
-		}
-		if (data) {
-			setModules(data);
+			setTargetYear(year);
+
+			if (error) {
+				console.error("Error from apiAxios.get:", error); // Log the error
+				setError(error.message);
+				return;
+			}
+			if (data) {
+				console.log("Data from apiAxios.get:", data); // Log the data
+				setModules(data);
+			}
+		} catch (err) {
+			console.error("Exception thrown in onSubmit:", err); // Log any exceptions
 		}
 	}
 
@@ -64,9 +69,6 @@ export default function CoursesShowcase() {
 		if (!initData) return;
 		setModules(initData.data);
 	}, [initData]);
-	useEffect(() => {
-		setIsLoading(swrLoading);
-	}, [swrLoading]);
 
 	// Use a type assertion to tell TypeScript that `modules` can be indexed with a string
 	let yearData = modules && (modules as LooseObject)[`year_${targetYear}`];
