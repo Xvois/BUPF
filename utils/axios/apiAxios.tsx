@@ -29,17 +29,9 @@ type Params = {
 
 class APIAxios {
 	private axiosInstance: typeof Axios.prototype;
-	private readonly defaultURL: string;
-
 	constructor(config?: AxiosRequestConfig) {
 		this.axiosInstance = axios.create(config);
-		if (process.env.VERCEL_BRANCH_URL) {
-			this.defaultURL = `https://${process.env.VERCEL_BRANCH_URL}`;
-		} else if (process.env.VERCEL_URL) {
-			this.defaultURL = `https://${process.env.VERCEL_URL}`;
-		} else {
-			this.defaultURL = 'http://localhost:3000';
-		}
+
 	}
 
 	/**
@@ -77,8 +69,17 @@ class APIAxios {
 			throw new Error('(sbFetch): Route must be a relative URL.');
 		}
 
+		let defaultURL: string;
+		if (process.env.VERCEL_BRANCH_URL) {
+			defaultURL = `https://${process.env.VERCEL_BRANCH_URL}`;
+		} else if (process.env.VERCEL_URL) {
+			defaultURL = `https://${process.env.VERCEL_URL}`;
+		} else {
+			defaultURL = 'http://localhost:3000';
+		}
+
 		// Replace all instances of something enclosed in square brackets with its corresponding string in the ids parameter
-		let url = `${this.defaultURL}${route}`;
+		let url = `${defaultURL}${route}`;
 		for (const key in params) {
 			if (params[key] !== undefined && key !== 'searchParams') {
 				url = url.replace(`[${key}]`, params[key] as string);
