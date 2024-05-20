@@ -2,7 +2,7 @@ import {Tables} from "@/types/supabase";
 import {createClient} from "@/utils/supabase/server";
 import apiAxios from "@/utils/axios/apiAxios";
 
-export async function GET(request: Request) {
+export async function GET() {
 	const supabase = createClient();
 
 	// Get the current user
@@ -11,7 +11,7 @@ export async function GET(request: Request) {
 	const user = userResponse.data.user;
 
 	// Get the profile of the current user, including their courses
-	const profileResponse = await supabase.from("profiles").select("*, courses (*)").eq("id", user.id).single();
+	const profileResponse = await supabase.from("profiles").select("entry_date, courses (*)").eq("id", user.id).single();
 	if (profileResponse.error) {return Response.json(profileResponse);}
 	const profile = profileResponse.data;
 

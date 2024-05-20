@@ -41,12 +41,12 @@ export const LinkBoxSkeleton = ({className, ...props}: React.HTMLAttributes<HTML
         <Skeleton
             {...props}
             className={cn("flex flex-col border rounded-md p-4 transition-all focus:outline-foreground hover:bg-accent", className)}>
-            <Skeleton className={"space-y-4"}>
+            <Skeleton className={"space-y-2"}>
                 <h3 className={"text-xl font-bold"}>
                     <Skeleton className={"w-1/2 bg-background h-6 rounded-md"}/>
                 </h3>
                 <p className={"text-sm text-muted-foreground"}>
-                    <Skeleton className={"w-1/3 bg-background h-4 rounded-md"}/>
+                    <Skeleton className={"w-3/4 bg-background h-4 rounded-md"}/>
                 </p>
                 <ArrowRight
                     className={"text-sm text-muted-foreground h-4 ml-auto w-fit"}

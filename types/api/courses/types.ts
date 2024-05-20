@@ -8,7 +8,7 @@ export type CoursesResponse = PostgrestResponse<Tables<"courses">>
 export type CourseResponse = PostgrestSingleResponse<Tables<"courses">>
 
 // /api/courses/id/modules
-type CourseModules = {
+export type CourseModules = {
 	required: Tables<"modules">[],
 	optional: Tables<"modules">[]
 }

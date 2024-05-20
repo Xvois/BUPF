@@ -24,9 +24,14 @@ import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/
 import {useEffect} from "react";
 
 export default function EmailPopup() {
-
 	const searchParams = useSearchParams();
-	const isAwaitingEmail = window.localStorage.getItem('awaitingEmail');
+
+	let isAwaitingEmail;
+	try {
+		isAwaitingEmail = window.localStorage.getItem('awaitingEmail');
+	} catch (e) {
+		return null
+	}
 
 	const {data: postgrestResponse} = useSWR("/api/auth", fetcher);
 	const userData = postgrestResponse?.data;

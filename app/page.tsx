@@ -1,30 +1,19 @@
 import {Separator} from "@/components/ui/separator";
-import React, {Fragment} from "react";
+import React, {Fragment, Suspense} from "react";
 import {BookPlus, CircleFadingPlus, Component, NotebookPen} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import Link from "next/link";
-import DynamicIconGrid from "@/components/DynamicIconGrid/DynamicIconGrid";
-import {createClient} from "@/utils/supabase/server";
 import CoursesShowcase from "@/components/CoursesShowcase/CoursesShowcase";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {cn} from "@/utils/cn";
+import {createClient} from "@/utils/supabase/server";
+import Link from "next/link";
 
-export default async function Landing() {
-
-	const supabase = createClient();
-	const {data: {user}} = await supabase.auth.getUser();
-	if (!user) {
-		await supabase.auth.signInAnonymously();
-	}
-
+export default function Landing() {
 	return (
 		<div className={"space-y-8 w-full"}>
 			<header className={"text-center overflow-hidden pt-8 px-8"}>
 				<div className={"relative flex flex-col h-96 items-center align-middle justify-center space-y-8"}>
-					<div className={"absolute left-0 top-0 w-full h-full opacity-15 z-[-1]"}>
-						<DynamicIconGrid/>
-					</div>
 					<div>
 						<h1 className={"font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl"}>
 							For students, By students
@@ -35,34 +24,17 @@ export default async function Landing() {
 							of Bath.
 						</p>
 					</div>
-					<div className={"inline-flex flex-row gap-4 mx-auto"}>
-						{
-							user ?
-								<Button asChild>
-									<Link href={"/home"}>
-										Go to dashboard
-									</Link>
-								</Button>
-								:
-								<Fragment>
-									<Button variant={"outline"} asChild>
-										<Link href={"/academics"}>
-											I am an academic
-										</Link>
-									</Button>
-									<Button asChild>
-										<Link href={"/login"}>
-											Join now
-										</Link>
-									</Button>
-								</Fragment>
-						}
-					</div>
+
+					<Suspense fallback={HomepageButtonFallback()}>
+						<HomepageButton/>
+					</Suspense>
+
 					<Button variant={"link"} asChild>
 						<a href={"https://github.com/Xvois/BUPF"}>See the source</a>
 					</Button>
 				</div>
 			</header>
+
 			<Separator/>
 			<div className={"grid grid-cols-1 lg:grid-cols-2"}>
 				<section className={"p-6 space-y-8 h-full"}>
@@ -229,6 +201,50 @@ const FloatingComment = (props: { content: string, index: number }) => {
 				" backdrop-blur-md", classProperties[props.index])}>
 			<p className={"text-sm text-muted-foreground"}>Anonymous</p>
 			<MarkdownRender markdown={props.content}/>
+		</div>
+	)
+}
+
+async function HomepageButton() {
+	const supabase = createClient();
+	const {data: {user}} = await supabase.auth.getUser()
+	return (
+		<div className={"inline-flex flex-row gap-4 mx-auto"}>
+			{
+				user ?
+					<Button asChild>
+						<Link href={"/home"}>
+							Go to dashboard
+						</Link>
+					</Button>
+					:
+					<LoggedOut/>
+			}
+		</div>
+	)
+}
+
+const LoggedOut = () => {
+	return (
+		<Fragment>
+			<Button variant={"outline"} asChild>
+				<Link href={"/academics"}>
+					I am an academic
+				</Link>
+			</Button>
+			<Button asChild>
+				<Link href={"/login"}>
+					Join now
+				</Link>
+			</Button>
+		</Fragment>
+	)
+}
+
+function HomepageButtonFallback() {
+	return (
+		<div className={"inline-flex flex-row gap-4 mx-auto"}>
+			<LoggedOut/>
 		</div>
 	)
 }
