@@ -2,6 +2,8 @@ import {Tables} from "@/types/supabase";
 import {createClient} from "@/utils/supabase/server";
 import apiAxios from "@/utils/axios/apiAxios";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
 	const supabase = createClient();
 

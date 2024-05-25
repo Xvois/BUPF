@@ -22,3 +22,5 @@ export const ServerError = React.forwardRef((props: ServerErrorProps & React.HTM
         )
     }
 })
+
+ServerError.displayName = "ServerError";

@@ -32,7 +32,7 @@ export default function ResendButton({email}: ConfirmButtonProps) {
             }, Number(disableResendUntil) - new Date().getTime());
             return () => clearTimeout(timeoutId);
         }
-    }, []);
+	}, [localStorage]);
 
     const handleClick = async () => {
         if (!localStorage) return;

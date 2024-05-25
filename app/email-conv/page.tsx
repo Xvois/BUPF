@@ -8,36 +8,33 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle
 } from "@/components/ui/alert-dialog";
-import useSWR from "swr";
-import {fetcher} from "@/utils/fetcher";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {z} from "zod";
 import {FieldValues, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {handleEmailChange} from "@/components/EmailPopup/actions";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
 import {SendHorizonal} from "lucide-react";
 import {useAuthWatcher} from "@/hooks/use-auth-watcher";
 import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/ui/form";
-import {useEffect} from "react";
+import {Suspense, useEffect} from "react";
+import {handleEmailChange} from "@/app/email-conv/actions";
 
-export default function EmailPopup() {
+// See https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+export default function Page() {
+	return (
+		<Suspense>
+			<EmailPopup/>
+		</Suspense>
+	)
+
+}
+
+function EmailPopup() {
 	const searchParams = useSearchParams();
 
-	let isAwaitingEmail;
-	try {
-		isAwaitingEmail = window.localStorage.getItem('awaitingEmail');
-	} catch (e) {
-		return null
-	}
-
-	const {data: postgrestResponse} = useSWR("/api/auth", fetcher);
-	const userData = postgrestResponse?.data;
-	const user = userData?.user;
-	const email = user?.email;
-	const isInvalid = email ? !email.endsWith("@bath.ac.uk") : false;
+	const isAwaitingEmail = window.localStorage.getItem('awaitingEmail');
 
 	// Form
 	const emailSchema = z.object({
@@ -47,6 +44,7 @@ export default function EmailPopup() {
 	});
 	const form = useForm({
 		resolver: zodResolver(emailSchema),
+		reValidateMode: 'onChange',
 	});
 	const onSubmit = async (data: FieldValues) => {
 		console.log('submitting')
@@ -76,11 +74,11 @@ export default function EmailPopup() {
 	})
 
 	return (
-		<AlertDialog open={isInvalid}>
+		<AlertDialog open>
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
-						Change your email to a Bath University email to continue
+						Move to your Bath email
 					</AlertDialogTitle>
 					<AlertDialogDescription>
 						Personal emails are no longer valid on the platform, you will not be able to continue to use the

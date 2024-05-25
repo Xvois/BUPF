@@ -1,13 +1,12 @@
 import {Inter} from "next/font/google";
 import "./globals.css";
 import {cn} from "@/utils/cn";
-import React, {StrictMode} from "react";
+import React, {StrictMode, Suspense} from "react";
 import {Analytics} from "@vercel/analytics/react"
 import {SpeedInsights} from "@vercel/speed-insights/next"
-import TopBar from "@/components/TopBar";
+import TopBar, {TopBarSkeleton} from "@/components/TopBar";
 import {Footer} from "@/components/Footer";
 import NextTopLoader from "nextjs-toploader";
-import EmailPopup from "@/components/EmailPopup/EmailPopup";
 import ThemeListener from "@/components/ThemeListener";
 
 
@@ -54,8 +53,10 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 				showAtBottom={false}
 			/>
 
-			{/* Top bar */}
-			<TopBar/>
+			<Suspense fallback={TopBarSkeleton()}>
+				<TopBar/>
+			</Suspense>
+
 
 			{/* Main content */}
 			<main className="flex-grow flex flex-col w-full items-center ">
@@ -68,9 +69,6 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 			{/* Vercel Analytics */}
 			<SpeedInsights/>
 			<Analytics/>
-
-			{/* Email popup */}
-			<EmailPopup/>
 
 			{/* Theme listener */}
 			<ThemeListener/>

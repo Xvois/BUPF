@@ -1,6 +1,9 @@
 import {createAdminClient} from "@/utils/supabase/admin";
 import {ModuleResponse} from "@/types/api/modules/types";
 
+export const dynamic = 'force-static';
+export const revalidate = 60;
+
 /*
 IMPORTANT:
 THIS ROUTE USES createAdminClient, MEANING RLS IS ABANDONED

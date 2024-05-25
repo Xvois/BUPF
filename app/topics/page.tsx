@@ -29,7 +29,7 @@ export default async function Modules() {
                 </div>
                 <h1 className={"font-black text-4xl"}>Topics</h1>
                 <p>
-                    View topics, see what's coming up, and discuss with your peers.
+					View topics, see what`&apos;`s coming up, and discuss with your peers.
                 </p>
             </header>
             <Separator/>

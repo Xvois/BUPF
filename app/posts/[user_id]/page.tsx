@@ -70,7 +70,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
     return (
         <div className={"w-full space-y-8"}>
             <header className="p-6">
-                <p className={"text-3xl leading-none"}>{profile.first_name}'s</p>
+				<p className={"text-3xl leading-none"}>{profile.first_name}`&apos;s</p>
                 <h1 className={"font-black text-4xl"}>Questions, Discussions & Articles</h1>
                 <p>
                     View your posts, questions, articles, and discussions here.
@@ -141,7 +141,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
                 <div>
                     <h2 className={"text-2xl font-bold"}>Articles</h2>
                     <p className={"text-sm text-muted-foreground"}>
-                        These are all the articles you hav written. You can view them here.
+						These are all the articles you have written. You can view them here.
                     </p>
                 </div>
                 <div className="space-y-4">

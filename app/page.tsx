@@ -8,6 +8,7 @@ import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {cn} from "@/utils/cn";
 import {createClient} from "@/utils/supabase/server";
 import Link from "next/link";
+import {Skeleton} from "@/components/ui/skeleton";
 
 export default function Landing() {
 	return (
@@ -34,7 +35,6 @@ export default function Landing() {
 					</Button>
 				</div>
 			</header>
-
 			<Separator/>
 			<div className={"grid grid-cols-1 lg:grid-cols-2"}>
 				<section className={"p-6 space-y-8 h-full"}>
@@ -48,7 +48,9 @@ export default function Landing() {
 							to interact with other students and academics taking the same modules as you.
 						</p>
 					</div>
-					<CoursesShowcase/>
+					<Suspense fallback={null}>
+						<CoursesShowcase/>
+					</Suspense>
 				</section>
 				<section className={"flex flex-col p-6 space-y-8 w-fit ml-auto"}>
 					<div className={"min-h-32 border-b text-right"}>
@@ -218,33 +220,26 @@ async function HomepageButton() {
 						</Link>
 					</Button>
 					:
-					<LoggedOut/>
+					<Fragment>
+						<Button variant={"outline"} asChild>
+							<Link href={"/academics"}>
+								I am an academic
+							</Link>
+						</Button>
+						<Button asChild>
+							<Link href={"/login"}>
+								Join now
+							</Link>
+						</Button>
+					</Fragment>
 			}
 		</div>
 	)
 }
 
-const LoggedOut = () => {
-	return (
-		<Fragment>
-			<Button variant={"outline"} asChild>
-				<Link href={"/academics"}>
-					I am an academic
-				</Link>
-			</Button>
-			<Button asChild>
-				<Link href={"/login"}>
-					Join now
-				</Link>
-			</Button>
-		</Fragment>
-	)
-}
-
 function HomepageButtonFallback() {
 	return (
-		<div className={"inline-flex flex-row gap-4 mx-auto"}>
-			<LoggedOut/>
-		</div>
+		<Skeleton className={"inline-flex flex-row gap-4 mx-auto"}>
+		</Skeleton>
 	)
 }

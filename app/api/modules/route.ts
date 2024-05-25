@@ -1,10 +1,13 @@
-import {createClient} from "@/utils/supabase/server";
 import {isQueryFilters, operatorHandlers} from "@/utils/api/helpers";
 import {PostgrestOperators} from "@/types/api/options";
 import {ModulesResponse} from "@/types/api/modules/types";
+import {createAdminClient} from "@/utils/supabase/admin";
+
+export const dynamic = 'force-static';
+export const revalidate = 60;
 
 export async function GET(request: Request) {
-	const client = createClient();
+	const client = createAdminClient();
 
 	const params = new URL(request.url).searchParams;
 

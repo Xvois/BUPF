@@ -3,6 +3,9 @@ import apiAxios from "@/utils/axios/apiAxios";
 import {SupabaseClient} from "@supabase/supabase-js";
 import {Tables} from "@/types/supabase";
 
+export const dynamic = 'force-static';
+export const revalidate = 60;
+
 // TODO: Add types for the response data
 
 // Fetch the course data
@@ -100,7 +103,6 @@ export async function GET(
     const {data: modules, error: modulesError} = await fetchModules(moduleIDs);
 
     if (modulesError) {
-        console.error("Error fetching modules:", modulesError); // Log the error
         return Response.json({data: null, error: modulesError}, {status: 200});
     }
 

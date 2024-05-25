@@ -53,8 +53,9 @@ export default function CourseForm({setModules}: { setModules: Dispatch<SetState
 	const {data: initData} = useSWR(`/api/courses/${form.getValues('course')}/modules`, fetcher);
 	useEffect(() => {
 		if (!initData) return;
+		console.log(initData);
 		setModules(initData.data.year_1);
-	}, [initData]);
+	}, [initData, setModules]);
 
 	return (
 		<Form {...form}>

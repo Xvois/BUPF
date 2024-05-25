@@ -17,7 +17,6 @@ export default function MarkdownRender({className, markdown, ...props}: Markdown
         <ReactMarkdown
             remarkPlugins={[remarkMath]}
             rehypePlugins={[rehypeKatex]}
-            children={markdown}
             className={cn("whitespace-pre-wrap markdown", className)}
             components={{
                 a: props => {
@@ -25,6 +24,8 @@ export default function MarkdownRender({className, markdown, ...props}: Markdown
                 }
             }}
             {...props} // pass down additional props
-        />
+        >
+            {markdown}
+        </ReactMarkdown>
     );
 }

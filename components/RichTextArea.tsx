@@ -38,4 +38,6 @@ const RichTextArea = forwardRef<HTMLTextAreaElement, RichTextAreaProps>(({classN
     )
 })
 
+RichTextArea.displayName = "RichTextArea";
+
 export default RichTextArea;

@@ -1,6 +1,9 @@
 import {createAdminClient} from "@/utils/supabase/admin";
 import {ProfileResponse} from "@/types/api/profiles/types";
 
+export const dynamic = 'force-static';
+export const revalidate = 60;
+
 /*
  IMPORTANT:
  THIS ROUTE USES createAdminClient, MEANING RLS IS ABANDONED

@@ -9,5 +9,7 @@ export const handleEmailChange = async (newEmail: string) => {
 	const {error} = await admin.auth.updateUser({email: newEmail});
 	if (error) {
 		return redirect("?email_error=" + error.message);
+	} else {
+		return redirect("/home");
 	}
 }

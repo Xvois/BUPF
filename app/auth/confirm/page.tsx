@@ -3,6 +3,16 @@ import {Separator} from "@/components/ui/separator";
 import ResendButton from "@/app/auth/confirm/ResendButton";
 import {redirect, useSearchParams} from "next/navigation";
 import {useAuthWatcher} from "@/hooks/use-auth-watcher";
+import {Suspense} from "react";
+
+// See https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+export default function Page() {
+	return (
+		<Suspense>
+			<ConfirmPage/>
+		</Suspense>
+	)
+}
 
 /*
     * ConfirmPage
@@ -12,8 +22,7 @@ import {useAuthWatcher} from "@/hooks/use-auth-watcher";
     * The user can only resend the email every 5 minutes.
 */
 
-
-export default function ConfirmPage() {
+function ConfirmPage() {
     const searchParams = useSearchParams();
     const email = searchParams.get('email');
     const sentAt = searchParams.get('sent_at');
@@ -43,7 +52,7 @@ export default function ConfirmPage() {
                     confirmation link to verify your email address.
                 </p>
                 <p className={"text-muted-foreground"}>
-                    If you haven't received the email, you can click the button below to resend it.
+					If you haven`&apos;t received the email, you can click the button below to resend it.
                 </p>
             </div>
             <div className={"inline-flex flex-col gap-2"}>

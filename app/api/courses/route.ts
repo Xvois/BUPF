@@ -1,6 +1,9 @@
 import {createAdminClient} from "@/utils/supabase/admin";
 import {CoursesResponse} from "@/types/api/courses/types";
 
+export const dynamic = 'force-static';
+export const revalidate = 60;
+
 function toPostgresList(arr: string[]): string {
     let str = '(';
     str += arr.map(item => `"${item.replace(/"/g, '\\"')}"`).join(',');

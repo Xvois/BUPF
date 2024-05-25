@@ -66,7 +66,7 @@ class APIAxios {
 		const isRelativeUrl = (url: string) => {return !(/^(?:[a-z]+:)?\/\//i.test(url));}
 
 		if (!isRelativeUrl(route as string)) {
-			throw new Error('(sbFetch): Route must be a relative URL.');
+			throw new Error('(apiAxios): Route must be a relative URL.');
 		}
 
 		let defaultURL: string;

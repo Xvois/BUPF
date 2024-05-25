@@ -35,10 +35,9 @@ export default function Page() {
 						<h2 className={"font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
 							Ditch Excel & Moodle
 						</h2>
-						<p>
-							With the platform built by students, for students, you can now understand your students
-							better than before. No more poorly formatted Excel sheets or Moodle forums.
-						</p>
+						<p>With the platform built by students, for students, you can now understand your
+							students&apos; better than before. No more poorly formatted Excel sheets or Moodle
+							forums.</p>
 					</div>
 					<div className={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
 						<Card className={"md:col-span-2 border bg-gradient-to-br from-background to-green-500/10"}>
@@ -100,7 +99,7 @@ export default function Page() {
 					<div className={"p-4 border rounded-md bg-gradient-to-br from-muted/0 to-muted/50"}>
 						<div>
 							<p className={"text-sm"}>Anonymous</p>
-							<p>But how can I apply Gauss's Law to this scenario?</p>
+							<p>But how can I apply Gauss&apos;s Law to this scenario?</p>
 						</div>
 						<div className={"pl-4 mt-2 border-l"}>
 							<p className={"text-sm"}>You</p>
@@ -134,7 +133,8 @@ export default function Page() {
 					</div>
 					<div className={"space-y-2"}>
 						{
-							FauxModules.map(module => <ModuleDisplay title={module.title} tags={module.tags}/>)
+							FauxModules.map((module, index) => <ModuleDisplay key={index} title={module.title}
+																			  tags={module.tags}/>)
 						}
 					</div>
 
@@ -171,7 +171,7 @@ const ModuleDisplay = (props: { title: string, tags: string[] }) => {
 				<p className={"font-semibold text-sm"}>You teach:</p>
 				<div className={"flex flex-row gap-2"}>
 					{
-						props.tags.map(tag => <Badge variant={"outline"}>{tag}</Badge>)
+						props.tags.map((tag, index) => <Badge key={index} variant={"outline"}>{tag}</Badge>)
 					}
 				</div>
 			</div>

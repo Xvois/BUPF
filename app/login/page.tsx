@@ -20,9 +20,9 @@ export default function Login() {
 				</CardContent>
 			</Card>
 			<div className={"inline-flex w-full space-x-2 justify-center p-4 border rounded-md"}>
-				<p>Don't have an account?</p>
+				<p>Don&apos;t have an account?</p>
 				<Link href={"/signup"}
-					  className={"inline-flex space-x-1 items-center justify-center"}>
+					  className={"inline-flex space-x-1 items-center justify-center underline"}>
 					Sign up
 				</Link>
 			</div>
