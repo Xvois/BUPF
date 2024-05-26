@@ -26,7 +26,7 @@ export default function Landing() {
 						</p>
 					</div>
 
-					<Suspense fallback={HomepageButtonFallback()}>
+					<Suspense fallback={<HomepageButtonFallback/>}>
 						<HomepageButton/>
 					</Suspense>
 
@@ -36,86 +36,85 @@ export default function Landing() {
 				</div>
 			</header>
 			<Separator/>
-			<div className={"grid grid-cols-1 lg:grid-cols-2"}>
-				<section className={"p-6 space-y-8 h-full"}>
-					<div className={"min-h-32 border-b"}>
-						<h2 className={"inline-flex font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
-							Your modules <Component/>
-						</h2>
-						<p>
-							All you need to do is select your course and your modules will automatically be updated,
-							allowing you
-							to interact with other students and academics taking the same modules as you.
-						</p>
-					</div>
-					<Suspense fallback={null}>
-						<CoursesShowcase/>
-					</Suspense>
-				</section>
-				<section className={"flex flex-col p-6 space-y-8 w-fit ml-auto"}>
-					<div className={"min-h-32 border-b text-right"}>
-						<h2 className={"font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
-							Tailor your posts
-						</h2>
-						<p>
-							The Bath University Physics Forum is a place where you can ask questions, read articles and
-							spark
-							discussions about physics topics that matter to you.
-						</p>
-					</div>
-					<div className={"flex flex-row gap-8 flex-wrap align-bottom justify-end"}>
-						<Card className={"flex-grow max-w-96 flex flex-col hover:bg-gradient-to-br" +
-							" hover:from-muted/10 hover:to-muted/20"}>
-							<CardHeader>
-								<CardTitle className={"inline-flex"}>
-									Articles
-									<NotebookPen className={"h-4 w-4"}/>
-								</CardTitle>
-								<CardDescription>
-									Read articles written by students and staff at the University of Bath.
-								</CardDescription>
-							</CardHeader>
-							<CardContent className={"flex-grow"}>
-								The forum provides a platform for students and academics to write articles about physics
-								topics that interest them, and engage in meaningful discussions.
-							</CardContent>
-						</Card>
-						<Card className={"flex-grow max-w-96 flex flex-col hover:bg-gradient-to-br" +
-							" hover:from-muted/10 hover:to-muted/20"}>
-							<CardHeader>
-								<CardTitle className={"inline-flex"}>
-									Questions
-									<CircleFadingPlus className={"h-4 w-4"}/>
-								</CardTitle>
-								<CardDescription>
-									Ask questions and get answers from a community of students and academics.
-								</CardDescription>
-							</CardHeader>
-							<CardContent className={"flex-grow"}>
-								Ask questions about problem sheets, lectures, or anything else physics related in
-								the module relevant. Easily find answers for common questions and pool together
-								knowledge to solve problems.
-							</CardContent>
-						</Card>
-						<Card className={"flex-grow max-w-96 flex flex-col hover:bg-gradient-to-br" +
-							" hover:from-muted/10 hover:to-muted/20"}>
-							<CardHeader>
-								<CardTitle className={"inline-flex"}>
-									Discussions
-									<BookPlus className={"h-4 w-4"}/>
-								</CardTitle>
-								<CardDescription>
-									Spark discussion about physics topics that matter to you.
-								</CardDescription>
-							</CardHeader>
-							<CardContent className={"flex-grow"}>
-								Engage in discussions about physics topics that interest you, and share your
-								knowledge with others.
-							</CardContent>
-						</Card>
-					</div>
-				</section>
-			</div>
+			<section className={"p-6 space-y-8 h-full"}>
+				<div>
+					<h2 className={"inline-flex font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
+						Your modules <Component/>
+					</h2>
+					<p>
+						All you need to do is select your course and your modules will automatically be updated,
+						allowing you
+						to interact with other students and academics taking the same modules as you.
+					</p>
+				</div>
+				<Suspense fallback={null}>
+					<CoursesShowcase/>
+				</Suspense>
+			</section>
+			<Separator/>
+			<section className={"flex flex-col p-6 space-y-8 w-fit ml-auto"}>
+				<div className={"text-right"}>
+					<h2 className={"font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
+						Tailor your posts
+					</h2>
+					<p>
+						The Bath University Physics Forum is a place where you can ask questions, read articles and
+						spark
+						discussions about physics topics that matter to you.
+					</p>
+				</div>
+				<div className={"flex flex-row gap-8 flex-wrap align-bottom justify-end"}>
+					<Card className={"flex-grow max-w-96 flex flex-col hover:bg-gradient-to-br" +
+						" hover:from-muted/10 hover:to-muted/20"}>
+						<CardHeader>
+							<CardTitle className={"inline-flex"}>
+								Articles
+								<NotebookPen className={"h-4 w-4"}/>
+							</CardTitle>
+							<CardDescription>
+								Read articles written by students and staff at the University of Bath.
+							</CardDescription>
+						</CardHeader>
+						<CardContent className={"flex-grow"}>
+							The forum provides a platform for students and academics to write articles about physics
+							topics that interest them, and engage in meaningful discussions.
+						</CardContent>
+					</Card>
+					<Card className={"flex-grow max-w-96 flex flex-col hover:bg-gradient-to-br" +
+						" hover:from-muted/10 hover:to-muted/20"}>
+						<CardHeader>
+							<CardTitle className={"inline-flex"}>
+								Questions
+								<CircleFadingPlus className={"h-4 w-4"}/>
+							</CardTitle>
+							<CardDescription>
+								Ask questions and get answers from a community of students and academics.
+							</CardDescription>
+						</CardHeader>
+						<CardContent className={"flex-grow"}>
+							Ask questions about problem sheets, lectures, or anything else physics related in
+							the module relevant. Easily find answers for common questions and pool together
+							knowledge to solve problems.
+						</CardContent>
+					</Card>
+					<Card className={"flex-grow max-w-96 flex flex-col hover:bg-gradient-to-br" +
+						" hover:from-muted/10 hover:to-muted/20"}>
+						<CardHeader>
+							<CardTitle className={"inline-flex"}>
+								Discussions
+								<BookPlus className={"h-4 w-4"}/>
+							</CardTitle>
+							<CardDescription>
+								Spark discussion about physics topics that matter to you.
+							</CardDescription>
+						</CardHeader>
+						<CardContent className={"flex-grow"}>
+							Engage in discussions about physics topics that interest you, and share your
+							knowledge with others.
+						</CardContent>
+					</Card>
+				</div>
+			</section>
 			<Separator/>
 			<section className={"p-6 space-y-8"}>
 				<div className={"mx-auto max-w-screen-sm text-center"}>
@@ -239,7 +238,6 @@ async function HomepageButton() {
 
 function HomepageButtonFallback() {
 	return (
-		<Skeleton className={"inline-flex flex-row gap-4 mx-auto"}>
-		</Skeleton>
+		<Skeleton className={"inline-flex h-[40px] w-64 flex-row gap-4 mx-auto"}/>
 	)
 }

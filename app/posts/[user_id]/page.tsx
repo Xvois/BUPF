@@ -70,7 +70,7 @@ export default async function UserPosts({params}: { params: { user_id: string } 
     return (
         <div className={"w-full space-y-8"}>
             <header className="p-6">
-				<p className={"text-3xl leading-none"}>{profile.first_name}`&apos;s</p>
+                <p className={"text-3xl leading-none"}>{profile.first_name}&apos;s</p>
                 <h1 className={"font-black text-4xl"}>Questions, Discussions & Articles</h1>
                 <p>
                     View your posts, questions, articles, and discussions here.

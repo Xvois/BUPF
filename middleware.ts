@@ -1,7 +1,7 @@
 import {type NextRequest, NextResponse} from "next/server";
 import {type CookieOptions, createServerClient} from "@supabase/ssr";
 
-const authorisedPaths = ["/", "/academics", "/login", "/signup"];
+const authorisedPaths = ["/", "/academics", "/login", "/signup", "/opengraph-image.ts"];
 
 export async function middleware(request: NextRequest) {
 

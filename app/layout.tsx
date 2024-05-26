@@ -1,13 +1,12 @@
 import {Inter} from "next/font/google";
 import "./globals.css";
 import {cn} from "@/utils/cn";
-import React, {StrictMode, Suspense} from "react";
+import React, {StrictMode} from "react";
 import {Analytics} from "@vercel/analytics/react"
 import {SpeedInsights} from "@vercel/speed-insights/next"
-import TopBar, {TopBarSkeleton} from "@/components/TopBar";
+import TopBar from "@/components/TopBar";
 import {Footer} from "@/components/Footer";
 import NextTopLoader from "nextjs-toploader";
-import ThemeListener from "@/components/ThemeListener";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -53,9 +52,8 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 				showAtBottom={false}
 			/>
 
-			<Suspense fallback={TopBarSkeleton()}>
-				<TopBar/>
-			</Suspense>
+			{/* Top bar */}
+			<TopBar/>
 
 
 			{/* Main content */}
@@ -69,9 +67,6 @@ export default function RootLayout({children}: { children: React.ReactNode; }) {
 			{/* Vercel Analytics */}
 			<SpeedInsights/>
 			<Analytics/>
-
-			{/* Theme listener */}
-			<ThemeListener/>
 		</StrictMode>
 		</body>
 		</html>

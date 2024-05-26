@@ -17,7 +17,7 @@ export default function Modules() {
 				</div>
 				<h1 className={"font-black text-4xl"}>Modules</h1>
 				<p>
-					View your modules, see what`&apos;s coming up, and discuss with your peers.
+					View your modules, see what&apos;s coming up, and discuss with your peers.
 				</p>
 			</header>
 			<Separator/>
