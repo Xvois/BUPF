@@ -1,6 +1,6 @@
 'use client'
 import {Separator} from "@/components/ui/separator";
-import ResendButton from "@/app/auth/confirm/ResendButton";
+import ResendButton from "@/app/auth/confirm/_components/ResendButton";
 import {redirect, useSearchParams} from "next/navigation";
 import {useAuthWatcher} from "@/hooks/use-auth-watcher";
 import {Suspense} from "react";

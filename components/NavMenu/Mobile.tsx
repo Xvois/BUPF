@@ -113,13 +113,19 @@ export default function MobileNavMenu({modules, topics}: {
 							</ul>
 						</AccordionContent>
 					</AccordionItem>
-					<AccordionItem value="item-4">
+					<AccordionItem value={"item-4"}>
+						<div className="py-4 font-medium flex">
+							<Link onClick={() => setIsSheetOpen(false)} className="w-full h-full"
+								  href="/articles">Articles</Link>
+						</div>
+					</AccordionItem>
+					<AccordionItem value="item-5">
 						<div className="py-4 font-medium flex">
 							<Link onClick={() => setIsSheetOpen(false)} className="w-full h-full"
 								  href="/about">About</Link>
 						</div>
 					</AccordionItem>
-					<AccordionItem value="item-5">
+					<AccordionItem value="item-6">
 						<div className="py-4 font-medium flex">
 							<a onClick={() => setIsSheetOpen(false)} className="w-full h-full"
 							   href={"mailto:smp90@bath.ac.uk?subject=BUPF%20Help"}>Help</a>

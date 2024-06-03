@@ -1,7 +1,7 @@
 "use client"
 import {Button} from "@/components/ui/button";
 import {useEffect, useState} from "react";
-import {resendEmail} from "./resend";
+import {resendEmail} from "../_actions/resend";
 
 /*
     * ResendButton

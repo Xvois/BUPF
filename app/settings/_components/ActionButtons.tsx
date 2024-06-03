@@ -3,7 +3,6 @@
 import {Button, ButtonProps} from "@/components/ui/button";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
-import {deleteAccount} from "@/app/settings/actions";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -16,6 +15,7 @@ import {
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import {Fragment, useEffect, useState} from "react";
+import deleteAccount from "@/app/settings/_actions/deleteAccount";
 
 export const DeleteAccountButton = (props: ButtonProps) => {
     const searchParams = useSearchParams();

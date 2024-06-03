@@ -56,7 +56,7 @@ const CourseDetailsInputs = () => {
 								</FormControl>
 							</PopoverTrigger>
 							<PopoverContent className="max-w-[572px] w-screen p-0">
-								<Command className={"max-h-96 w-full overflow-y-scroll pt-12"}>
+								<Command className={"max-h-96 w-full pt-12"}>
 									<CommandList>
 										<div
 											className={"fixed z-10 bg-popover w-full rounded-md top-[1px] scale-x-[99%]"}>

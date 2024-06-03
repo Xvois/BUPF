@@ -78,7 +78,7 @@ export default function ProfilePictureUpload() {
                         <FormItem className={"w-full"}>
                             <FormLabel>New file</FormLabel>
                             <FormControl>
-                                <Input type={"file"} onChange={handleFileChange}/>
+								<Input type={"file"} accept={"image/*"} onChange={handleFileChange}/>
                             </FormControl>
                             <FormMessage/>
                         </FormItem>

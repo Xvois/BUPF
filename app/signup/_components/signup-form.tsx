@@ -5,7 +5,7 @@ import {useForm, useFormContext} from "react-hook-form";
 import {z} from "zod"
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button} from "@/components/ui/button";
-import {formSchema} from "@/app/signup/formSchema";
+import {formSchema} from "@/app/signup/_schema/formSchema";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
 import UserDetailsInputs from "@/components/form-components/user-details";

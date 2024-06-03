@@ -1,8 +1,7 @@
 import {Separator} from "@/components/ui/separator";
 import React, {Fragment, Suspense} from "react";
-import {BookPlus, CircleFadingPlus, Component, NotebookPen} from "lucide-react";
+import {BookPlus, CircleFadingPlus, NotebookPen} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import CoursesShowcase from "@/components/CoursesShowcase/CoursesShowcase";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {cn} from "@/utils/cn";
@@ -10,7 +9,10 @@ import {createClient} from "@/utils/supabase/server";
 import Link from "next/link";
 import {Skeleton} from "@/components/ui/skeleton";
 
-export default function Landing() {
+export const dynamic = 'auto';
+
+export default async function Landing() {
+
 	return (
 		<div className={"space-y-8 w-full"}>
 			<header className={"text-center overflow-hidden pt-8 px-8"}>
@@ -36,20 +38,52 @@ export default function Landing() {
 				</div>
 			</header>
 			<Separator/>
+			<section className={"p-6 space-y-8"}>
+				<div className={"mx-auto max-w-screen-sm text-center"}>
+					<h2 className={"font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
+						Write <span className={"bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400" +
+						" inline-block text-transparent bg-clip-text"}>meaningful</span> contributions
+					</h2>
+					<p>
+						BUPF allows you to write using Markdown and LaTeX, meaning you can easily convey
+						complex ideas and equations in your posts, without resorting to screenshots or
+						text explanations.
+					</p>
+				</div>
+				<div className={"relative hidden lg:block h-[400px] overflow-x-hidden"}>
+					{
+						markdownComments.map((comment, i) => (
+							<FloatingComment key={i} index={i} content={comment}/>
+						))
+					}
+				</div>
+				<div className={"space-y-2 lg:hidden"}>
+					{
+						markdownComments.slice(5, 10).map((comment, i) => (
+							<div key={i} className={"p-4 border rounded-md bg-gradient-to-br from-muted/0 to-muted/50"}>
+								<div>
+									<p className={"text-sm"}>Anonymous</p>
+									<MarkdownRender>
+										{comment}
+									</MarkdownRender>
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
+			<Separator/>
 			<section className={"p-6 space-y-8 h-full"}>
 				<div>
 					<h2 className={"inline-flex font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
-						Your modules <Component/>
+						We stay with you
 					</h2>
 					<p>
-						All you need to do is select your course and your modules will automatically be updated,
-						allowing you
-						to interact with other students and academics taking the same modules as you.
+						Simply put your course details in and BUPF will automatically update every academic year
+						with your modules and details, meaning you can spend more time studying and discussing
+						physics.
 					</p>
 				</div>
-				<Suspense fallback={null}>
-					<CoursesShowcase/>
-				</Suspense>
 			</section>
 			<Separator/>
 			<section className={"flex flex-col p-6 space-y-8 w-fit ml-auto"}>
@@ -116,39 +150,6 @@ export default function Landing() {
 				</div>
 			</section>
 			<Separator/>
-			<section className={"p-6 space-y-8"}>
-				<div className={"mx-auto max-w-screen-sm text-center"}>
-					<h2 className={"font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl"}>
-						Write <span className={"bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400" +
-						" inline-block text-transparent bg-clip-text"}>meaningful</span> contributions
-					</h2>
-					<p>
-						BUPF allows you to write using Markdown and LaTeX, meaning you can easily convey
-						complex ideas and equations in your posts, without resorting to screenshots or
-						text explanations.
-					</p>
-				</div>
-				<div className={"relative hidden lg:block h-[400px] overflow-x-hidden"}>
-					{
-						markdownComments.map((comment, i) => (
-							<FloatingComment key={i} index={i} content={comment}/>
-						))
-					}
-				</div>
-				<div className={"space-y-2 lg:hidden"}>
-					{
-						markdownComments.slice(5, 10).map((comment, i) => (
-							<div key={i} className={"p-4 border rounded-md bg-gradient-to-br from-muted/0 to-muted/50"}>
-								<div>
-									<p className={"text-sm"}>Anonymous</p>
-									<MarkdownRender
-										markdown={comment}/>
-								</div>
-							</div>
-						))
-					}
-				</div>
-			</section>
 		</div>
 	)
 }
@@ -201,7 +202,9 @@ const FloatingComment = (props: { content: string, index: number }) => {
 			className={cn("absolute bg-background/10  border p-4 w-fit min-w-96 shrink-0 h-fit rounded-md shadow" +
 				" backdrop-blur-md", classProperties[props.index])}>
 			<p className={"text-sm text-muted-foreground"}>Anonymous</p>
-			<MarkdownRender markdown={props.content}/>
+			<MarkdownRender>
+				{props.content}
+			</MarkdownRender>
 		</div>
 	)
 }

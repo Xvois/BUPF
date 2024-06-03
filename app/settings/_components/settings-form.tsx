@@ -2,15 +2,15 @@
 
 import {Form} from "@/components/ui/form";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {DeleteAccountButton} from "@/app/settings/ActionButtons";
+import {DeleteAccountButton} from "@/app/settings/_components/ActionButtons";
 import {Button} from "@/components/ui/button";
 import {useForm} from "react-hook-form";
 import {Tables} from "@/types/supabase";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {formSchema} from "@/app/settings/formSchema";
+import {formSchema} from "@/app/settings/_schema/formSchema";
 import CourseDetailsInputs from "@/components/form-components/course-details";
 import UserDetailsInputs from "@/components/form-components/user-details";
-import {handleSubmit} from "@/app/settings/actions";
+import {handleSubmit} from "@/app/settings/_actions/handleSubmit";
 import {z} from "zod";
 import {ServerError} from "@/components/ServerError";
 import {redirect, useSearchParams} from "next/navigation";

@@ -31,7 +31,7 @@ export default function Comment({
         ) : (
           <Profile user={comment.profiles} />
         )}
-        <MarkdownRender markdown={comment.content} />
+		  <MarkdownRender>{comment.content}</MarkdownRender>
         <div
           className={`inline-flex gap-4 text-sm items-start text-muted-foreground`}
         >

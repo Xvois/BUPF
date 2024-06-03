@@ -120,6 +120,13 @@ export default function DesktopNavBar({modules, topics}: {
 					</NavigationMenuContent>
 				</NavigationMenuItem>
 				<NavigationMenuItem>
+					<Link href="/articles" legacyBehavior passHref>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+							Articles
+						</NavigationMenuLink>
+					</Link>
+				</NavigationMenuItem>
+				<NavigationMenuItem>
 					<Link href="/about" legacyBehavior passHref>
 						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
 							About

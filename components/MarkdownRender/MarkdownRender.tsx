@@ -6,12 +6,12 @@ import rehypeKatex from 'rehype-katex'
 import {cn} from "@/utils/cn";
 
 interface MarkdownRenderProps {
-    markdown: string;
+	children: string;
 
     [x: string]: any; // for additional props
 }
 
-export default function MarkdownRender({className, markdown, ...props}: MarkdownRenderProps) {
+export default function MarkdownRender({className, children, ...props}: MarkdownRenderProps) {
 
     return (
         <ReactMarkdown
@@ -25,7 +25,7 @@ export default function MarkdownRender({className, markdown, ...props}: Markdown
             }}
             {...props} // pass down additional props
         >
-            {markdown}
+			{children}
         </ReactMarkdown>
     );
 }

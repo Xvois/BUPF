@@ -2,7 +2,7 @@
 
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
-import {formSchema} from "@/app/auth/reset/formSchema";
+import {formSchema} from "@/app/auth/reset/_schema/formSchema";
 import {z} from "zod";
 
 

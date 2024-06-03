@@ -6,7 +6,7 @@ import {redirect} from "next/navigation";
 /*
 Performs a login action using the email and password provided.
 */
-export default async function logIn(props: { email: string; password: string }) {
+export default async function login(props: { email: string; password: string }) {
     const {email, password} = props;
 
     const supabase = createClient();

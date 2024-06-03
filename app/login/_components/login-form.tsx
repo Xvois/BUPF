@@ -3,7 +3,7 @@
 import {Button} from "@/components/ui/button";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
-import logIn from "@/app/login/actions";
+import login from "@/app/login/_actions/login";
 import {FormEvent, Suspense, useState} from "react";
 
 /*
@@ -33,7 +33,7 @@ function LoginContents() {
         const email = target.email.value;
         const password = target.password.value;
         setIsLoading(true)
-        await logIn({email, password});
+        await login({email, password});
         setIsLoading(false)
     }
 

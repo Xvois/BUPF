@@ -1,8 +1,8 @@
-import SignupForm from "@/app/signup/signup-form";
+import SignupForm from "@/app/signup/_components/signup-form";
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import {z} from "zod";
-import {formSchema} from "@/app/signup/formSchema";
+import {formSchema} from "@/app/signup/_schema/formSchema";
 import {headers} from "next/headers";
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 

@@ -2,13 +2,13 @@
 
 import {useForm} from "react-hook-form";
 import PasswordConfirmation from "@/components/form-components/password-confirmation";
-import {formSchema} from "@/app/auth/reset/formSchema";
+import {formSchema} from "@/app/auth/reset/_schema/formSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form} from "@/components/ui/form";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {z} from "zod";
-import {updatePassword} from "@/app/auth/reset/actions";
+import {updatePassword} from "@/app/auth/reset/_actions/actions";
 
 
 export default function ResetForm() {

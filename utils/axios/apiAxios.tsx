@@ -6,8 +6,9 @@ import {CourseModulesResponse, CourseResponse, CoursesResponse} from "@/types/ap
 import {ModuleResponse, ModulesResponse} from "@/types/api/modules/types";
 import {PostResponse, PostsResponse} from "@/types/api/posts/types";
 import {ProfileResponse} from "@/types/api/profiles/types";
-import {UserModulesResponse} from "@/types/api/user/types";
+import {UserModulesResponse} from "@/types/api/user/tyoes";
 import axios, {Axios, AxiosRequestConfig, AxiosResponse} from "axios";
+import {ArticlesResponse} from "@/types/api/articles/types";
 
 
 type GetRouteResponseMap = {
@@ -19,7 +20,8 @@ type GetRouteResponseMap = {
 	'/api/posts/[id]': PostResponse,
 	'/api/posts': PostsResponse,
 	'/api/profiles/[id]': ProfileResponse,
-	'/api/user/modules': UserModulesResponse
+	'/api/user/modules': UserModulesResponse,
+	'/api/articles': ArticlesResponse
 };
 
 type Params = {

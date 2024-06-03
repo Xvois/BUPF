@@ -1,12 +1,12 @@
 import {Separator} from "@/components/ui/separator";
 import {Package} from "lucide-react";
-import {Suspense} from "react";
-import {CoreModules} from "@/app/modules/components/CoreModules";
-import {OptionalModules} from "@/app/modules/components/OptionalModules";
-import {ModulesSkeleton} from "@/app/modules/components/ModulesSkeleton";
+import {CoreModules} from "@/app/modules/_components/CoreModules";
+import {OptionalModules} from "@/app/modules/_components/OptionalModules";
 
+export const dynamic = 'auto';
+export const revalidate = false;
 
-export default function Modules() {
+export default async function Modules() {
 	return (
 		<div className="w-full space-y-4">
 			<header
@@ -28,9 +28,7 @@ export default function Modules() {
 						These modules are mandatory for your course.
 					</p>
 				</div>
-				<Suspense fallback={<ModulesSkeleton/>}>
-					<CoreModules/>
-				</Suspense>
+				<CoreModules/>
 			</section>
 			<Separator/>
 			<section className={"space-y-4 p-6"}>
@@ -40,9 +38,7 @@ export default function Modules() {
 						These are modules you can choose to take.
 					</p>
 				</div>
-				<Suspense fallback={<ModulesSkeleton/>}>
-					<OptionalModules/>
-				</Suspense>
+				<OptionalModules/>
 			</section>
 		</div>
 	)
