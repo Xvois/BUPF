@@ -9,14 +9,47 @@ import z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button} from "@/components/ui/button";
 import formSchema from "@/app/articles/editor/_schema/editorSchema";
-import {handlePublish, handleSave} from "@/app/articles/editor/_actions/editorHandler";
-import {useEffect, useRef} from "react";
+import {handleSave} from "@/app/articles/editor/_actions/handleSave";
+import {handlePublish} from "@/app/articles/editor/_actions/handlePublish";
+import {useEffect, useRef, useState} from "react";
+import {ServerError} from "@/components/ServerError";
+import {useSearchParams} from "next/navigation";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import resizeImage from "@/utils/resize";
+import {createClient} from "@/utils/supabase/client";
+import Image from "next/image";
+import {AspectRatio} from "@/components/ui/aspect-ratio";
 
-export default function EditorForm(props: { defaultValues: z.infer<typeof formSchema>, draftID?: number }) {
+export default function EditorForm(props: {
+	defaultValues: z.infer<typeof formSchema>,
+	imagePath?: string,
+	draftID?: number
+}) {
+	const searchParams = useSearchParams();
+	const [isSaving, setIsSaving] = useState<boolean>(false);
+	const [imagePreview, setImagePreview] = useState<string | null>(null);
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		defaultValues: props.defaultValues,
 		resolver: zodResolver(formSchema)
 	});
+
+	// Grab an image preview if an image path is given
+	useEffect(() => {
+		if (props.imagePath) {
+			const client = createClient();
+			client.storage.from("article_images_drafts").download(props.imagePath).then(res => {
+				if (res.error) {
+					console.error(res.error);
+					return;
+				}
+				const url = URL.createObjectURL(res.data);
+				setImagePreview(url);
+			});
+		} else {
+			setImagePreview(null);
+		}
+	}, [props.imagePath]);
 
 	// Set up the form state for our default values
 	useEffect(() => {
@@ -28,7 +61,7 @@ export default function EditorForm(props: { defaultValues: z.infer<typeof formSc
 	}, [form, props.defaultValues]);
 
 
-	// Auto save the form after a 300ms debounce time
+	// Auto save the form after a 2s debounce time
 	// given that the form is valid and a draftID is present
 	let timeoutId = useRef<NodeJS.Timeout | null>(null);
 	useEffect(() => {
@@ -36,10 +69,10 @@ export default function EditorForm(props: { defaultValues: z.infer<typeof formSc
 			if (timeoutId.current) {
 				clearTimeout(timeoutId.current);
 			}
-
+			setIsSaving(true);
 			timeoutId.current = setTimeout(() => {
-				handleSave(...args);
-			}, 300); // 300ms debounce time
+				handleSave(...args).then(() => setIsSaving(false));
+			}, 2000); // 2s debounce time
 		};
 
 		const watch = form.watch((data) => {
@@ -55,22 +88,36 @@ export default function EditorForm(props: { defaultValues: z.infer<typeof formSc
 		}
 	}, [form, props.draftID]);
 
+	const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (file) {
+			const options = {
+				quality: 0.5,
+				maxWidth: 1000,
+				maxHeight: 400,
+			}
+			resizeImage(file).then(resizedFile => form.setValue("header_picture", resizedFile))
+		}
+	}
+
 	const onSubmit = form.handleSubmit(async (data, e) => {
 		const nativeEvent = e?.nativeEvent as { submitter: HTMLButtonElement } | undefined;
 		const type = nativeEvent?.submitter?.value;
 		switch (type) {
 			case "draft":
+				setIsSaving(true);
 				await handleSave(data, props.draftID);
+				setIsSaving(false);
 				break;
 			case "publish":
-				await handlePublish(data);
+				await handlePublish(data, props.draftID);
 				break;
 		}
 	})
 
 	return (
 		<Form {...form}>
-			<form onSubmit={onSubmit} className={"space-y-8 p-8"}>
+			<form onSubmit={onSubmit} className={"space-y-8"}>
 				<FormField
 					control={form.control}
 					name={"heading"}
@@ -84,15 +131,29 @@ export default function EditorForm(props: { defaultValues: z.infer<typeof formSc
 							<FormMessage/>
 						</FormItem>
 					)}/>
-				<FormField control={form.control} name={"heading_picture"} render={({field}) => (
+				<FormField control={form.control} name={"header_picture"} render={({field}) => (
 					<FormItem>
 						<FormLabel>Heading Picture</FormLabel>
 						<FormControl>
-							<Input accept="image/*" type={"file"}/>
+							<Input onChange={handlePictureChange}
+								   className={"text-foreground"} accept="image/*" type={"file"}/>
 						</FormControl>
 						<FormMessage/>
 					</FormItem>
 				)}/>
+				{
+					imagePreview && (
+						<FormItem>
+							<FormLabel>Current Picture</FormLabel>
+							<FormControl>
+								<AspectRatio ratio={10 / 4}>
+									<Image src={imagePreview} alt={"Current header picture"}
+										   width={1000} height={400} className={"h-full w-full object-cover"}/>
+								</AspectRatio>
+							</FormControl>
+						</FormItem>
+					)
+				}
 				<FormField
 					control={form.control}
 					name={"content"}
@@ -115,14 +176,25 @@ export default function EditorForm(props: { defaultValues: z.infer<typeof formSc
 							<FormMessage/>
 						</FormItem>
 					)}/>
-				<div className={"inline-flex gap-4"}>
+				<div className={"flex w-fit ml-auto gap-4 items-center"}>
 					{
 						!props.draftID && (
 							<Button type={"submit"} variant={"outline"} value={"draft"}>Save as draft</Button>
 						)
 					}
+					{
+						isSaving && (
+							<LoadingSpinner style={{
+								fill: "hsl(var(--foreground))"
+							}}/>
+						)
+					}
+
 					<Button type={"submit"} value={"publish"}>Publish</Button>
 				</div>
+				<ServerError>
+					{searchParams.get("error")}
+				</ServerError>
 			</form>
 		</Form>
 	)

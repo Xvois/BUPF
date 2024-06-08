@@ -1,7 +1,6 @@
 import {useFormContext} from "react-hook-form";
 import useSWR from "swr";
-import {sbFetcher} from "@/utils/fetcher";
-import {Tables} from "@/types/supabase";
+import {fetcher} from "@/utils/fetcher";
 import {useEffect} from "react";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
@@ -25,7 +24,8 @@ export default function Question() {
 
 	const form = useFormContext();
 
-	const {data: modules, error} = useSWR('modules', sbFetcher<Tables<"modules">>);
+	const {data: response, error} = useSWR('/api/modules', (url) => fetcher(url));
+	const modules = response?.data;
 	const {isSubmitting, defaultValues} = form.formState;
 
 	useEffect(() => {

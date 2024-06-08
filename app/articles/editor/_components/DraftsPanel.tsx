@@ -1,38 +1,59 @@
-import {createClient} from "@/utils/supabase/server";
+'use client'
+
 import Link from "next/link";
+import {Separator} from "@/components/ui/separator";
+import {Button} from "@/components/ui/button";
+import {Suspense, useState} from "react";
+import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
+import useSWR from "swr";
+import {fetcher} from "@/utils/fetcher";
 
 
-export default async function DraftsPanel() {
-	const supabase = createClient();
-	const {data: drafts} = await supabase.from("drafts").select("*");
-
+export default function DraftsPanel() {
+	const {data: response} = useSWR("/api/drafts", (url) => fetcher(url));
+	const drafts = response?.data;
+	const [isOpened, setIsOpened] = useState(false);
 	return (
-		<div className={"space-y-8 w-full"}>
-			<section className={"p-6 space-y-8 h-full"}>
-				<h2>Your drafts</h2>
-				<ul className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"}>
-					<li>
-						<Link href={"/articles/editor"}>
-							<div
-								className={"p-4 border rounded-md focus:outline-foreground hover:bg-gradient-to-br hover:from-muted/0 hover:to-muted/50"}>
-								<h3 className={"text-xl font-semibold"}>Create a new draft</h3>
-								<p className={"text-sm text-muted-foreground"}>Start writing a new article</p>
-							</div>
-						</Link>
-					</li>
-					{drafts?.map(draft => (
-						<li key={draft.id}>
-							<Link href={`/articles/editor?draftID=${draft.id}`}>
-								<div
-									className={"p-4 border rounded-md focus:outline-foreground hover:bg-gradient-to-br hover:from-muted/0 hover:to-muted/50"}>
-									<h3 className={"text-xl font-semibold"}>{draft.heading}</h3>
-									<p className={"text-sm text-muted-foreground"}>{draft.content}</p>
-								</div>
-							</Link>
-						</li>
-					))}
+		<Sheet open={isOpened} onOpenChange={(state) => setIsOpened(state)}>
+			<SheetTrigger asChild>
+				<Button>
+					Your drafts
+				</Button>
+			</SheetTrigger>
+			<SheetContent className="w-[400px] sm:w-[540px] space-y-8">
+				<SheetHeader>
+					<SheetTitle>Your drafts</SheetTitle>
+					<SheetDescription>
+						Here you can see all the drafts you have created. You can also create a new draft by
+						clicking
+						the button
+						below.
+					</SheetDescription>
+				</SheetHeader>
+				<Button asChild>
+					<Link onClick={() => setIsOpened(false)} href={"/articles/editor"}>
+						New draft
+					</Link>
+				</Button>
+				<Separator/>
+				<ul className={"grid grid-cols-1 gap-4"}>
+					<Suspense fallback={<div>Loading...</div>}>
+						{drafts?.map(draft => (
+							<li key={draft.id}>
+								<Link onClick={() => setIsOpened(false)} href={`/articles/editor?draftID=${draft.id}`}>
+									<p>
+										{draft.heading}
+									</p>
+									<p className={"text-xs text-muted-foreground"}>
+										{draft.content}
+									</p>
+								</Link>
+							</li>
+						))}
+					</Suspense>
 				</ul>
-			</section>
-		</div>
+			</SheetContent>
+		</Sheet>
+
 	)
 }

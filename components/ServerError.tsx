@@ -10,7 +10,7 @@ export const ServerError = React.forwardRef((props: ServerErrorProps & React.HTM
     if(props.children) {
         return (
             <div {...props}
-                 className={cn("grid gap-4 w-full items-center border bg-gradient-to-br" +
+                 className={cn("grid gap-4 w-full items-center border border-destructive/10 bg-gradient-to-br" +
                      " from-background" +
                      " to-red-500/10 rounded-md p-4", props.className)}>
                 <p className={"inline-flex gap-1 items-center font-bold text-destructive"}><CircleAlert

@@ -4,8 +4,8 @@ import {Separator} from "@/components/ui/separator";
 import PostsDisplay from "@/components/PostsDisplay/PostsDisplay";
 import {BookCopy, Component} from "lucide-react";
 import LinkBox from "@/components/LinkBox";
-import DiscussionButton from "@/reuseable-pages/combo_display/components/DiscussionButton";
-import QuestionButton from "@/reuseable-pages/combo_display/components/QuestionButton";
+import DiscussionButton from "@/reuseable-pages/combo-display/_components/DiscussionButton";
+import QuestionButton from "@/reuseable-pages/combo-display/_components/QuestionButton";
 import {Fragment} from "react";
 
 type PageData = {

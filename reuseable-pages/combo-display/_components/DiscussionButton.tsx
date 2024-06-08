@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/dialog";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import {formSchema} from "@/reuseable-pages/combo_display/schema/formSchema";
+import {formSchema} from "@/reuseable-pages/combo-display/_schema/formSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
-import post from "@/reuseable-pages/combo_display/actions/post";
+import post from "@/reuseable-pages/combo-display/_actions/post";
 import {Form} from "@/components/ui/form";
-import FormSkeleton from "@/reuseable-pages/combo_display/components/FormSkeleton";
+import FormSkeleton from "@/reuseable-pages/combo-display/_components/FormSkeleton";
 import {Button} from "@/components/ui/button";
 import {BookPlus} from "lucide-react";
 

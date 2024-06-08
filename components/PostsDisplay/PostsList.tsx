@@ -5,7 +5,6 @@ import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import Post, {PostSkeleton} from "@/components/Post";
 import {QueryFilters} from "@/types/api/options";
-import {PostgrestResponse} from "@supabase/supabase-js";
 
 
 // Calculate the weight for a post
@@ -27,10 +26,10 @@ export function PostsList({queryFilters, type}: {
 	searchParams.set("filters", JSON.stringify(queryFilters));
 
     // Fetch posts data from the API using SWR
-	let {data: response, error, isLoading} = useSWR<PostgrestResponse<(Tables<"posts"> & {
-        profiles: Tables<"profiles"> & { courses: Tables<"courses"> | null } | null
-	})>>(`/api/posts?${searchParams.toString()}`, fetcher);
-
+	let {data: response, error, isLoading} = useSWR(
+		[`/api/posts` as const, {searchParams: searchParams.toString()}],
+		([url, params]) => fetcher(url, params)
+	);
 	const posts = response?.data;
 
     if (isLoading) {

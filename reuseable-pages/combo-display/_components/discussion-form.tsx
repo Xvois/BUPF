@@ -1,7 +1,6 @@
 import {useFormContext} from "react-hook-form";
 import useSWR from "swr";
-import {sbFetcher} from "@/utils/fetcher";
-import {Tables} from "@/types/supabase";
+import {fetcher} from "@/utils/fetcher";
 import {useEffect} from "react";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
@@ -16,7 +15,8 @@ import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/
 export default function Discussion() {
 
 	const form = useFormContext();
-	const {data: topics} = useSWR('topics', sbFetcher<Tables<"topics">>);
+	const {data: response} = useSWR('/api/topics', (url) => fetcher(url));
+	const topics = response?.data;
 
 	const {isSubmitting, defaultValues} = form.formState;
 

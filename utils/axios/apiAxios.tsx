@@ -9,9 +9,11 @@ import {ProfileResponse} from "@/types/api/profiles/types";
 import {UserModulesResponse} from "@/types/api/user/tyoes";
 import axios, {Axios, AxiosRequestConfig, AxiosResponse} from "axios";
 import {ArticlesResponse} from "@/types/api/articles/types";
+import {DraftsResponse} from "@/types/api/drafts/types";
+import {TopicsResponse} from "@/types/api/topics/types";
 
 
-type GetRouteResponseMap = {
+export type GetRouteResponseMap = {
 	'/api/courses': CoursesResponse,
 	'/api/courses/[id]': CourseResponse,
 	'/api/courses/[id]/modules': CourseModulesResponse,
@@ -21,10 +23,12 @@ type GetRouteResponseMap = {
 	'/api/posts': PostsResponse,
 	'/api/profiles/[id]': ProfileResponse,
 	'/api/user/modules': UserModulesResponse,
-	'/api/articles': ArticlesResponse
+	'/api/articles': ArticlesResponse,
+	'/api/drafts': DraftsResponse,
+	'/api/topics': TopicsResponse
 };
 
-type Params = {
+export type Params = {
 	searchParams?: string;
 	[key: string]: string | undefined;
 }

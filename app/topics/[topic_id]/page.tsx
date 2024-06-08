@@ -1,3 +1,3 @@
-import ComboDisplay from "@/reuseable-pages/combo_display/page";
+import ComboDisplay from "@/reuseable-pages/combo-display/page";
 
 export default ComboDisplay;

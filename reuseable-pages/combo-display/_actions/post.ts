@@ -2,7 +2,7 @@
 
 
 import {z} from "zod";
-import {formSchema} from "@/reuseable-pages/combo_display/schema/formSchema";
+import {formSchema} from "@/reuseable-pages/combo-display/_schema/formSchema";
 import {createClient} from "@/utils/supabase/server";
 import {revalidatePath} from "next/cache";
 import {headers} from "next/headers";

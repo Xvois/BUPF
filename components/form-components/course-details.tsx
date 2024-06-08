@@ -1,7 +1,5 @@
 import {useFormContext} from "react-hook-form";
 import useSWR from "swr";
-import {sbFetcher} from "@/utils/fetcher";
-import {Tables} from "@/types/supabase";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
@@ -18,10 +16,12 @@ import {
 } from "@/components/ui/command";
 import {Input} from "@/components/ui/input";
 import {useState} from "react";
+import {fetcher} from "@/utils/fetcher";
 
 const CourseDetailsInputs = () => {
 	const form = useFormContext()
-	const {data: courses, error, isLoading} = useSWR('courses', sbFetcher<Tables<"courses">>);
+	const {data: response, error, isLoading} = useSWR('/api/courses', (url) => fetcher(url));
+	const courses = response?.data;
 	const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 	return (
 		<>
