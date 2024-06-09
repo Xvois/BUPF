@@ -15,7 +15,7 @@ const nextConfig = {
 		],
 	},
 	experimental: {
-		ppr: true,
+		//ppr: true,
 		reactCompiler: true,
 		turbo: {}
 	},

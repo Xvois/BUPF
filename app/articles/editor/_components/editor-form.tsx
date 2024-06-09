@@ -40,9 +40,10 @@ export default function EditorForm(props: {
 			const client = createClient();
 			client.storage.from("article_images_drafts").download(props.imagePath).then(res => {
 				if (res.error) {
-					console.error(res.error);
+					form.setError("header_picture", {message: res.error.message});
 					return;
 				}
+				form.setValue("header_picture", res.data);
 				const url = URL.createObjectURL(res.data);
 				setImagePreview(url);
 			});
@@ -92,12 +93,20 @@ export default function EditorForm(props: {
 		const file = e.target.files?.[0];
 		if (file) {
 			const options = {
-				quality: 0.5,
-				maxWidth: 1000,
-				maxHeight: 400,
+				maxWidthOrHeight: 1000,
+				maxSizeMB: 1,
 			}
-			resizeImage(file).then(resizedFile => form.setValue("header_picture", resizedFile))
+			resizeImage(file, options).then(resizedFile => {
+				form.setValue("header_picture", resizedFile);
+				const url = URL.createObjectURL(resizedFile);
+				setImagePreview(url);
+			}).catch(error => form.setError("header_picture", {message: error.message}));
 		}
+	}
+
+	const clearPicture = () => {
+		form.setValue("header_picture", undefined);
+		setImagePreview(null);
 	}
 
 	const onSubmit = form.handleSubmit(async (data, e) => {
@@ -131,29 +140,39 @@ export default function EditorForm(props: {
 							<FormMessage/>
 						</FormItem>
 					)}/>
+				<FormItem>
+					<FormLabel>Heading Picture</FormLabel>
+					<FormControl>
+						<AspectRatio ratio={10 / 4}>
+							{
+								imagePreview ?
+									<Image src={imagePreview} alt={"Current header picture"}
+										   width={1000} height={400} className={"h-full w-full object-cover"}/>
+									:
+									<div className={"flex items-center justify-center h-full w-full" +
+										" bg-gradient-to-br from-background to-muted/10" +
+										" border rounded-md"}>
+										<p className={"text-muted-foreground"}>No picture selected</p>
+									</div>
+							}
+
+						</AspectRatio>
+					</FormControl>
+				</FormItem>
+				<Button variant={"outline"} size={"sm"} className={"ml-auto"} onClick={clearPicture}>Clear
+					picture</Button>
 				<FormField control={form.control} name={"header_picture"} render={({field}) => (
 					<FormItem>
-						<FormLabel>Heading Picture</FormLabel>
 						<FormControl>
 							<Input onChange={handlePictureChange}
 								   className={"text-foreground"} accept="image/*" type={"file"}/>
 						</FormControl>
+						<FormDescription>
+							Upload a new header picture for your article. The picture should be 1000x400 pixels.
+						</FormDescription>
 						<FormMessage/>
 					</FormItem>
 				)}/>
-				{
-					imagePreview && (
-						<FormItem>
-							<FormLabel>Current Picture</FormLabel>
-							<FormControl>
-								<AspectRatio ratio={10 / 4}>
-									<Image src={imagePreview} alt={"Current header picture"}
-										   width={1000} height={400} className={"h-full w-full object-cover"}/>
-								</AspectRatio>
-							</FormControl>
-						</FormItem>
-					)
-				}
 				<FormField
 					control={form.control}
 					name={"content"}

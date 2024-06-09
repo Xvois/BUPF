@@ -4,7 +4,6 @@ type Options = {
 	maxSizeMB: number,            // (default: Number.POSITIVE_INFINITY)
 	maxWidthOrHeight: number,     // compressedFile will scale down by ratio to a point that width or height is smaller than maxWidthOrHeight (default: undefined)
 								  // but, automatically reduce the size to smaller than the maximum Canvas size supported by each browser.
-								  // Please check the Caveat part for details.
 	onProgress?: (progress: number) => void,         // optional, a function takes one progress argument (percentage from 0 to 100)
 	useWebWorker?: boolean,        // optional, use multi-thread web worker, fallback to run in main-thread
 	// (default: true)
