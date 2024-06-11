@@ -43,7 +43,7 @@ export default function EditorForm(props: {
 					form.setError("header_picture", {message: res.error.message});
 					return;
 				}
-				form.setValue("header_picture", res.data);
+				form.setValue("header_picture", "");
 				const url = URL.createObjectURL(res.data);
 				setImagePreview(url);
 			});
@@ -63,49 +63,58 @@ export default function EditorForm(props: {
 
 
 	// Auto save the form after a 2s debounce time
-	// given that the form is valid and a draftID is present
 	let timeoutId = useRef<NodeJS.Timeout | null>(null);
-	useEffect(() => {
-		const handleSaveDebounced = (...args: Parameters<typeof handleSave>) => {
-			if (timeoutId.current) {
-				clearTimeout(timeoutId.current);
-			}
-			setIsSaving(true);
-			timeoutId.current = setTimeout(() => {
-				handleSave(...args).then(() => setIsSaving(false));
-			}, 2000); // 2s debounce time
-		};
+	const handleSaveDebounced = (...args: Parameters<typeof handleSave>) => {
+		if (timeoutId.current) {
+			clearTimeout(timeoutId.current);
+		}
+		setIsSaving(true);
+		timeoutId.current = setTimeout(() => {
+			handleSave(...args).then(() => setIsSaving(false));
+		}, 2000); // 2s debounce time
+	};
 
-		const watch = form.watch((data) => {
+	// Subscribe to the form state and save the form if it is valid
+	useEffect(() => {
+		const subscription = form.watch((data) => {
+			console.log("form has changed")
 			if (form.formState.isValid && props.draftID) {
 				// Since the form is valid, we can safely cast the data to the form schema type
 				const formData = data as z.infer<typeof formSchema>;
 				handleSaveDebounced(formData, props.draftID);
 			}
-		})
+		});
 
-		return () => {
-			watch.unsubscribe();
-		}
-	}, [form, props.draftID]);
+		// Cleanup function to unsubscribe when the component unmounts or dependencies change
+		return () => subscription.unsubscribe();
+	}, [form.watch, props.draftID]);
 
-	const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
-		if (file) {
-			const options = {
-				maxWidthOrHeight: 1000,
-				maxSizeMB: 1,
-			}
-			resizeImage(file, options).then(resizedFile => {
-				form.setValue("header_picture", resizedFile);
-				const url = URL.createObjectURL(resizedFile);
-				setImagePreview(url);
-			}).catch(error => form.setError("header_picture", {message: error.message}));
+
+	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.item(0);
+		if (!file) {
+			return;
 		}
+		const options = {
+			maxSizeMB: 1,
+			maxWidthOrHeight: 1000
+		}
+		// Resize image for transfer to server actions
+		const resized = await resizeImage(file, options);
+
+		// Set the form value to the blob of the compressed image
+		form.setValue("header_picture", resized);
+		// Manually trigger a save, as the form state change doesn't seem to trigger on file changes
+		handleSaveDebounced(form.getValues(), props.draftID);
+
+		// Create a preview for the user
+		const url = URL.createObjectURL(resized);
+		setImagePreview(url);
 	}
 
+
 	const clearPicture = () => {
-		form.setValue("header_picture", undefined);
+		form.setValue("header_picture", "");
 		setImagePreview(null);
 	}
 
@@ -140,9 +149,11 @@ export default function EditorForm(props: {
 							<FormMessage/>
 						</FormItem>
 					)}/>
-				<FormItem>
-					<FormLabel>Heading Picture</FormLabel>
-					<FormControl>
+
+
+				<FormField control={form.control} name={"header_picture"} render={({field}) => (
+					<FormItem>
+						<FormLabel>Heading Picture</FormLabel>
 						<AspectRatio ratio={10 / 4}>
 							{
 								imagePreview ?
@@ -157,15 +168,14 @@ export default function EditorForm(props: {
 							}
 
 						</AspectRatio>
-					</FormControl>
-				</FormItem>
-				<Button variant={"outline"} size={"sm"} className={"ml-auto"} onClick={clearPicture}>Clear
-					picture</Button>
-				<FormField control={form.control} name={"header_picture"} render={({field}) => (
-					<FormItem>
-						<FormControl>
-							<Input onChange={handlePictureChange}
+						<div className={"inline-flex w-full gap-4"}>
+							<Input onChange={handleFileChange}
 								   className={"text-foreground"} accept="image/*" type={"file"}/>
+							<Button variant={"outline"} className={"ml-auto"} onClick={clearPicture}>Clear
+								picture</Button>
+						</div>
+						<FormControl>
+
 						</FormControl>
 						<FormDescription>
 							Upload a new header picture for your article. The picture should be 1000x400 pixels.

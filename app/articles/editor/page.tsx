@@ -26,6 +26,7 @@ export default async function Editor({searchParams}: {
 	const defaultValues = {
 		heading: draft?.heading || "",
 		content: draft?.content || "",
+		header_picture: ""
 	}
 
 	return (
