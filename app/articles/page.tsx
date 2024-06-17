@@ -1,15 +1,13 @@
 import {Separator} from "@/components/ui/separator";
 import apiAxios from "@/utils/axios/apiAxios";
-import {Article} from "@/components/Article";
 import Image from "next/image";
-import {AspectRatio} from "@/components/ui/aspect-ratio";
-import {Fragment} from "react";
-import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
-import Profile from "@/components/Profile";
 import truncateMarkdown from "@/utils/trunc";
-import {Sparkle} from "lucide-react";
-import {Button} from "@/components/ui/button";
+import Profile from "@/components/Profile";
 import Link from "next/link";
+import {Package} from "lucide-react";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {Tables} from "@/types/supabase";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60;
@@ -17,63 +15,125 @@ export const revalidate = 60;
 export default async function Articles() {
 
 	const {data: articles} = await apiAxios.get("/api/articles").then(res => res.data);
-	const featured = articles?.filter(a => a.tags.includes("featured"))[0];
-
+	const featured = articles?.filter(a => a.tags.includes("featured"))[0]
 	return (
 		<div className={"space-y-8 w-full"}>
-			<header className={"text-center overflow-hidden pt-8 px-8"}>
-				<div className={"relative flex flex-col h-96 items-center align-middle justify-center space-y-8"}>
-					<h1 className={"font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl"}>Articles</h1>
-					<p>
-						From the students and academics at the University of Bath.
-					</p>
+			<header className={"flex flex-col p-6 h-40 justify-center"}>
+				<div className={"inline-flex gap-2"}>
+					<Package/>
+					<p>Section</p>
 				</div>
+				<h1 className={"font-black text-4xl"}>Articles</h1>
+				<p>
+					Write and read articles on physics topics, share your knowledge and learn from others.
+				</p>
 			</header>
-			<section>
-
-			</section>
 			<Separator/>
-			{
-				featured && (
-					<Fragment>
-						<section className={"p-6 space-y-8 grid gap-8 grid-rows-2 lg:grid-cols-3 lg:grid-rows-none"}>
-							<div className={"flex flex-col row-span-1 lg:col-span-1 gap-4"}>
-								<h2 className={"inline-flex items-center gap-2 font-bold"}><Sparkle className={"h-4" +
-									" w-4"}/> Featured article</h2>
-								<div>
-									<h3 className={"font-black text-4xl"}>{featured.heading}</h3>
-									by <Profile user={featured.profiles}/>
-								</div>
-								<AspectRatio ratio={10 / 4}>
-									<Image
-										src={featured.header_picture}
-										alt={featured.heading}
-										width={1000}
-										height={400}
-										className={"h-full w-full object-cover"}/>
-								</AspectRatio>
-							</div>
-							<div className={"row-span-1 lg:col-span-2"}>
-								<MarkdownRender>
-									{truncateMarkdown(featured.content, 1000)}
-								</MarkdownRender>
-								<Button variant={"link"} asChild>
-									<Link href={"/articles/" + featured.id}>Read more</Link>
-								</Button>
-							</div>
-						</section>
-						<Separator/>
-					</Fragment>
-				)
-			}
-			<section className={"p-6 space-y-8 h-full"}>
-				<h2>Recent posts</h2>
-				<div className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"}>
-					{articles?.map(article => (
-						<Article article={article} key={article.id}/>
-					))}
-				</div>
+			<div className={"flex flex-row gap-4 p-6 py-0"}>
+				<Button asChild>
+					<Link href={"/articles/editor"}>
+						Write an article
+					</Link>
+				</Button>
+			</div>
+			<Separator/>
+			<section className={"flex flex-col mx-auto w-fit p-6 space-y-8 h-full flex-wrap gap-4"}>
+				<LargeArticleBlock articles={[featured, featured, featured, featured]}/>
 			</section>
 		</div>
+	)
+}
+
+const LargeArticleBlock = ({articles}: {
+	articles: (Tables<"posts"> & {
+		profiles: (Tables<"profiles"> & { courses: Tables<"courses"> | null }) | null
+	})[]
+}) => {
+	return (
+		<div className={"flex flex-row gap-8"}>
+			<LargeArticle article={articles[0]} key={articles[0].id}/>
+			<div className={"flex flex-col justify-around"}>
+				<SmallArticle article={articles[1]} key={articles[1].id}/>
+				<SmallArticle article={articles[2]} key={articles[2].id}/>
+				<SmallArticle article={articles[3]} key={articles[3].id}/>
+			</div>
+		</div>
+	)
+}
+
+const LargeArticle = ({article}: {
+	article: Tables<"posts"> & {
+		profiles: (Tables<"profiles"> & { courses: Tables<"courses"> | null }) | null
+	}
+}) => {
+
+	if (article.header_picture === null) {
+		throw new Error("LargeArticle must have a header picture.");
+	}
+
+	return (
+		<div className={"flex flex-row gap-4 w-full max-w-screen-md flex-grow"}>
+			<Image
+				src={article.header_picture}
+				alt={article.heading}
+				width={1000}
+				height={400}
+				className={"h-96 w-96 object-cover aspect-square rounded-md"}
+			/>
+			<article className={"inline-flex flex-col gap-4"}>
+				<div>
+					<h2 className={"font-black text-2xl"}>{article.heading}</h2>
+					{article.profiles?.courses && <Profile user={article.profiles}/>}
+				</div>
+				<p className={"text-sm text-muted-foreground"}>{truncateMarkdown(article.content, 200)}</p>
+				<div className={"flex flex-col gap-4 mt-auto"}>
+					<div className={"flex flex-row gap-2"}>
+						{
+							article.tags.map(tag => (
+								<Badge variant={"secondary"} key={tag}>
+									{tag}
+								</Badge>
+							))
+						}
+					</div>
+					<Separator/>
+					<Button variant={"link"} asChild>
+						<Link href={`/articles/${article.id}`}>
+							Read More
+						</Link>
+					</Button>
+				</div>
+			</article>
+		</div>
+	)
+}
+
+const SmallArticle = ({article}: {
+	article: Tables<"posts"> & {
+		profiles: (Tables<"profiles"> & { courses: Tables<"courses"> | null }) | null
+	}
+}) => {
+	return (
+		<Link href={`/articles/${article.id}`} className={"flex flex-row gap-2 max-w-96"}>
+			{
+				article.header_picture && (
+					<Image
+						src={article.header_picture}
+						alt={article.heading}
+						width={500}
+						height={200}
+						className={"h-24 w-24 object-cover aspect-square rounded-md"}
+					/>
+				)
+			}
+			<div className={"flex flex-col"}>
+				<h3 className={"text-xl font-semibold"}>
+					{article.heading}
+				</h3>
+				<p className={"text-xs text-muted-foreground"}>
+					{truncateMarkdown(article.content, 100)}
+				</p>
+			</div>
+		</Link>
 	)
 }

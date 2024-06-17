@@ -9,8 +9,7 @@ export const revalidate = false;
 export default async function Modules() {
 	return (
 		<div className="w-full space-y-4">
-			<header
-				className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none">
+			<header className={"flex flex-col p-6 h-40 justify-center"}>
 				<div className={"inline-flex gap-2"}>
 					<Package/>
 					<p>Section</p>

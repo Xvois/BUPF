@@ -41,8 +41,7 @@ export default async function ComboDisplay({params, searchParams}: {
 
 	return (
 		<div className="w-full grid space-y-4">
-			<header
-				className="flex h-full w-full select-none flex-col justify-end p-6 no-underline outline-none">
+			<header className={"flex flex-col p-6 h-40 justify-center"}>
 				<div className="inline-flex gap-2">
 					{isModule ?
 						<Fragment>
@@ -58,17 +57,19 @@ export default async function ComboDisplay({params, searchParams}: {
 				</div>
 				<h1 className="font-black text-4xl uppercase break-words overflow-hidden">{pageData.title}</h1>
 				<p>{pageData.description}</p>
-				<div className="flex flex-row flex-wrap gap-2 mt-2">
-					{
-						isModule ?
-							params.module_id &&
-							<QuestionButton module_id={params.module_id}/>
-							:
-							params.topic_id &&
-							<DiscussionButton topic_id={params.topic_id}/>
-					}
-				</div>
 			</header>
+			<Separator/>
+			{/* Why does px-6 not work?? */}
+			<div className={"p-6 py-0"}>
+				{
+					isModule ?
+						params.module_id &&
+						<QuestionButton module_id={params.module_id}/>
+						:
+						params.topic_id &&
+						<DiscussionButton topic_id={params.topic_id}/>
+				}
+			</div>
 			<Separator/>
 			<section className="flex flex-col p-6 space-y-4 max-h-[1000px] md:h-[750px]">
 				<div>

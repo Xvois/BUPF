@@ -15,12 +15,12 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import post from "@/reuseable-pages/combo-display/_actions/post";
 import {Form} from "@/components/ui/form";
 import FormSkeleton from "@/reuseable-pages/combo-display/_components/FormSkeleton";
-import {Button} from "@/components/ui/button";
+import {Button, ButtonProps} from "@/components/ui/button";
 import {BookPlus} from "lucide-react";
 
 const LazyDiscussionForm = lazy(() => import("./discussion-form"));
 
-export default function DiscussionButton(props: { topic_id: string }) {
+export default function QuestionButton({topic_id, ...props}: { topic_id: string } & ButtonProps) {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -30,7 +30,7 @@ export default function DiscussionButton(props: { topic_id: string }) {
 			heading: "",
 			content: "",
 			type: "discussion",
-			target: props.topic_id,
+			target: topic_id,
 			anonymous: false,
 		}
 	})
@@ -43,7 +43,7 @@ export default function DiscussionButton(props: { topic_id: string }) {
 	return (
 		<Dialog open={isDialogOpen} onOpenChange={(e) => setIsDialogOpen(e)}>
 			<DialogTrigger>
-				<Button variant={"default"} className={"space-x-2"}>
+				<Button {...props} className={"space-x-2"}>
 					<BookPlus className={"h-4 w-4"}/>
 					<p>Start a discussion</p>
 				</Button>
