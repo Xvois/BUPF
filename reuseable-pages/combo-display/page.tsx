@@ -6,7 +6,7 @@ import {BookCopy, Component} from "lucide-react";
 import LinkBox from "@/components/LinkBox";
 import DiscussionButton from "@/reuseable-pages/combo-display/_components/DiscussionButton";
 import QuestionButton from "@/reuseable-pages/combo-display/_components/QuestionButton";
-import {Fragment} from "react";
+import SectionHeader from "@/components/SectionHeader";
 
 type PageData = {
 	created_at: string,
@@ -41,23 +41,12 @@ export default async function ComboDisplay({params, searchParams}: {
 
 	return (
 		<div className="w-full grid space-y-4">
-			<header className={"flex flex-col p-6 h-40 justify-center"}>
-				<div className="inline-flex gap-2">
-					{isModule ?
-						<Fragment>
-							<Component/>
-							<p>Module</p>
-						</Fragment>
-						:
-						<Fragment>
-							<BookCopy/>
-							<p>Topic</p>
-						</Fragment>
-					}
-				</div>
-				<h1 className="font-black text-4xl uppercase break-words overflow-hidden">{pageData.title}</h1>
-				<p>{pageData.description}</p>
-			</header>
+			<SectionHeader
+				icon={isModule ? <Component/> : <BookCopy/>}
+				type={isModule ? "Module" : "Topic"}
+				title={pageData.title}
+				description={pageData.description}
+			/>
 			<Separator/>
 			{/* Why does px-6 not work?? */}
 			<div className={"p-6 py-0"}>

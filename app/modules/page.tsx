@@ -2,6 +2,7 @@ import {Separator} from "@/components/ui/separator";
 import {Package} from "lucide-react";
 import {CoreModules} from "@/app/modules/_components/CoreModules";
 import {OptionalModules} from "@/app/modules/_components/OptionalModules";
+import SectionHeader from "@/components/SectionHeader";
 
 export const dynamic = 'auto';
 export const revalidate = false;
@@ -9,16 +10,12 @@ export const revalidate = false;
 export default async function Modules() {
 	return (
 		<div className="w-full space-y-4">
-			<header className={"flex flex-col p-6 h-40 justify-center"}>
-				<div className={"inline-flex gap-2"}>
-					<Package/>
-					<p>Section</p>
-				</div>
-				<h1 className={"font-black text-4xl"}>Modules</h1>
-				<p>
-					View your modules, see what&apos;s coming up, and discuss with your peers.
-				</p>
-			</header>
+			<SectionHeader
+				icon={<Package/>}
+				type={"Section"}
+				title={"Modules"}
+				description={"Explore the modules that are available to you."}
+			/>
 			<Separator/>
 			<section className={"space-y-4 p-6"}>
 				<div>

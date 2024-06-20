@@ -77,7 +77,6 @@ export default function EditorForm(props: {
 	// Subscribe to the form state and save the form if it is valid
 	useEffect(() => {
 		const subscription = form.watch((data) => {
-			console.log("form has changed")
 			if (form.formState.isValid && props.draftID) {
 				// Since the form is valid, we can safely cast the data to the form schema type
 				const formData = data as z.infer<typeof formSchema>;

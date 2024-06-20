@@ -4,30 +4,36 @@ import Image from "next/image";
 import truncateMarkdown from "@/utils/trunc";
 import Profile from "@/components/Profile";
 import Link from "next/link";
-import {Package} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import {Tables} from "@/types/supabase";
+import SectionHeader from "@/components/SectionHeader";
+import {Package} from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60;
 
+const hasHeaderPicture = (article: Tables<"posts">) => {
+	return article.header_picture !== null;
+}
+
 export default async function Articles() {
 
-	const {data: articles} = await apiAxios.get("/api/articles").then(res => res.data);
+	const {data: articles, error: articlesError} = await apiAxios.get("/api/articles").then(res => res.data);
+
+	if (articlesError) {
+		return new Error(articlesError.message);
+	}
+
 	const featured = articles?.filter(a => a.tags.includes("featured"))[0]
 	return (
 		<div className={"space-y-8 w-full"}>
-			<header className={"flex flex-col p-6 h-40 justify-center"}>
-				<div className={"inline-flex gap-2"}>
-					<Package/>
-					<p>Section</p>
-				</div>
-				<h1 className={"font-black text-4xl"}>Articles</h1>
-				<p>
-					Write and read articles on physics topics, share your knowledge and learn from others.
-				</p>
-			</header>
+			<SectionHeader
+				icon={<Package/>}
+				type={"Section"}
+				title={"Articles"}
+				description={"Read articles written by your peers and contribute your own."}
+			/>
 			<Separator/>
 			<div className={"flex flex-row gap-4 p-6 py-0"}>
 				<Button asChild>
@@ -37,26 +43,17 @@ export default async function Articles() {
 				</Button>
 			</div>
 			<Separator/>
-			<section className={"flex flex-col mx-auto w-fit p-6 space-y-8 h-full flex-wrap gap-4"}>
-				<LargeArticleBlock articles={[featured, featured, featured, featured]}/>
+			<section className={"grid md:grid-cols-2 lg:grid-cols-3 w-fit p-6 space-y-8 h-full flex-wrap gap-4"}>
+				{
+					articles.map((article) => {
+						if (hasHeaderPicture(article)) {
+							return <LargeArticle key={article.id} article={article}/>
+						} else {
+							return <SmallArticle key={article.id} article={article}/>
+						}
+					})
+				}
 			</section>
-		</div>
-	)
-}
-
-const LargeArticleBlock = ({articles}: {
-	articles: (Tables<"posts"> & {
-		profiles: (Tables<"profiles"> & { courses: Tables<"courses"> | null }) | null
-	})[]
-}) => {
-	return (
-		<div className={"flex flex-row gap-8"}>
-			<LargeArticle article={articles[0]} key={articles[0].id}/>
-			<div className={"flex flex-col justify-around"}>
-				<SmallArticle article={articles[1]} key={articles[1].id}/>
-				<SmallArticle article={articles[2]} key={articles[2].id}/>
-				<SmallArticle article={articles[3]} key={articles[3].id}/>
-			</div>
 		</div>
 	)
 }
