@@ -43,7 +43,7 @@ export default async function Articles() {
 				</Button>
 			</div>
 			<Separator/>
-			<section className={"grid md:grid-cols-2 lg:grid-cols-3 w-fit p-6 space-y-8 h-full flex-wrap gap-4"}>
+            <section className={"grid md:grid-cols-1 lg:grid-cols-2 gap-4 p-6"}>
 				{
 					articles.map((article) => {
 						if (hasHeaderPicture(article)) {
@@ -69,7 +69,7 @@ const LargeArticle = ({article}: {
 	}
 
 	return (
-		<div className={"flex flex-row gap-4 w-full max-w-screen-md flex-grow"}>
+        <div className={"flex flex-row gap-4 w-[768px] flex-grow"}>
 			<Image
 				src={article.header_picture}
 				alt={article.heading}
@@ -77,7 +77,7 @@ const LargeArticle = ({article}: {
 				height={400}
 				className={"h-96 w-96 object-cover aspect-square rounded-md"}
 			/>
-			<article className={"inline-flex flex-col gap-4"}>
+            <article className={"inline-flex w-full flex-col gap-4"}>
 				<div>
 					<h2 className={"font-black text-2xl"}>{article.heading}</h2>
 					{article.profiles?.courses && <Profile user={article.profiles}/>}
@@ -111,7 +111,7 @@ const SmallArticle = ({article}: {
 	}
 }) => {
 	return (
-		<Link href={`/articles/${article.id}`} className={"flex flex-row gap-2 max-w-96"}>
+        <Link href={`/articles/${article.id}`} className={"flex flex-row gap-2 w-96 h-48 border"}>
 			{
 				article.header_picture && (
 					<Image

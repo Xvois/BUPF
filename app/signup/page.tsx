@@ -52,7 +52,7 @@ export default function Page() {
                 <CardTitle>BUPF</CardTitle>
                 <CardDescription>The Bath University Physics Forum</CardDescription>
             </CardHeader>
-            <SignupForm {...{signUp}} />
+            <SignupForm signUp={signUp}/>
         </Card>
     );
 }

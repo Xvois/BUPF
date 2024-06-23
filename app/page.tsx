@@ -6,8 +6,7 @@ import {cn} from "@/utils/cn";
 import {h1, h2, subtle_p} from "@/styles/text";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
-import {ServerError} from "@/components/ServerError";
-import {CourseModules} from "@/types/api/courses/types";
+import ElementGraph from "@/components/ElementGraph";
 
 /*
  Emphasise something within a subtle text
@@ -114,9 +113,6 @@ const MarkdownSection = ({isActive}: { isActive?: boolean }) => {
             " p-6 items-center" +
             " align-middle" +
             " justify-center"}>
-            {
-                isActive && <div>Is active.</div>
-            }
             <h2 className={cn(h2, "z-10")}>
                 Make meaningful contributions
             </h2>
@@ -144,98 +140,50 @@ const CourseSection = ({isActive}: { isActive?: boolean }) => {
     const {data: courseModulesResponse} = useSWR(`/api/courses/[id]/modules`, (url) => fetcher(url, {id: id.toString()}));
     const courseModules = courseModulesResponse?.data;
 
-    if (!courseModules) {
-        return (
-            <ServerError>
-                Failed to load course modules
-            </ServerError>
-        )
-    }
-
     const getActiveModules = () => {
         switch (activeYear) {
             case 1:
-                return courseModules.year_1
+                return courseModules?.year_1;
             case 2:
-                return courseModules.year_2
+                return courseModules?.year_2;
             case 3:
-                return courseModules.year_3
+                return courseModules?.year_3;
             case 4:
-                return courseModules.year_4
+                return courseModules?.year_4;
             case 5:
-                return courseModules.year_5
+                return courseModules?.year_5;
             default:
-                return {required: [], optional: []} as CourseModules
+                return {required: [], optional: []};
         }
     }
-
     const activeModules = getActiveModules();
 
-    const Timeline = () => {
-        return (
-            <div className={"grid w-full grid-cols-4 justify-around"}>
-                {
-                    Array.from({length: courseLength}, (_, i) => i + 1).map((year) => {
-                        const isLast = year === courseLength;
-                        const stdClass = `p-4 rounded-full bg-background transition-all outline`;
-                        // The className depending on the active year
-                        const activeYearClass = cn(activeYear > year && "bg-gradient-to-br from-background to-muted/100 outline-muted-foreground", activeYear === year && "bg-foreground")
-                        // The className depending on if the parent is active or not
-                        const parentActiveClass = isActive ? "opacity-100" : "opacity-0";
-                        return (
-                            <div className={"relative"} key={`year_${year}`}>
-                                <button key={year} onClick={() => setActiveYear(year)}
-                                        className={cn(stdClass, activeYearClass, parentActiveClass)}/>
-                                {
-                                    !isLast &&
-                                    (
-                                        <React.Fragment>
-                                            <div
-                                                className={"absolute flex top-0 left-0 w-full h-full pointer-events-none"}>
-                                                <div
-                                                    className={cn(`w-full h-1 -z-10 my-auto transition-transform ease-out bg-muted-foreground`, activeYear > year ? "scale-x-100 translate-x-1/2" : "scale-x-0 translate-x-0", activeYear === year + 1 && "bg-gradient-to-r from-muted-foreground to-foreground")}/>
-                                            </div>
-                                            <div
-                                                className={"absolute flex top-0 left-0 w-full h-full pointer-events-none"}>
-                                                <div className={`w-full h-1 -z-20 my-auto bg-muted translate-x-1/2`}/>
-                                            </div>
-                                        </React.Fragment>
-                                    )
+    const allActiveModules = activeModules?.required.concat(activeModules?.optional);
 
-                                }
-                            </div>
-                        )
-                    })
-                }
-            </div>
-        )
-    }
-
-    const ModuleShowcase = () => {
+    const YearsDisplay = () => {
         return (
-            <div className={"space-y-4"}>
-                <div className={"flex flex-row flex-wrap gap-4 justify-center max-w-screen-xl mx-auto"}>
+            <div className={"flex flex-col h-1/3 justify-end"}>
+                <div className={"flex flex-row gap-16 justify-center"}>
                     {
-                        activeModules?.required.map((module, index) => (
-                            <div key={index}
-                                 className={"p-4 max-w-screen-sm rounded-md border bg-gradient-to-br from-background to-muted/50 flex-grow"}>
-                                <h4>{module.title}</h4>
-                                <p className={subtle_p}>{module.description}</p>
+                        Array.from({length: courseLength}, (_, i) => i + 1).map((year) => (
+                            <div key={year}>
+                                <button onClick={() => setActiveYear(year)}
+                                        className={cn("text-6xl font-black transition duration-250 text-muted hover:text-muted-foreground", year === activeYear && "text-foreground hover:text-foreground")}>{year}</button>
                             </div>
                         ))
                     }
                 </div>
+                <p className={subtle_p}>year of <EmSubtle>MSci
+                    Physics</EmSubtle></p>
             </div>
         )
     }
+
 
     return (
         <section className={"relative flex flex-col text-center w-full h-screen p-6 items-center" +
             " align-middle" +
             " justify-center"}>
-            {
-                isActive && <div>Is active.</div>
-            }
             <h2 className={h2}>
                 A course that stays with you
             </h2>
@@ -244,10 +192,23 @@ const CourseSection = ({isActive}: { isActive?: boolean }) => {
             </p>
             <div className={"absolute top-0 left-0 w-full h-full flex flex-col justify-between"}>
                 <div className={"flex flex-col h-1/3 justify-end"}>
-                    <Timeline/>
+                    <YearsDisplay/>
                 </div>
                 <div className={"h-1/3"}>
-                    <ModuleShowcase/>
+                    {
+                        allActiveModules?.length > 1 && (
+                            <ElementGraph stroke={"hsl(var(--muted))"} strokeWidth={"2"}>
+                                {
+                                    allActiveModules.map((module, index) => (
+                                        <button
+                                            className={cn(subtle_p, universalOffsets[index], "absolute text-lg text-muted-foreground")}>
+                                            {module.title}
+                                        </button>
+                                    ))
+                                }
+                            </ElementGraph>
+                        )
+                    }
                 </div>
             </div>
         </section>
@@ -277,36 +238,57 @@ const markdownComments = [
     "What actually is enthalpy and how does it relate to the internal energy of a system?",
 ]
 
+const universalOffsets = [
+    "bottom-[25%] right-[38%]",
+    "bottom-[65%] right-[40%]",
+    "bottom-[68%] right-[10%]",
+    "bottom-[0%] right-[30%]",
+    "bottom-[33%] right-[25%]",
+    "bottom-[65%] right-[14%]",
+    "bottom-[80%] right-[10%]",
+    "bottom-[0%] right-[65%]",
+    "bottom-[70%] right-[70%]",
+    "bottom-[23%] left-[5%] ",
+    "bottom-[20%] right-[10%] ",
+    "bottom-[10%] right-[60%] ",
+    "bottom-[60%] right-[70%] ",
+    "bottom-[20%] left-[75%] ",
+    "bottom-[75%] left-[80%] ",
+    "bottom-[90%] left-[10%] ",
+    "bottom-[10%] left-[0%] ",
+];
+
+const universalScaling = [
+    "scale-100 text-foreground/100 z-0",
+    "scale-[80%] text-foreground/80 -z-20",
+    "scale-100 text-foreground/100 z-0",
+    "scale-[60%] text-foreground/60 -z-40",
+    "scale-[70%] text-foreground/70 -z-30",
+    "scale-[80%] text-foreground/80 -z-[60]",
+    "scale-50 text-foreground/50 -z-[50]",
+    "scale-[80%] text-foreground/80 -z-20",
+    "scale-90 text-foreground/90 -z-10",
+    "scale-100 text-foreground/100 z-0",
+    "scale-50 text-foreground/50 -z-[50]",
+    "scale-50 text-foreground/50 -z-[50]",
+    "scale-[60%] text-foreground/60 -z-40",
+    "scale-[80%] text-foreground/80 -z-20",
+    "scale-[70%] text-foreground/70 -z-30",
+    "scale-[60%] text-foreground/60 -z-40",
+    "scale-100 text-foreground/100 z-0\""
+]
+
 const FloatingComment = (props: { content: string, index: number, className?: string }) => {
 
-    const classProperties = [
-        "bottom-[25%] right-[38%] scale-100 text-foreground/100 z-0",
-        "bottom-[65%] right-[40%] scale-[80%] text-foreground/80 -z-20",
-        "bottom-[68%] right-[10%] scale-100 text-foreground/100 z-0",
-        "bottom-[0%] right-[30%] scale-[60%] text-foreground/60 -z-40",
-        "bottom-[33%] right-[25%] scale-[70%] text-foreground/70 -z-30",
-        "bottom-[65%] right-[14%] scale-[80%] text-foreground/80 -z-[60]",
-        "bottom-[80%] right-[10%] scale-50 text-foreground/50 -z-[50]",
-        "bottom-[0%] right-[65%] scale-[80%] text-foreground/80 -z-20",
-        "bottom-[70%] right-[70%] scale-90 text-foreground/90 -z-10",
-        "bottom-[23%] left-[5%] scale-100 text-foreground/100 z-0",
-        "bottom-[20%] right-[10%] scale-50 text-foreground/50 -z-[50]",
-        "bottom-[10%] right-[60%] scale-50 text-foreground/50 -z-[50]",
-        "bottom-[60%] right-[70%] scale-[60%] text-foreground/60 -z-40",
-        "bottom-[20%] left-[75%] scale-[80%] text-foreground/80 -z-20",
-        "bottom-[75%] left-[80%] scale-[70%] text-foreground/70 -z-30",
-        "bottom-[90%] left-[10%] scale-[60%] text-foreground/60 -z-40",
-        "bottom-[10%] left-[0%] scale-100 text-foreground/100 z-0",
-    ];
 
     return (
         <div
             style={{
-                transition: "1s opacity",
+                transition: "opacity 1s",
                 transitionDelay: `${props.index / 10}s`,
                 transitionTimingFunction: "ease-in-out"
             }}
-            className={cn("absolute bg-background border p-4 w-fit min-w-96 shrink-0 h-fit rounded-md shadow", classProperties[props.index], props.className)}>
+            className={cn("absolute bg-background border p-4 w-fit min-w-96 shrink-0 h-fit rounded-md shadow", universalOffsets[props.index], universalScaling[props.index], props.className)}>
             <p className={"text-sm text-muted-foreground"}>Anonymous</p>
             <MarkdownRender>
                 {props.content}

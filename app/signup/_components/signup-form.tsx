@@ -73,14 +73,14 @@ function SignupContents(props: { signUp: (fd: z.infer<typeof formSchema>) => Pro
 }
 
 /*
-Conditionally renders a form with multiple stages.
-Form stages should be supplied as children.
-Form context is used to manage form state, so a form
-wrapper is expected.
+    Conditionally renders a form with multiple stages.
+    Form stages should be supplied as children.
+    Form context is used to manage form state, so a form
+    wrapper is expected.
 
-An optional custom page schema can be supplied to
-help provide more context to auth about errors
-on other pages.
+    An optional custom page schema can be supplied to
+    help provide more context to auth about errors
+    on other pages.
  */
 const MultiStageForm = ({children, pageSchema}: { children: ReactNode[], pageSchema?: string[][] }) => {
     const [progress, setProgress] = useState<number>(0);
