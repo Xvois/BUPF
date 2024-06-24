@@ -51,18 +51,19 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<any>> = ({children, ..
     const divRef = useRef<HTMLDivElement | null>(null);
     const svgRef = useRef<SVGSVGElement | null>(null);
 
-    // Refs are now passed as props [React 19]
-    const existingChildRefs = children.map(child => child.props.ref);
+    // Create an array of refs for all children, or use the existing ref if it exists
+    const childRefs = children.map((child) => {
+        if(child.props.ref) {
+            return child.props.ref;
+        } else {
+            return React.createRef();
+        }
+    });
 
-    // Create a ref for each child, or use the existing ref if it exists
-    const childRefs = children.map((_, index) => existingChildRefs[index] || useRef<HTMLElement | null>(null));
 
-    // Attach all refs to children
+    // Attach the refs to the children (does not override existing refs)
     const childrenWithRefs = children.map((child, index) => {
-        return cloneElement(child, {
-            ref: childRefs[index],
-            key: index
-        });
+        return cloneElement(child, {ref: childRefs[index]});
     });
 
 
@@ -96,6 +97,8 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<any>> = ({children, ..
                     for (let i = 0; i < relativePositions.length; i++) {
                         for (let j = 0; j < relativePositions.length; j++) {
                             if (i !== j && !linked.includes(j)) {
+                                // Very very odd TS error here
+                                // @ts-ignore
                                 drawLine(getCenter(relativePositions[i]), getCenter(relativePositions[j]));
                             }
                         }
@@ -119,8 +122,7 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<any>> = ({children, ..
         }
         ,
         [children]
-    )
-    ; // Re-run the effect if children change
+    ); // Re-run the effect if children change
 
     return (
         <div className={"relative w-full h-full -z-10"} ref={divRef}>

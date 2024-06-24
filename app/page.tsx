@@ -71,7 +71,7 @@ const DynamicSections = ({children, ...props}: DynamicSectionsProps) => {
     return (
         <div {...props}>
             {childrenWithProps.map((child, index) => (
-                <div ref={(el) => {
+                <div key={`section_${index}`} ref={(el) => {
                     sectionRefs.current[index] = el;
                 }}>
                     {child}
@@ -196,11 +196,12 @@ const CourseSection = ({isActive}: { isActive?: boolean }) => {
                 </div>
                 <div className={"h-1/3"}>
                     {
-                        allActiveModules?.length > 1 && (
+                        allActiveModules && (
                             <ElementGraph stroke={"hsl(var(--muted))"} strokeWidth={"2"}>
                                 {
                                     allActiveModules.map((module, index) => (
                                         <button
+                                            key={module.id}
                                             className={cn(subtle_p, universalOffsets[index], "absolute text-lg text-muted-foreground")}>
                                             {module.title}
                                         </button>
