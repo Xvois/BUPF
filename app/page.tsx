@@ -195,21 +195,22 @@ const CourseSection = ({isActive}: { isActive?: boolean }) => {
                     <YearsDisplay/>
                 </div>
                 <div className={"h-1/3"}>
-                    {
-                        allActiveModules && (
-                            <ElementGraph stroke={"hsl(var(--muted))"} strokeWidth={"2"}>
-                                {
-                                    allActiveModules.map((module, index) => (
-                                        <button
-                                            key={module.id}
-                                            className={cn(subtle_p, universalOffsets[index], "absolute text-lg text-muted-foreground")}>
-                                            {module.title}
-                                        </button>
-                                    ))
-                                }
-                            </ElementGraph>
-                        )
-                    }
+                    <ElementGraph stroke={"hsl(var(--foreground))"} strokeWidth={"2"}
+                                  stops={[
+                                      {offset: "0%", style: {stopOpacity: 0}},
+                                      {offset: "50%", style: {stopColor: "hsl(var(--foreground))", stopOpacity: 1}},
+                                      {offset: "100%", style: {stopOpacity: 0}}
+                                  ]}>
+                        {
+                            allActiveModules?.map((module, index) => (
+                                <button
+                                    key={module.id}
+                                    className={cn("absolute text-sm p-2 border backdrop-blur-sm bg-none rounded-md")}>
+                                    {module.title}
+                                </button>
+                            ))
+                        }
+                    </ElementGraph>
                 </div>
             </div>
         </section>
