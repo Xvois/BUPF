@@ -161,21 +161,21 @@ export type Database = {
 					created_at: string
 					description: string | null
 					id: string
-					tags: string[] | null
+					tags: string[]
 					title: string
 				}
 				Insert: {
 					created_at?: string
 					description?: string | null
 					id: string
-					tags?: string[] | null
+					tags?: string[]
 					title?: string
 				}
 				Update: {
 					created_at?: string
 					description?: string | null
 					id?: string
-					tags?: string[] | null
+					tags?: string[]
 					title?: string
 				}
 				Relationships: []
