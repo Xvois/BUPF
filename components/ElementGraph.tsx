@@ -99,10 +99,14 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<any>> = ({nodes, links
     // Store the timestamp of the previous frame
     let lastTimestamp = 0;
 
-// Function to calculate the forces between nodes
+    // Function to calculate the forces between nodes
     const tick = (timestamp: number) => {
-        // Calculate the time difference between the current frame and the last frame
-        const dt = (timestamp - lastTimestamp);
+
+        // Keep stability at low frame rates
+        const dtUpperBound = 16;
+
+        // Calculate the time difference between the current frame and the last frame, with an upper bound
+        const dt = Math.min(timestamp - lastTimestamp, dtUpperBound);
 
         const scale = 1000;
 
@@ -156,6 +160,7 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<any>> = ({nodes, links
             });
             return force;
         });
+
 
         motionStates.position.current = prev.position.map((pos, i) => {
             // Use verlet integration to update the position
@@ -233,7 +238,6 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<any>> = ({nodes, links
     };
 
     const animate = (timestamp: number) => {
-        console.log("Animate called!");
         // Update ref positions
         tick(timestamp);
         // Update the transform of each child

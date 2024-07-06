@@ -1,62 +1,80 @@
 'use client'
 
-import React, {useEffect, useRef, useState} from "react";
+import React, {createContext, ReactElement, ReactNode, useContext, useEffect, useRef, useState} from 'react';
 
-type DynamicSectionsProps = {
-    children: React.ReactElement[];
-} & React.HTMLAttributes<HTMLDivElement>;
+type ActiveSectionContextType = {
+    activeSection: number;
+    registerSection: (ref: HTMLDivElement) => void;
+    getSectionIndex: (ref: HTMLDivElement | null) => number;
+};
 
-export default function DynamicSections({children, ...props}: DynamicSectionsProps) {
+const ActiveSectionContext = createContext<ActiveSectionContextType | undefined>(undefined);
 
-    // Define the section refs and which ones are activated
-    const numOfSections = children.length;
-    const sectionRefs = useRef(Array(numOfSections).fill(null));
+export const useActiveSection = () => {
+    const context = useContext(ActiveSectionContext);
+    if (!context) {
+        throw new Error('useActiveSection must be used within a ActiveSectionProvider');
+    }
+    return context;
+};
+
+const ActiveSectionProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [activeSection, setActiveSection] = useState(-1);
+    const sectionRefs = useRef<HTMLDivElement[]>([]);
 
     useEffect(() => {
-        // Create an observer to watch the sections
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                const index = sectionRefs.current.indexOf(entry.target);
-                if (entry.isIntersecting && index !== -1) {
-                    setActiveSection(index);
-                }
-            });
-        }, {
-            threshold: 0.75
-        });
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const index = sectionRefs.current.indexOf(entry.target as HTMLDivElement);
+                    if (entry.isIntersecting && index !== -1) {
+                        setActiveSection(index);
+                    }
+                });
+            },
+            {threshold: 0.75}
+        );
 
-        // Observe each section
         sectionRefs.current.forEach((ref) => {
-            if (ref) {
-                observer.observe(ref);
-            }
+            if (ref) observer.observe(ref);
         });
 
-        // Cleanup
         return () => {
             sectionRefs.current.forEach((ref) => {
-                if (ref) {
-                    observer.unobserve(ref);
-                }
+                if (ref) observer.unobserve(ref);
             });
         };
     }, []);
 
-    // Clone children and attach props to pass down
-    const childrenWithProps = children.map((child, index) => {
-        return React.cloneElement(child, {isActive: activeSection === index});
-    });
+    const registerSection = (ref: HTMLDivElement) => {
+        if (ref && !sectionRefs.current.includes(ref)) {
+            sectionRefs.current.push(ref);
+        }
+    };
+
+    const getSectionIndex = (ref: HTMLDivElement | null) => {
+        if (!ref) return -1;
+        return sectionRefs.current.indexOf(ref);
+    }
 
     return (
-        <div {...props}>
-            {childrenWithProps.map((child, index) => (
-                <div key={`section_${index}`} ref={(el) => {
-                    sectionRefs.current[index] = el;
-                }}>
-                    {child}
-                </div>
-            ))}
-        </div>
+        <ActiveSectionContext.Provider value={{activeSection, registerSection, getSectionIndex}}>
+            {children}
+        </ActiveSectionContext.Provider>
+    );
+};
+
+type DynamicSectionsProps = {
+    children: ReactElement[];
+} & React.HTMLAttributes<HTMLDivElement>;
+
+
+export default function DynamicSections({children, ...props}: DynamicSectionsProps) {
+    return (
+        <ActiveSectionProvider>
+            <div {...props}>
+                {children}
+            </div>
+        </ActiveSectionProvider>
     );
 }

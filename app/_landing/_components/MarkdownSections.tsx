@@ -3,8 +3,9 @@
 import {cn} from "@/utils/cn";
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import EmSubtle from "@/components/EmSubtle";
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import {h2, subtle_p} from "@/styles/text";
+import {useActiveSection} from "@/components/DynamicSections";
 
 const markdownComments = [
     "Does anyone known how to find $\\delta t$ for in this domain?",
@@ -85,12 +86,26 @@ const FloatingComment = (props: { content: string, index: number, className?: st
     )
 }
 
-export default function MarkdownSection({isActive}: { isActive?: boolean }) {
+export default function MarkdownSection() {
+
+
+    const {activeSection, registerSection, getSectionIndex} = useActiveSection();
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (ref.current) {
+            registerSection(ref.current);
+        }
+    }, [registerSection]);
+
+    const isActive = activeSection === getSectionIndex(ref.current);
+
+
     return (
         <section className={"relative flex flex-col text-center w-full h-screen" +
             " p-6 items-center" +
             " align-middle" +
-            " justify-center"}>
+            " justify-center"} ref={ref}>
             <h2 className={cn(h2, "z-10")}>
                 Make meaningful contributions
             </h2>
@@ -107,5 +122,5 @@ export default function MarkdownSection({isActive}: { isActive?: boolean }) {
             </div>
         </section>
     )
-}
+};
 

@@ -1,14 +1,27 @@
 'use client'
 
-import React, {HTMLProps, useState} from "react";
+import React, {HTMLProps, useEffect, useRef, useState} from "react";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import {cn} from "@/utils/cn";
 import {h2, subtle_p} from "@/styles/text";
 import EmSubtle from "@/components/EmSubtle";
 import ElementGraph from "@/components/ElementGraph";
+import {useActiveSection} from "@/components/DynamicSections";
 
-export default function CourseSection({isActive}: { isActive?: boolean }) {
+export default function CourseSection() {
+
+    const {activeSection, registerSection, getSectionIndex} = useActiveSection();
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (ref.current) {
+            registerSection(ref.current);
+        }
+    }, [registerSection]);
+
+    const isActive = activeSection === getSectionIndex(ref.current);
+
     const [activeYear, setActiveYear] = useState(1);
     const courseLength = 4;
 
@@ -42,7 +55,7 @@ export default function CourseSection({isActive}: { isActive?: boolean }) {
             <div className={"absolute left-0 bottom-8 w-full z-10"}>
                 <div
                     className={"flex flex-col w-fit mx-auto gap-2 "}>
-                    <div className={"inline-flex gap-4 py-2 px-4 backdrop-blur rounded-full border items-center"}>
+                    <div className={"inline-flex gap-4 py-2 px-4 backdrop-blur rounded-md border items-center"}>
                         <p className={"font-semibold"}>Year</p>
                         <div className={"flex gap-4"}>
                             {
@@ -87,7 +100,7 @@ export default function CourseSection({isActive}: { isActive?: boolean }) {
             return (
                 <button {...buttonProps}
                         type={"button"}
-                        className={cn("border px-4 py-2 bg-gradient-to-br from-muted/0 to-muted/75 backdrop-blur shrink-0 h-fit w-fit rounded-full shadow", buttonProps.className)}>
+                        className={cn("border px-4 py-2 bg-gradient-to-br backdrop-blur shrink-0 h-fit w-fit rounded-full", buttonProps.className)}>
                     <p className={"uppercase font-semibold"}>{module.id}</p>
                 </button>
             )
@@ -97,7 +110,7 @@ export default function CourseSection({isActive}: { isActive?: boolean }) {
             return (
                 <button {...buttonProps}
                         type={"button"}
-                        className={cn("border px-4 py-2 backdrop-blur shrink-0 h-fit w-fit rounded-full", buttonProps.className)}>
+                        className={cn("border px-4 py-2 backdrop-blur shrink-0 h-fit w-fit rounded-full text-muted-foreground", buttonProps.className)}>
                     <p className={"text-xs"}>#{tag}</p>
                 </button>
             )
@@ -123,9 +136,9 @@ export default function CourseSection({isActive}: { isActive?: boolean }) {
     }
 
     return (
-        <section className={"relative flex flex-col text-center w-full h-screen p-6 items-center" +
-            " align-middle" +
-            " justify-center"}>
+        <section
+            className={"relative flex flex-col text-center w-full h-screen p-6 items-center align-middle justify-center"}
+            ref={ref}>
             <h2 className={h2}>
                 A course that stays with you
             </h2>
