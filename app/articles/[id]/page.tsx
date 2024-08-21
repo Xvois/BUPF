@@ -17,7 +17,7 @@ export default async function ArticlePage({params}: { params: { id: string } }) 
 	}
 
 	return (
-		<div className={"flex flex-col space-y-8 w-full max-w-screen-md py-16"}>
+		<article className={"flex flex-col space-y-8 w-full h-full max-w-screen-lg p-16 border-l border-r"}>
 			<div>
 				<h1 className={"font-black text-5xl"}>{post.heading}</h1>
 				by <Profile user={post.profiles}/>
@@ -35,6 +35,6 @@ export default async function ArticlePage({params}: { params: { id: string } }) 
 			</MarkdownRender>
 			<Separator/>
 			<CommentSection post_id={params.id} post_type={"article"} owner={post.owner}/>
-		</div>
+		</article>
 	)
 }

@@ -27,7 +27,6 @@ async function fetchModules(moduleIDs: Tables<"modules">[]) {
             value: moduleIDs
         }
     ];
-
     let searchParams = new URLSearchParams();
     searchParams.append('filters', JSON.stringify(modFilters));
 	return await apiAxios.get(`/api/modules`, {searchParams: searchParams.toString()}).then(res => res.data);

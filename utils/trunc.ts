@@ -1,4 +1,4 @@
-export default function truncateMarkdown(markdown: string, length: number): string {
+export function truncateMarkdown(markdown: string, length: number): string {
 	// Initial truncation point
 	let truncPoint = length;
 
@@ -34,5 +34,27 @@ export default function truncateMarkdown(markdown: string, length: number): stri
 	// Truncate the string at the adjusted truncation point
 	const truncated = markdown.slice(0, truncPoint);
 
+	// Add an ellipsis if the string was truncated
+	if (truncated !== markdown) {
+		return truncated + '...';
+	}
+
 	return truncated;
+}
+
+export const calcFittingCharacters = (content: string, width: number, height: number, fontSize: number): number => {
+	// Calculate the maximum number of characters that can fit in the given area
+	const maxCharacters = calcMaxCharacters(width, height, fontSize);
+
+	// Truncate the content to the maximum number of characters
+	return Math.min(content.length, maxCharacters);
+};
+
+
+export const calcMaxCharacters = (width: number, height: number, fontSize: number): number => {
+	// Average width of a character in the given font size (approximation)
+	const avgCharWidth = fontSize * 0.75; // This is a rough estimate and may vary with different fonts
+
+	// Calculate the maximum number of characters that can fit in the given area
+	return Math.floor(width / avgCharWidth) * Math.floor(height / fontSize);
 }

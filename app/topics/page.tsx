@@ -24,8 +24,8 @@ export default async function Modules() {
 			<SectionHeader
 				icon={<Package/>}
 				type={"Section"}
-				title={"Modules"}
-				description={"Explore the modules that are available to you."}
+				title={"Topics"}
+				description={"Explore discussions related to the following topics."}
 			/>
 			<Separator/>
 			<section className={"space-y-4 p-6"}>

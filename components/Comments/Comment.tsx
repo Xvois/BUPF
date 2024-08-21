@@ -79,7 +79,7 @@ export default function Comment({
                   <CheckCircle className={"h-5 w-5 text-green-600/90"} />
                 </TooltipTrigger>
                 <TooltipContent>
-					<p>This thread is the author`&apos;`s selected answer.</p>
+                  <p>This thread is the author&apos;s selected answer.</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

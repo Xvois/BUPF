@@ -7,7 +7,7 @@ import DynamicSections from "@/components/DynamicSections";
 import WelcomeSection from "@/app/_landing/_components/WelcomeSection";
 import MarkdownSection from "@/app/_landing/_components/MarkdownSections";
 import CourseSection from "@/app/_landing/_components/CourseSection";
-import DiscussionSection from "@/app/_landing/_components/DiscussionSections";
+import OpenSourceSection from "@/app/_landing/_components/OpenSourceSection";
 
 export default function Landing() {
     return (
@@ -15,7 +15,7 @@ export default function Landing() {
             <WelcomeSection/>
             <MarkdownSection/>
             <CourseSection/>
-            <DiscussionSection/>
+            <OpenSourceSection/>
         </DynamicSections>
     );
 }

@@ -18,7 +18,7 @@ export default function WelcomeSection() {
     const isActive = activeSection === getSectionIndex(ref.current);
 
     return (
-        <section className={"flex flex-col text-center w-full h-screen p-6 items-center" +
+        <section className={"flex flex-col text-center w-full h-screen p-6 -mt-20 items-center" +
             " align-middle" +
             " justify-center"} ref={ref}>
             <div>

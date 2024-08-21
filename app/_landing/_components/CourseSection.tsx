@@ -96,23 +96,21 @@ export default function CourseSection() {
         });
 
 
-        const Module = ({module, ...buttonProps}: { module: any } & HTMLProps<HTMLButtonElement>) => {
+        const Module = ({module, ...props}: { module: any } & HTMLProps<HTMLDivElement>) => {
             return (
-                <button {...buttonProps}
-                        type={"button"}
-                        className={cn("border px-4 py-2 bg-gradient-to-br backdrop-blur shrink-0 h-fit w-fit rounded-full", buttonProps.className)}>
+                <div {...props}
+                     className={cn("", props.className)}>
                     <p className={"uppercase font-semibold"}>{module.id}</p>
-                </button>
+                </div>
             )
         }
 
-        const Tag = ({tag, ...buttonProps}: { tag: string } & HTMLProps<HTMLButtonElement>) => {
+        const Tag = ({tag, ...props}: { tag: string } & HTMLProps<HTMLDivElement>) => {
             return (
-                <button {...buttonProps}
-                        type={"button"}
-                        className={cn("border px-4 py-2 backdrop-blur shrink-0 h-fit w-fit rounded-full text-muted-foreground", buttonProps.className)}>
+                <div {...props}
+                     className={cn("text-muted-foreground", props.className)}>
                     <p className={"text-xs"}>#{tag}</p>
-                </button>
+                </div>
             )
         }
 

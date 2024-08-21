@@ -1,19 +1,15 @@
-import React, {ReactNode} from "react";
+import React from "react";
 import {cn} from "@/utils/cn";
 import {CircleAlert} from "lucide-react";
 
-interface ServerErrorProps {
-    children: ReactNode;
-}
-
-export const ServerError = React.forwardRef((props: ServerErrorProps & React.HTMLAttributes<HTMLDivElement>, ref) => {
+export const ServerError = (props: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>) => {
     if(props.children) {
         return (
             <div {...props}
-                 className={cn("grid gap-4 w-full items-center border border-destructive/10 bg-gradient-to-br" +
+                 className={cn("grid gap-2 w-full items-center border border-destructive/10 bg-gradient-to-br" +
                      " from-background" +
                      " to-red-500/10 rounded-md p-4", props.className)}>
-                <p className={"inline-flex gap-1 items-center font-bold text-destructive"}><CircleAlert
+                <p className={"inline-flex gap-2 items-center font-bold text-destructive"}><CircleAlert
                     className={"h-4 w-4"}/>Server error</p>
                 <p className={"text-sm text-destructive/75"}>
                     {props.children}
@@ -21,6 +17,4 @@ export const ServerError = React.forwardRef((props: ServerErrorProps & React.HTM
             </div>
         )
     }
-})
-
-ServerError.displayName = "ServerError";
+}

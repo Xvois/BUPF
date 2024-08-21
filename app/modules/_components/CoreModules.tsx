@@ -1,6 +1,7 @@
 import LinkBox from "@/components/LinkBox";
 import {cookies} from "next/headers";
 import apiAxios from "@/utils/axios/apiAxios";
+import InfoBox from "@/components/InfoBox";
 
 
 export async function CoreModules() {
@@ -22,12 +23,9 @@ export async function CoreModules() {
 						</LinkBox>
 					))
 					:
-					<div className={"p-4 border rounded-md text-center"}>
-						<p>No required modules available.</p>
-						<p className={"text-sm text-muted-foreground"}>Think this is a mistake? Contact a
-							site
-							admin.</p>
-					</div>
+					<InfoBox className={"border-dashed"} title={"No required modules available."}>
+						Think this is a mistake? Contact a site admin.
+					</InfoBox>
 			}
 		</div>
 	)
