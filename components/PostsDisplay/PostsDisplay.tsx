@@ -5,12 +5,11 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
 import {TagIcon} from "lucide-react";
 import {useState} from "react";
-import {QueryFilters} from "@/types/api/options";
+import {Filter} from "@/utils/api/helpers";
 
 export function PostsDisplay({
 								 type,
 								 id,
-								 searchParams,
 								 tags
 							 }: {
 	type: "modules" | "topics";
@@ -24,7 +23,7 @@ export function PostsDisplay({
 		sort: 'rel'
 	})
 
-	const queryFilters: QueryFilters = [
+	const queryFilters: Filter[] = [
 		{
 			column: "tags",
 			operator: "cs",

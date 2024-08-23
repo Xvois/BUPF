@@ -101,7 +101,6 @@ class APIAxios {
 	}
 }
 
-// Axios instance to make type safe requests to the API
 const apiAxios: APIAxios = new APIAxios();
 
 // Export the instance

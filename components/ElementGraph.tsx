@@ -53,25 +53,63 @@ const getRelativePosition = (element: HTMLElement, container: HTMLElement): Boun
 }
 
 /**
- * The ElementGraph component is used to create a force-directed graph of elements.
+ * ElementGraph component
+ *
+ * This component is used to draw lines between child elements based on the provided nodes and links.
+ * Each node element must be a forward ref to allow the ElementGraph component to access its DOM element.
+ *
+ * @param {ElementGraphProps} props - The props for the ElementGraph component.
+ * @param {Array<{ id: string, element: React.ReactElement }>} props.nodes - An array of nodes, each containing an id and a React element.
+ * @param {Array<{ source: string, target: string }>} props.links - An array of links, each containing a source and target node id.
+ *
+ * @example
+ * // Define a Module component with forward ref
+ * const Module = React.forwardRef<HTMLDivElement, { module: any } & HTMLProps<HTMLDivElement>>(({ module, ...props }, ref) => {
+ *     return (
+ *         <div {...props} ref={ref} className={cn("", props.className)}>
+ *             <p className={"uppercase font-semibold"}>{module.id}</p>
+ *         </div>
+ *     );
+ * });
+ *
+ * // Define a Tag component with forward ref
+ * const Tag = React.forwardRef<HTMLDivElement, { tag: string } & HTMLProps<HTMLDivElement>>(({ tag, ...props }, ref) => {
+ *     return (
+ *         <div {...props} ref={ref} className={cn("text-muted-foreground", props.className)}>
+ *             <p className={"text-xs"}>#{tag}</p>
+ *         </div>
+ *     );
+ * });
+ *
+ * // Create nodes and links
+ * const nodes = [
+ *     { id: 'module1', element: <Module module={{ id: 'module1' }} /> },
+ *     { id: 'tag1', element: <Tag tag="tag1" /> }
+ * ];
+ * const links = [
+ *     { source: 'module1', target: 'tag1' }
+ * ];
+ *
+ * // Use the ElementGraph component
+ * <ElementGraph nodes={nodes} links={links} />
  */
-const ElementGraph: React.FC<ElementGraphProps & SVGProps<any>> = ({nodes, links}) => {
+const ElementGraph: React.FC<ElementGraphProps & SVGProps<never>> = ({nodes, links}: ElementGraphProps) => {
 
     const divRef = useRef<HTMLDivElement | null>(null);
     const svgRef = useRef<SVGSVGElement | null>(null);
     const defsRef = useRef<SVGDefsElement | null>(null);
 
-    const [graph, setGraph] = React.useState({nodes, links});
+    const graph = {nodes, links}
     const motionStates = {
         position: useRef(
             nodes.map((n, i) =>
                 ({x: Math.random() * 500 * i, y: Math.random() * 10 * i}))
         ),
         velocity: useRef(
-            nodes.map((n, i) => ({x: 0, y: 0}))
+            nodes.map(() => ({x: 0, y: 0}))
         ),
         acceleration: useRef(
-            nodes.map((n, i) => ({x: 0, y: 0}))
+            nodes.map(() => ({x: 0, y: 0}))
         ),
     }
 
@@ -121,7 +159,7 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<any>> = ({nodes, links
         };
 
         const forces = prev.position.map((pos, i) => {
-            let force = {x: 0, y: 0};
+            const force = {x: 0, y: 0};
             nodes.forEach((_, j) => {
                 if (i !== j) {
                     const otherPos = prev.position[j];
@@ -167,10 +205,10 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<any>> = ({nodes, links
             return newPos;
         });
 
-        motionStates.acceleration.current = forces.map((force, i) => {
+        motionStates.acceleration.current = forces.map((force) => {
             const newAcc: Vector2D = {
-                x: force.x / 1,
-                y: force.y / 1
+                x: force.x,
+                y: force.y
             };
             return newAcc;
         });

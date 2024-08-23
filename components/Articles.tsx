@@ -45,7 +45,7 @@ export const Article = ({article, ...props}: {
     return (
         <Link href={`/articles/${article.id}`}
               {...props}
-              className={cn("flex flex-row w-full max-w-screen-lg gap-4 p-4 items-center rounded-md border", props.className)}>
+              className={cn("flex flex-row h-52 w-full max-w-screen-lg gap-4 p-4 items-center rounded-md border", props.className)}>
             {
                 article.header_picture && <Image src={article.header_picture} alt={"temp alt"} width={400} height={400}
                                                  className={"rounded-md h-44 w-44 object-cover"}/>
@@ -55,7 +55,7 @@ export const Article = ({article, ...props}: {
                     <h3 className={"text-xl font-semibold"}>
                         {article.heading}
                     </h3>
-                    <p>
+                    <p className={"text-sm"}>
                         by {article.profiles?.courses && <Profile user={article.profiles}/>}
                     </p>
                 </div>

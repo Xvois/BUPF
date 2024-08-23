@@ -43,12 +43,13 @@ export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
     const [open, setOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [reply, setReply] = useState("");
+    const [isAnonymous, setIsAnonymous] = useState(false);
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (reply) {
             setIsSubmitting(true);
-            await postComment(reply, false, postID, comment.id);
+            await postComment(reply, isAnonymous, postID, comment.id);
             setIsSubmitting(false);
             setReply("");
             setOpen(false);
@@ -70,7 +71,7 @@ export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
                         Reply to comment
                     </DialogTitle>
                     <DialogDescription>
-                        {comment.content}
+                        "{comment.content}"
                     </DialogDescription>
                 </DialogHeader>
                 <form className={"flex flex-col gap-2"} onSubmit={onSubmit}>
@@ -86,8 +87,9 @@ export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
                             <Checkbox
                                 name={"anonymous"}
                                 id={"anonymous"}
-                                checked={false}
+                                checked={isAnonymous}
                                 onClick={() => {
+                                    setIsAnonymous((state) => !state);
                                 }}
                             />
                             <div className="grid gap-1.5 leading-none">

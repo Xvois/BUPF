@@ -2,27 +2,28 @@ import {Separator} from "@/components/ui/separator";
 import apiAxios from "@/utils/axios/apiAxios";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
-import {Tables} from "@/types/supabase";
 import SectionHeader from "@/components/SectionHeader";
 import {Package} from "lucide-react";
 import {Article} from "@/components/Articles";
+import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
+import {createAPIParams} from "@/utils/api/helpers";
+import {ArticlesResponse} from "@/types/api/articles/types";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60;
 
-const hasHeaderPicture = (article: Tables<"posts">) => {
-    return article.header_picture !== null;
-}
-
 export default async function Articles() {
 
-    const {data: articles, error: articlesError} = await apiAxios.get("/api/articles").then(res => res.data);
+    const params = createAPIParams([], {id: "created_at", type: {ascending: false}}, 5)
+    const {
+        data: recentArticles,
+        error: recentArticlesError
+    } = await apiAxios.get("/api/articles", {searchParams: params.toString()}).then(res => res.data);
 
-    if (articlesError) {
-        return new Error(articlesError.message);
+    if (recentArticlesError) {
+        return new Error(recentArticlesError.message);
     }
 
-    const featured = articles?.filter(a => a.tags.includes("featured"))[0]
     return (
         <div className={"space-y-4 w-full"}>
             <SectionHeader
@@ -43,12 +44,30 @@ export default async function Articles() {
             </div>
             <Separator/>
             <section className={"flex flex-col items-center justify-around gap-4 p-6"}>
-                {
-                    articles.map((article) =>
-                        <Article key={article.id} article={article}/>
-                    )
-                }
+                <h2 className={"font-semibold"}>Recent Articles</h2>
+                <ArticlesCarousel articles={recentArticles}/>
             </section>
         </div>
+    )
+}
+
+const ArticlesCarousel = ({articles}: { articles: ArticlesResponse["data"] }) => {
+    return (
+        <Carousel
+            opts={{
+                align: "start",
+                loop: true,
+            }}
+        >
+            <CarouselContent>
+                {
+                    articles && articles.map((article) =>
+                        <CarouselItem className="basis-1/2 2xl:basis-1/3">
+                            <Article key={article.id} article={article}/>
+                        </CarouselItem>
+                    )
+                }
+            </CarouselContent>
+        </Carousel>
     )
 }

@@ -20,14 +20,14 @@ async function fetchCourseModules(supabase: SupabaseClient, modules: number) {
 
 // Fetch the modules
 async function fetchModules(moduleIDs: Tables<"modules">[]) {
-    let modFilters = [
+    const modFilters = [
         {
             column: "id",
             operator: "in",
             value: moduleIDs
         }
     ];
-    let searchParams = new URLSearchParams();
+    const searchParams = new URLSearchParams();
     searchParams.append('filters', JSON.stringify(modFilters));
 	return await apiAxios.get(`/api/modules`, {searchParams: searchParams.toString()}).then(res => res.data);
 }
@@ -51,7 +51,7 @@ function replaceModuleIDs(data: any, moduleMap: Map<string, Tables<"modules">>) 
     // Loop over each year
     for (let i = 1; i <= 5; i++) {
         // Use a type assertion to tell TypeScript that `data` can be indexed with a string
-        let yearData = (data as LooseObject)[`year_${i}`];
+        const yearData = (data as LooseObject)[`year_${i}`];
 
         // Check if the year exists in the courseModules
         if (yearData) {
@@ -76,8 +76,7 @@ export async function GET(
     if (courseError) {
         return Response.json({data: null, error: courseError}, {status: 200});
     }
-
-
+    
     if (!course.modules) {
         return Response.json({data: [], error: null}, {status: 200});
     }

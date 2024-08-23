@@ -96,23 +96,27 @@ export default function CourseSection() {
         });
 
 
-        const Module = ({module, ...props}: { module: any } & HTMLProps<HTMLDivElement>) => {
+        const Module = React.forwardRef<HTMLDivElement, { module: any } & HTMLProps<HTMLDivElement>>(({
+                                                                                                          module,
+                                                                                                          ...props
+                                                                                                      }, ref) => {
             return (
-                <div {...props}
-                     className={cn("", props.className)}>
+                <div {...props} ref={ref} className={cn("", props.className)}>
                     <p className={"uppercase font-semibold"}>{module.id}</p>
                 </div>
-            )
-        }
+            );
+        });
 
-        const Tag = ({tag, ...props}: { tag: string } & HTMLProps<HTMLDivElement>) => {
+        const Tag = React.forwardRef<HTMLDivElement, { tag: string } & HTMLProps<HTMLDivElement>>(({
+                                                                                                       tag,
+                                                                                                       ...props
+                                                                                                   }, ref) => {
             return (
-                <div {...props}
-                     className={cn("text-muted-foreground", props.className)}>
+                <div {...props} ref={ref} className={cn("text-muted-foreground", props.className)}>
                     <p className={"text-xs"}>#{tag}</p>
                 </div>
-            )
-        }
+            );
+        });
 
         const moduleNodes = allActiveModules.map((module, index) => ({
             id: module.id,

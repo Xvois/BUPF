@@ -21,9 +21,3 @@ export type PostgrestOperators =
 	| 'plfts'
 	| 'phfts'
 	| 'wfts';
-
-export type QueryFilters = {
-	column: string;
-	operator: PostgrestOperators;
-	value: string;
-}[]
