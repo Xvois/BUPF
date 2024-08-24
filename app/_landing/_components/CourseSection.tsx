@@ -142,7 +142,8 @@ export default function CourseSection() {
             className={"relative flex flex-col text-center w-full h-screen p-6 items-center align-middle justify-center"}
             ref={ref}>
             <h2 className={h2}>
-                A course that stays with you
+                A course that <span className={"bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400" +
+                        " inline-block text-transparent bg-clip-text"}>stays with you</span>
             </h2>
             <p className={subtle_p}>
                 Choose your course, and <EmSubtle>never</EmSubtle> lose track of your progress.

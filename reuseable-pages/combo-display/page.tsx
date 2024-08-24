@@ -28,9 +28,9 @@ export default async function ComboDisplay({params, searchParams}: {
         return redirect("/not-found");
     }
 
-    let id = params.module_id || params.topic_id as string;
+    const id = params.module_id || params.topic_id as string;
 
-    let {data} = await supabase.from(params.module_id ? "modules" : "topics").select("*").eq("id", id).single();
+    const {data} = await supabase.from(params.module_id ? "modules" : "topics").select("*").eq("id", id).single();
 
     if (!data) {
         return redirect("/not-found");

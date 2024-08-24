@@ -4,7 +4,7 @@ import {Tables} from "@/types/supabase";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import Post, {PostSkeleton} from "@/components/Post";
-import {createAPIParams, Filter} from "@/utils/api/helpers";
+import {wrapQParams, Filter} from "@/utils/api/helpers";
 
 
 // Calculate the weight for a post
@@ -23,7 +23,7 @@ export function PostsList({queryFilters, type}: {
 }) {
 
 
-    const params = createAPIParams(queryFilters)
+    const params = wrapQParams(queryFilters)
 
     // Fetch posts data from the API using SWR
 	const {data: response, isLoading} = useSWR(

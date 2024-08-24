@@ -3,10 +3,10 @@ import apiAxios from "@/utils/axios/apiAxios";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import SectionHeader from "@/components/SectionHeader";
-import {Package} from "lucide-react";
-import {Article} from "@/components/Articles";
+import {Package, PlusCircle} from "lucide-react";
+import {Article, ArticleSkeleton} from "@/components/Articles";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
-import {createAPIParams} from "@/utils/api/helpers";
+import {wrapQParams} from "@/utils/api/helpers";
 import {ArticlesResponse} from "@/types/api/articles/types";
 
 export const dynamic = 'force-dynamic';
@@ -14,14 +14,24 @@ export const revalidate = 60;
 
 export default async function Articles() {
 
-    const params = createAPIParams([], {id: "created_at", type: {ascending: false}}, 5)
+    const articlesPerCarousel = 5;
+
+    const recentParams = wrapQParams([], {id: "created_at", type: {ascending: false}}, articlesPerCarousel);
     const {
         data: recentArticles,
         error: recentArticlesError
-    } = await apiAxios.get("/api/articles", {searchParams: params.toString()}).then(res => res.data);
-
+    } = await apiAxios.get("/api/articles", {searchParams: recentParams.toString()}).then(res => res.data);
     if (recentArticlesError) {
         return new Error(recentArticlesError.message);
+    }
+
+    const popularParams = wrapQParams([], {id: "attached_comments", type: {ascending: false}}, articlesPerCarousel);
+    const {
+        data: popularArticles,
+        error: popularArticlesError
+    } = await apiAxios.get("/api/articles", {searchParams: popularParams.toString()}).then(res => res.data);
+    if (popularArticlesError) {
+        return new Error(popularArticlesError.message);
     }
 
     return (
@@ -43,15 +53,29 @@ export default async function Articles() {
                 </Button>
             </div>
             <Separator/>
-            <section className={"flex flex-col items-center justify-around gap-4 p-6"}>
-                <h2 className={"font-semibold"}>Recent Articles</h2>
-                <ArticlesCarousel articles={recentArticles}/>
+            <section className={"flex flex-col gap-4 p-6"}>
+                <div>
+                    <h2 className={"font-semibold"}>Popular Articles</h2>
+                    <p>
+                        Articles sorted by their engagement from your peers.
+                    </p>
+                </div>
+                <ArticlesCarousel articles={popularArticles} articlesPerCarousel={articlesPerCarousel}/>
+            </section>
+            <section className={"flex flex-col gap-4 p-6"}>
+                <div>
+                    <h2 className={"font-semibold"}>Recent Articles</h2>
+                    <p>
+                        The latest articles written by your peers.
+                    </p>
+                </div>
+                <ArticlesCarousel articles={recentArticles} articlesPerCarousel={articlesPerCarousel} />
             </section>
         </div>
     )
 }
 
-const ArticlesCarousel = ({articles}: { articles: ArticlesResponse["data"] }) => {
+const ArticlesCarousel = ({articles, articlesPerCarousel}: { articles: ArticlesResponse["data"], articlesPerCarousel: number }) => {
     return (
         <Carousel
             opts={{
@@ -62,8 +86,21 @@ const ArticlesCarousel = ({articles}: { articles: ArticlesResponse["data"] }) =>
             <CarouselContent>
                 {
                     articles && articles.map((article) =>
-                        <CarouselItem className="basis-1/2 2xl:basis-1/3">
-                            <Article key={article.id} article={article}/>
+                        <CarouselItem key={article.id} className="basis-[100%] lg:basis-1/2 2xl:basis-1/3">
+                            <Article article={article}/>
+                        </CarouselItem>
+                    )
+                }
+                {
+                    articles && articles?.length < articlesPerCarousel && [...Array(articlesPerCarousel - articles.length).keys()].map((i) =>
+                        <CarouselItem key={i} className="basis-[100%] lg:basis-1/2 2xl:basis-1/3">
+                            <Link
+                                href={"/articles/editor"}
+                                className={"relative flex flex-col h-48 w-full max-w-screen-lg gap-4 p-4 items-center justify-center rounded-md border"}>
+                                <ArticleSkeleton className={"absolute -z-10 opacity-50"} />
+                                <p className={"font-semibold"}>Create a new article</p>
+                                <PlusCircle strokeWidth={1} size={48} className={"text-foreground"}/>
+                            </Link>
                         </CarouselItem>
                     )
                 }

@@ -32,6 +32,10 @@ export default function Page() {
             },
         };
 
+        if(!data.email.endsWith("@bath.ac.uk")) {
+            return redirect("/signup?error=Please use a bath.ac.uk email address");
+        }
+
         const {error} = await supabase.auth.signUp(data);
         if (error) {
             return redirect("/signup?error=" + error.message);

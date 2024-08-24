@@ -107,7 +107,8 @@ export default function MarkdownSection() {
             " align-middle" +
             " justify-center"} ref={ref}>
             <h2 className={cn(h2, "z-10")}>
-                Make meaningful contributions
+                Make <span className={"bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400" +
+                " inline-block text-transparent bg-clip-text"}>meaningful</span> contributions
             </h2>
             <p className={subtle_p}>
                 BUPF allows you to write with <EmSubtle>Markdown</EmSubtle> and <EmSubtle>LaTeX</EmSubtle>.

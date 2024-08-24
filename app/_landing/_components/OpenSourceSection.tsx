@@ -170,8 +170,6 @@ export default function OpenSourceSection() {
         }
     }, [registerSection]);
 
-    const isActive = activeSection === getSectionIndex(ref.current);
-
     const maxCharacters = ref.current && calcMaxCharacters(ref.current.clientWidth, ref.current.clientHeight, 12);
     const numOfSnippets = maxCharacters && Math.ceil(maxCharacters / bunchedSnippet.length);
     const fittingSnippet = numOfSnippets && bunchedSnippet.repeat(numOfSnippets);
@@ -182,7 +180,8 @@ export default function OpenSourceSection() {
             ref={ref}>
             <div>
                 <h2 className={cn(h2, "z-10")}>
-                    Open for all
+                    <span className={"bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400" +
+                        " inline-block text-transparent bg-clip-text"}>Open</span> for all
                 </h2>
                 <p className={subtle_p}>
                     Open source on <EmSubtle><ExtLink

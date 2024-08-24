@@ -1,4 +1,4 @@
-import {applyQueryParams} from "@/utils/api/helpers";
+import {unwrapAndApplyQParams} from "@/utils/api/helpers";
 import {ModulesResponse} from "@/types/api/modules/types";
 import {createAdminClient} from "@/utils/supabase/admin";
 
@@ -12,9 +12,11 @@ export async function GET(request: Request) {
 
 	const query = client.from("modules").select("*");
 
-	applyQueryParams(query, params);
-
-	const response: ModulesResponse = await query;
-
-	return Response.json(response);
+	try {
+		unwrapAndApplyQParams(query, params);
+		const response: ModulesResponse = await query;
+		return Response.json(response);
+	} catch (e) {
+		return Response.json({error: e}, {status: 400});
+	}
 }

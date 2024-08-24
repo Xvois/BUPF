@@ -1,6 +1,7 @@
 import {createAdminClient} from "@/utils/supabase/admin";
 import {CoursesResponse} from "@/types/api/courses/types";
-import {applyQueryParams} from "@/utils/api/helpers";
+import {unwrapAndApplyQParams} from "@/utils/api/helpers";
+import {ArticlesResponse} from "@/types/api/articles/types";
 
 export const dynamic = 'force-static';
 export const revalidate = 60;
@@ -13,10 +14,14 @@ export async function GET(request: Request) {
     const params = new URL(request.url).searchParams;
 
     const query = client.from("courses").select("*");
-	
-	applyQueryParams(query, params);
-	
-	const response: CoursesResponse = await query;
 
-	return Response.json(response);
+    try {
+        unwrapAndApplyQParams(query, params);
+        const response: CoursesResponse = await query;
+        return Response.json(response);
+    } catch (e) {
+        return Response.json({error: e}, {status: 400});
+    }
+
+
 }

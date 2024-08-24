@@ -99,11 +99,14 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<never>> = ({nodes, lin
     const svgRef = useRef<SVGSVGElement | null>(null);
     const defsRef = useRef<SVGDefsElement | null>(null);
 
+    const width = divRef.current?.clientWidth || window.innerWidth;
+    const height = divRef.current?.clientHeight || window.innerHeight;
+
     const graph = {nodes, links}
     const motionStates = {
         position: useRef(
-            nodes.map((n, i) =>
-                ({x: Math.random() * 500 * i, y: Math.random() * 10 * i}))
+            nodes.map(() =>
+                ({x: Math.random() * width, y: Math.random() * height}))
         ),
         velocity: useRef(
             nodes.map(() => ({x: 0, y: 0}))
@@ -264,6 +267,7 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<never>> = ({nodes, lin
             if (sourceIndex !== -1 && targetIndex !== -1) {
                 const source = childRefs[sourceIndex];
                 const target = childRefs[targetIndex];
+                if(!source.current || !target.current) return;
                 const sourceBB = getRelativePosition(source.current as HTMLElement, divRef.current as HTMLElement);
                 const targetBB = getRelativePosition(target.current as HTMLElement, divRef.current as HTMLElement);
                 drawLine(getCenter(sourceBB), getCenter(targetBB));

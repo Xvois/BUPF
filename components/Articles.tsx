@@ -9,6 +9,7 @@ import Link, {LinkProps} from "next/link";
 import {useEffect, useRef, useState} from "react";
 import {Separator} from "@/components/ui/separator";
 import {cn} from "@/utils/cn";
+import {Skeleton} from "@/components/ui/skeleton";
 
 export const Article = ({article, ...props}: {
     article: Tables<"posts"> & {
@@ -45,10 +46,10 @@ export const Article = ({article, ...props}: {
     return (
         <Link href={`/articles/${article.id}`}
               {...props}
-              className={cn("flex flex-row h-52 w-full max-w-screen-lg gap-4 p-4 items-center rounded-md border", props.className)}>
+              className={cn("flex flex-row h-48 w-full max-w-screen-lg gap-4 p-4 items-center rounded-md border", props.className)}>
             {
                 article.header_picture && <Image src={article.header_picture} alt={"temp alt"} width={400} height={400}
-                                                 className={"rounded-md h-44 w-44 object-cover"}/>
+                                                 className={"hidden md:block rounded-md h-40 w-40 object-cover"}/>
             }
             <div className={"flex flex-col w-full gap-2"}>
                 <div>
@@ -79,5 +80,30 @@ export const Article = ({article, ...props}: {
                 </div>
             </div>
         </Link>
+    )
+}
+
+export const ArticleSkeleton = ({className}: {className?: string}) => {
+    return (
+        <div className={cn("flex flex-row h-48 w-full max-w-screen-lg gap-4 p-4 items-center rounded-md border", className)}>
+            <div className={"flex flex-col w-full gap-2"}>
+                <div>
+                    <Skeleton className={"w-40 h-6"}/>
+                    <Skeleton className={"w-20 h-4"}/>
+                </div>
+                <div className={"h-full overflow-hidden"}>
+                    <Skeleton className={"w-full h-12"}/>
+                </div>
+                <Separator/>
+                <div className={"flex flex-row items-center justify-between"}>
+                    <div className={"flex flex-row gap-1"}>
+                        <Skeleton className={"w-12 h-4"}/>
+                        <Skeleton className={"w-8 h-4"}/>
+                        <Skeleton className={"w-12 h-4"}/>
+                    </div>
+                    <Skeleton className={"w-12 h-4"}/>
+                </div>
+            </div>
+        </div>
     )
 }

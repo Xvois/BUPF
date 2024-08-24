@@ -41,8 +41,10 @@ export type Sort = {
  *   const response = await query;
  *   return Response.json(response);
  * }
+ *
+ * @see {@link wrapQParams}
  */
-export const applyQueryParams = <T extends GenericSchema, R extends Record<string, unknown>, N>(query: PostgrestFilterBuilder<T, R, N>, params: URLSearchParams): void => {
+export const unwrapAndApplyQParams = <T extends GenericSchema, R extends Record<string, unknown>, N>(query: PostgrestFilterBuilder<T, R, N>, params: URLSearchParams): void => {
     const filtersString = params.get("filters");
     if (filtersString) {
         const filters: Filter[] = JSON.parse(filtersString);
@@ -86,8 +88,9 @@ export const applyQueryParams = <T extends GenericSchema, R extends Record<strin
  *
  * @param limit
  * @see {@link apiAxios}
+ * @see {@link unwrapAndApplyQParams}
  */
-export const createAPIParams = (filters: Filter[] = [], sort?: Sort, limit?: number): URLSearchParams => {
+export const wrapQParams = (filters: Filter[] = [], sort?: Sort, limit?: number): URLSearchParams => {
     const searchParams = new URLSearchParams();
     if (filters.length > 0) {
         searchParams.set('filters', JSON.stringify(filters));

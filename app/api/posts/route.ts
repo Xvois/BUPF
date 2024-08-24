@@ -1,6 +1,6 @@
 import {PostsResponse} from "@/types/api/posts/types";
 import {createClient} from "@/utils/supabase/server";
-import {applyQueryParams} from "@/utils/api/helpers";
+import {unwrapAndApplyQParams} from "@/utils/api/helpers";
 
 
 export async function GET(request: Request) {
@@ -10,9 +10,11 @@ export async function GET(request: Request) {
 
 	const query = client.from("posts").select("*, profiles (*, courses (*))");
 
-	applyQueryParams(query, params);
-
-	const response: PostsResponse = await query;
-
-	return Response.json(response);
+	try {
+		unwrapAndApplyQParams(query, params);
+		const response: PostsResponse = await query;
+		return Response.json(response);
+	} catch (e) {
+		return Response.json({error: e}, {status: 400});
+	}
 }
