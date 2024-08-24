@@ -77,11 +77,11 @@ class APIAxios {
 
 		let defaultURL: string;
 
-		if (process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL) {
-			defaultURL = `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`;
-		} else if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+		if (process.env.NEXT_PUBLIC_VERCEL_URL) {
 			defaultURL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-		} else {
+		} else if (process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL) {
+			defaultURL = `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`;
+		}   else {
 			defaultURL = 'http://localhost:3000';
 		}
 
