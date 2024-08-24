@@ -1,21 +1,12 @@
-import axios from "axios";
-import {createClient} from "@/utils/supabase/client";
+import apiAxios, {GetRouteResponseMap, Params} from "@/utils/axios/apiAxios";
+import {AxiosRequestConfig} from "axios";
 
-export const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
-type Tables =
-    "comments"
-    | "comment_reports"
-    | "course_modules"
-    | "courses"
-    | "modules"
-    | "posts"
-    | "profiles"
-    | "topics"
-
-export const sbFetcher = async <T>(url: Tables): Promise<T[] | null> => {
-        const supabase = createClient();
-        const {data, error} = await supabase.from(url).select("*");
-        if (error) throw error;
-        return data as T[] || null;
-    }
+export const fetcher = async <Route extends keyof GetRouteResponseMap>(
+    url: Route,
+    params?: Params,
+    config?: AxiosRequestConfig
+): Promise<GetRouteResponseMap[Route]> => {
+    const response = await apiAxios.get(url, params, config);
+    if (!response.data) throw new Error("No data");
+    return response.data;
+}

@@ -19,7 +19,7 @@ import {SendHorizonal} from "lucide-react";
 import {useAuthWatcher} from "@/hooks/use-auth-watcher";
 import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/ui/form";
 import {Suspense, useEffect} from "react";
-import {handleEmailChange} from "@/app/email-conv/actions";
+import {handleEmailChange} from "@/app/email-conv/_actions/handleEmailChange";
 
 // See https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
 export default function Page() {

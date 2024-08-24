@@ -1,3 +1,3 @@
-import PostPage from "@/modules/post/page";
+import PostPage from "@/reuseable-pages/post/page";
 
 export default PostPage;

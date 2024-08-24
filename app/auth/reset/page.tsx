@@ -1,5 +1,5 @@
 import {createClient} from "@/utils/supabase/server";
-import ResetForm from "@/app/auth/reset/reset-form";
+import ResetForm from "@/app/auth/reset/_components/reset-form";
 
 
 export default async function Page() {

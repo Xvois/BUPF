@@ -3,7 +3,7 @@ import {Button} from "@/components/ui/button";
 
 export function Footer() {
 	return (
-		<footer className="w-full border-t py-4">
+		<footer className="w-full border-t py-4 mt-4 shadow-sm">
 			<div
 				className="w-full mx-auto flex flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:gap-0">
 				<p className="text-sm text-muted-foreground">Built by the students of the University of

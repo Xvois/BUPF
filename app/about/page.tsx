@@ -1,5 +1,6 @@
 import {Separator} from "@/components/ui/separator";
 import {ExternalLink} from "lucide-react";
+import ExtLink from "@/components/ExtLink";
 
 export default function Page() {
     return (
@@ -25,10 +26,8 @@ export default function Page() {
                 <p className={"text-muted-foreground"}>
                     It is student lead by means of the forum being created by students, for students. The platform
                     itself
-                    is open source, <a
-                    className={"underline inline-flex items-center gap-1"}
-                    href={"https://github.com/Xvois/BUPF"}>available here <ExternalLink
-                    className={"w-3 h-3"}/></a>, and contributions by students are welcome.
+                    is open source, <ExtLink href={"https://github.com/Xvois/BUPF"}>available here</ExtLink>, and
+                    contributions by students are welcome.
                 </p>
             </section>
             <section className={"space-y-2 p-6"}>

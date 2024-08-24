@@ -44,11 +44,11 @@ const UserDetailsInputs = () => {
                 name="email"
                 render={({field}) => (
                     <FormItem className={"w-full"}>
-                        <FormLabel>Personal Email</FormLabel>
+                        <FormLabel>University Email</FormLabel>
                         <FormControl>
                             <Input type={"email"} {...field} />
                         </FormControl>
-                        <FormDescription>Your university email address.</FormDescription>
+                        <FormDescription>Your university provided email address.</FormDescription>
                         <FormMessage/>
                     </FormItem>
                 )}

@@ -13,7 +13,7 @@ export default function Profile(props: { user: Tables<'profiles'> & { courses: T
     return (
         <HoverCard>
             <HoverCardTrigger asChild>
-                <Button className={"p-0 h-fit w-fit"}
+                <Button className={"p-0 h-fit w-fit font-normal text-md"}
                         variant="link">{user.first_name} {user.last_name}</Button>
             </HoverCardTrigger>
             <HoverCardContent className={"flex gap-4 items-center"}>

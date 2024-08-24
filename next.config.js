@@ -4,13 +4,15 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	logging: {
-		fetches: {
-			fullUrl: true,
-		},
-	},
-	experimental: {
-		ppr: true,
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'uyadlyphtuclcowrmrem.supabase.co',
+				port: '',
+				pathname: '/storage/v1/object/public/**',
+			},
+		],
 	},
 }
 

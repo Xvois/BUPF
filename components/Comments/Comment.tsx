@@ -31,7 +31,7 @@ export default function Comment({
         ) : (
           <Profile user={comment.profiles} />
         )}
-        <MarkdownRender markdown={comment.content} />
+		  <MarkdownRender>{comment.content}</MarkdownRender>
         <div
           className={`inline-flex gap-4 text-sm items-start text-muted-foreground`}
         >
@@ -79,7 +79,7 @@ export default function Comment({
                   <CheckCircle className={"h-5 w-5 text-green-600/90"} />
                 </TooltipTrigger>
                 <TooltipContent>
-					<p>This thread is the author`&apos;`s selected answer.</p>
+                  <p>This thread is the author&apos;s selected answer.</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

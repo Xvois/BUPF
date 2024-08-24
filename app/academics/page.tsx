@@ -103,22 +103,22 @@ export default function Page() {
 						</div>
 						<div className={"pl-4 mt-2 border-l"}>
 							<p className={"text-sm"}>You</p>
-							<MarkdownRender markdown={"Using a Gaussian surface, $\\vec{E} \\cdot d\\vec{A}$ is the" +
+							<MarkdownRender>{"Using a Gaussian surface, $\\vec{E} \\cdot d\\vec{A}$ is the" +
 								" flux through the surface, which is equal to the charge enclosed by the surface" +
 								" divided by $\\epsilon_0$. \n If we choose a surface symmetric to the field then" +
-								" $\\vec{E}$ becomes constant."}/>
+								" $\\vec{E}$ becomes constant."}</MarkdownRender>
 						</div>
 					</div>
 					<div className={"p-4 border rounded-md bg-gradient-to-br from-muted/0 to-muted/50"}>
 						<div>
 							<p className={"text-sm"}>Anonymous</p>
-							<MarkdownRender markdown={"What's the interval of convergence for the series $u = -" +
-								" \\frac{1}{5}x + \\frac{2}{25}x^2 - \\frac{3}{125}x^3 + \\frac{4}{625}x^4 - \\ldots$?"}/>
+							<MarkdownRender>{"What's the interval of convergence for the series $u = -" +
+								" \\frac{1}{5}x + \\frac{2}{25}x^2 - \\frac{3}{125}x^3 + \\frac{4}{625}x^4 - \\ldots$?"}</MarkdownRender>
 						</div>
 						<div className={"pl-4 mt-2 border-l"}>
 							<p className={"text-sm"}>You</p>
-							<MarkdownRender markdown={"Try using the D'Alembert ratio test. We went through this in" +
-								" lecture 3, and its available [here](#) in the course test."}/>
+							<MarkdownRender>{"Try using the D'Alembert ratio test. We went through this in" +
+								" lecture 3, and its available [here](#) in the course test."}</MarkdownRender>
 						</div>
 					</div>
 				</section>

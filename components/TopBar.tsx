@@ -10,7 +10,7 @@ import {Skeleton} from "@/components/ui/skeleton";
 const wrapperClass = "sticky top-0 left-0 h-16 bg-gradient-to-b from-background to-background/50 backdrop-blur-sm" +
 	" bg-background/50 border-b border-border inline-flex w-full flex-row items-center align-middle justify-between" +
 	" gap-x-10 px-4" +
-	" py-2 z-50 mb-4"
+	" py-2 z-50 mb-4 shadow-sm"
 
 
 export default function TopBar() {

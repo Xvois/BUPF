@@ -1,8 +1,8 @@
-import SignupForm from "@/app/signup/signup-form";
+import SignupForm from "@/app/signup/_components/signup-form";
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import {z} from "zod";
-import {formSchema} from "@/app/signup/formSchema";
+import {formSchema} from "@/app/signup/_schema/formSchema";
 import {headers} from "next/headers";
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
@@ -32,6 +32,10 @@ export default function Page() {
             },
         };
 
+        if(!data.email.endsWith("@bath.ac.uk")) {
+            return redirect("/signup?error=Please use a bath.ac.uk email address");
+        }
+
         const {error} = await supabase.auth.signUp(data);
         if (error) {
             return redirect("/signup?error=" + error.message);
@@ -52,7 +56,7 @@ export default function Page() {
                 <CardTitle>BUPF</CardTitle>
                 <CardDescription>The Bath University Physics Forum</CardDescription>
             </CardHeader>
-            <SignupForm {...{signUp}} />
+            <SignupForm signUp={signUp}/>
         </Card>
     );
 }

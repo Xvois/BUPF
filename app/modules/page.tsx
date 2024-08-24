@@ -1,25 +1,21 @@
 import {Separator} from "@/components/ui/separator";
 import {Package} from "lucide-react";
-import {Suspense} from "react";
-import {CoreModules} from "@/app/modules/components/CoreModules";
-import {OptionalModules} from "@/app/modules/components/OptionalModules";
-import {ModulesSkeleton} from "@/app/modules/components/ModulesSkeleton";
+import {CoreModules} from "@/app/modules/_components/CoreModules";
+import {OptionalModules} from "@/app/modules/_components/OptionalModules";
+import SectionHeader from "@/components/SectionHeader";
 
+export const dynamic = 'auto';
+export const revalidate = false;
 
-export default function Modules() {
+export default async function Modules() {
 	return (
 		<div className="w-full space-y-4">
-			<header
-				className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none">
-				<div className={"inline-flex gap-2"}>
-					<Package/>
-					<p>Section</p>
-				</div>
-				<h1 className={"font-black text-4xl"}>Modules</h1>
-				<p>
-					View your modules, see what&apos;s coming up, and discuss with your peers.
-				</p>
-			</header>
+			<SectionHeader
+				icon={<Package/>}
+				type={"Section"}
+				title={"Modules"}
+				description={"Explore the modules that are available to you."}
+			/>
 			<Separator/>
 			<section className={"space-y-4 p-6"}>
 				<div>
@@ -28,9 +24,7 @@ export default function Modules() {
 						These modules are mandatory for your course.
 					</p>
 				</div>
-				<Suspense fallback={<ModulesSkeleton/>}>
-					<CoreModules/>
-				</Suspense>
+				<CoreModules/>
 			</section>
 			<Separator/>
 			<section className={"space-y-4 p-6"}>
@@ -40,9 +34,7 @@ export default function Modules() {
 						These are modules you can choose to take.
 					</p>
 				</div>
-				<Suspense fallback={<ModulesSkeleton/>}>
-					<OptionalModules/>
-				</Suspense>
+				<OptionalModules/>
 			</section>
 		</div>
 	)

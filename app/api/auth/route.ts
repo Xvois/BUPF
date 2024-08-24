@@ -8,7 +8,7 @@ This is a server route that returns the current user.
 */
 
 
-export async function GET(req: Request) {
+export async function GET() {
     const supabase = createClient();
 
     const userResponse = await supabase.auth.getUser();

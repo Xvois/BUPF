@@ -13,29 +13,13 @@ import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/compon
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import Image from "next/image";
+import resizeImage from "@/utils/resize";
 
 
 export default function ProfilePictureUpload() {
     const [previewSrc, setPreviewSrc] = useState('');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    async function resizeImage(file: File) {
-        const Compress = (await import ('compress.js')).default;
-        const compress = new Compress();
-
-        const resizedImage = await compress.compress([file], {
-            size: 1,
-            quality: 0.75,
-            maxWidth: 300,
-            maxHeight: 300,
-            resize: true
-        })
-
-        const img = resizedImage[0];
-        const base64str = img.data
-        const imgExt = img.ext
-        return Compress.convertBase64ToFile(base64str, imgExt)
-    }
 
     const form = useFormContext();
 
@@ -43,7 +27,12 @@ export default function ProfilePictureUpload() {
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
 
-            resizeImage(file).then((resizedFile) => {
+            const settings = {
+                maxSizeMB: 0.1,
+                maxWidthOrHeight: 300,
+            }
+
+            resizeImage(file, settings).then((resizedFile) => {
                 form.setValue("profilePicture", resizedFile)
             })
 
@@ -78,7 +67,7 @@ export default function ProfilePictureUpload() {
                         <FormItem className={"w-full"}>
                             <FormLabel>New file</FormLabel>
                             <FormControl>
-                                <Input type={"file"} onChange={handleFileChange}/>
+								<Input type={"file"} accept={"image/*"} onChange={handleFileChange}/>
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
