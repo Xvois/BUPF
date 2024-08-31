@@ -16,7 +16,7 @@ type CommentWOChildren = Omit<CommentType, "children">;
 
 type CommentSectionProps = {
     post_id: string,
-    post_type: "question" | "discussion" | "article",
+    post_type: string,
     marked_comment?: number
     owner: string | null
 }
