@@ -52,7 +52,7 @@ function ConfirmPage() {
                     confirmation link to verify your email address.
                 </p>
                 <p className={"text-muted-foreground"}>
-					If you haven`&apos;t received the email, you can click the button below to resend it.
+					If you haven&apos;t received the email, you can click the button below to resend it.
                 </p>
             </div>
             <div className={"inline-flex flex-col gap-2"}>

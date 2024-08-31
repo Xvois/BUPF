@@ -42,7 +42,7 @@ export default function QuestionButton({module_id, ...props}: { module_id: strin
 
 	return (
 		<Dialog open={isDialogOpen} onOpenChange={(e) => setIsDialogOpen(e)}>
-			<DialogTrigger>
+			<DialogTrigger asChild>
 				<Button {...props} className={"space-x-2"}>
 					<CircleFadingPlus className={"h-4 w-4"}/>
 					<p>Ask a question</p>

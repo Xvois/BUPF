@@ -23,6 +23,8 @@ export default function ProfilePictureUpload() {
 
     const form = useFormContext();
 
+    const fileError = form.formState.errors.profilePicture?.message;
+
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
@@ -49,7 +51,7 @@ export default function ProfilePictureUpload() {
     return (
         <Dialog open={isDialogOpen} onOpenChange={e => setIsDialogOpen(e)}>
             <DialogTrigger asChild>
-                <Button variant={"outline"}>Upload new profile picture</Button>
+                <Button variant={fileError ? "destructive" : "outline"}>Upload new profile picture</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

@@ -76,7 +76,7 @@ export default async function ComboDisplay({params, searchParams}: {
             <Separator/>
             <section className="p-6 space-y-4">
                 <div>
-                    <h2 className="text-2xl font-bold">Useful resources</h2>
+                    <h2 className="text-2xl font-bold">Useful resources</h2>s
                     <p className="text-muted-foreground">
                         Here are some resources that you might find useful for this module.
                     </p>

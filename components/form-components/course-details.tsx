@@ -20,7 +20,7 @@ import {fetcher} from "@/utils/fetcher";
 
 const CourseDetailsInputs = () => {
 	const form = useFormContext()
-	const {data: response, error, isLoading} = useSWR('/api/courses', (url) => fetcher(url));
+	const {data: response} = useSWR('/api/courses', (url) => fetcher(url));
 	const courses = response?.data;
 	const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 	return (
@@ -121,7 +121,7 @@ const CourseDetailsInputs = () => {
 							Your enrolled course. This will affect what modules are available to you.
 							Not a physics student? Choose <Button variant={"link"} type={"button"}
 																  onClick={() => form.setValue("course", "0")}
-																  className={"underline p-0 text-muted-foreground h-fit"}>Other</Button>.
+																  className={"underline p-0 text-muted-foreground h-fit"}>Other here</Button>.
 						</FormDescription>
 						<FormMessage/>
 					</FormItem>

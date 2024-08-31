@@ -42,7 +42,7 @@ export default function QuestionButton({topic_id, ...props}: { topic_id: string 
 
 	return (
 		<Dialog open={isDialogOpen} onOpenChange={(e) => setIsDialogOpen(e)}>
-			<DialogTrigger>
+			<DialogTrigger asChild>
 				<Button {...props} className={"space-x-2"}>
 					<BookPlus className={"h-4 w-4"}/>
 					<p>Start a discussion</p>

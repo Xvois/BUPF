@@ -34,7 +34,7 @@ export const DeleteAccountButton = (props: ButtonProps) => {
     return (
         <Fragment>
             <AlertDialog open={alertIsOpen} onOpenChange={(e) => setAlertIsOpen(e)}>
-                <AlertDialogTrigger>
+                <AlertDialogTrigger asChild>
                     <Button {...props}>
                         Delete account
                     </Button>

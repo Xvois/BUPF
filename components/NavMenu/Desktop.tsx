@@ -32,7 +32,7 @@ export default function DesktopNavBar({modules, topics}: {
 				<NavigationMenuItem>
 					<NavigationMenuTrigger>Modules</NavigationMenuTrigger>
 					<NavigationMenuContent>
-						<li className="row-span-3 list-none">
+						<div className="row-span-3 list-none">
 							<Link href={"/modules"} legacyBehavior passHref>
 								<NavigationMenuLink>
 									<div
@@ -50,7 +50,7 @@ export default function DesktopNavBar({modules, topics}: {
 									</div>
 								</NavigationMenuLink>
 							</Link>
-						</li>
+						</div>
 						{modules ?
 							<ul className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
 								{modules.slice(0, 4).map((module) => (
@@ -82,7 +82,7 @@ export default function DesktopNavBar({modules, topics}: {
 				<NavigationMenuItem>
 					<NavigationMenuTrigger>Topics</NavigationMenuTrigger>
 					<NavigationMenuContent className="z-10">
-						<li className="row-span-3 list-none">
+						<div className="row-span-3 list-none">
 							<Link href={"/topics"} legacyBehavior passHref>
 								<NavigationMenuLink>
 									<div
@@ -101,7 +101,7 @@ export default function DesktopNavBar({modules, topics}: {
 									</div>
 								</NavigationMenuLink>
 							</Link>
-						</li>
+						</div>
 						{topics ?
 							<ul className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
 								{topics.slice(0, 4).map((topic) => (
@@ -149,7 +149,7 @@ const ListItem = React.forwardRef<HTMLDivElement, LinkProps & {
 	className?: string,
 	title: string,
 	children?: React.ReactNode
-}>(({className, title, href, children, ...props}, ref) => {
+}>(({className, title, href, children}, ref) => {
 	return (
 		<li>
 			<Link href={href} legacyBehavior passHref>

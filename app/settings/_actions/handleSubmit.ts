@@ -2,45 +2,36 @@
 
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
-import {formSchema} from "@/app/settings/_schema/formSchema";
-import {z} from "zod";
 import changeEmail from "@/app/settings/_actions/changeEmail";
 
-export const handleSubmit = async (fd: z.infer<typeof formSchema>) => {
+export type SettingsUploadSchema =
+    { first_name: string; last_name: string; course: number; entry_date: string | null; profile_picture?: string; email: string }
 
-	const supabase = createClient();
-	const {data: {user}} = await supabase.auth.getUser();
+export const handleSubmit = async (fd: SettingsUploadSchema) => {
 
-	if (!user) {
-		return redirect("/settings?error=No user found");
-	}
+    const supabase = createClient();
+    const {data: {user}} = await supabase.auth.getUser();
 
-	if (user.email !== fd.email) {
-		await changeEmail(fd.email);
-	}
+    if (!user) {
+        return redirect("/settings?error=No user found");
+    }
 
-	type Profile = {
-		first_name: string;
-		last_name: string;
-		course: number;
-		entry_date: Date | null;
-		profile_picture?: string;
-	};
+    if (user.email !== fd.email) {
+        await changeEmail(fd.email);
+    }
 
-	const newProfile: Profile = {
-		first_name: fd.firstName,
-		last_name: fd.lastName,
-		course: +fd.course,
-		entry_date: fd.yearOfStudy ? new Date(+fd.yearOfStudy, 9, 1, 12, 0, 0, 0) : null,
-	}
+    // No email field in the profile table
+    const updatedProfile = {
+        first_name: fd.first_name,
+        last_name: fd.last_name,
+        course: fd.course,
+        entry_date: fd.entry_date,
+        profile_picture: fd.profile_picture
+    }
 
-	if (fd.profilePicture) {
-		newProfile["profile_picture"] = fd.profilePicture;
-	}
+    const {error} = await supabase.from("profiles").update({...updatedProfile}).eq("id", user.id);
 
-	const {error} = await supabase.from("profiles").update({...newProfile}).eq("id", user.id);
-
-	if (error) {
-		return redirect("/settings?error=" + error.message);
-	}
+    if (error) {
+        return redirect("/settings?error=" + error.message);
+    }
 }

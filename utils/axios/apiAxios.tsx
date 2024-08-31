@@ -45,6 +45,9 @@ class APIAxios {
      * This method is used to send a GET request to a specified route and return a typed response.
      * The route is specified as a key of the RouteResponseMap type, and the ids parameter is used to replace placeholders in the route.
      *
+     * This method should be used on popular routes that are used in multiple components to take advantage of caching.
+     * The nature of the API endpoints means only simple GET requests are supported. For more complex requests, use the supabase client directly.
+     *
      * @template Route - The route type, which should be a key of GetRouteResponseMap.
      * @param {Route} route - The route to which the GET request should be sent.
      * @param {Params} params - An object where the keys are the parameter names and the values are the parameter
@@ -78,17 +81,15 @@ class APIAxios {
             throw new Error('(apiAxios): Route must be a relative URL.');
         }
 
-        let defaultURL: string;
+        let defaultURL: string = 'http://localhost:3000'; // Initialize with a default value
 
         if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'development') {
             if (process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL) {
                 defaultURL = `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`;
             } else if (process.env.NEXT_PUBLIC_VERCEL_URL) {
                 defaultURL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-            } else {
-                defaultURL = 'http://localhost:3000';
             }
-        } else {
+        } else if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
             defaultURL = `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`;
         }
 
