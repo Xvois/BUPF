@@ -7,6 +7,8 @@ import LinkBox from "@/components/LinkBox";
 import DiscussionButton from "@/reuseable-pages/combo-display/_components/DiscussionButton";
 import QuestionButton from "@/reuseable-pages/combo-display/_components/QuestionButton";
 import SectionHeader from "@/components/SectionHeader";
+import UsefulResourceButton from "@/reuseable-pages/combo-display/_components/UsefulResources/UsefulResourceButton";
+import Resource from "@/reuseable-pages/combo-display/_components/UsefulResources/Resource";
 
 type PageData = {
     created_at: string,
@@ -28,16 +30,19 @@ export default async function ComboDisplay({params, searchParams}: {
         return redirect("/not-found");
     }
 
+    // Grab the module or topic data
     const id = params.module_id || params.topic_id as string;
-
     const {data} = await supabase.from(params.module_id ? "modules" : "topics").select("*").eq("id", id).single();
-
     if (!data) {
         return redirect("/not-found");
     }
 
     // A valid type assertion as it **only** combines the two types to make tags optional
     const pageData = data as PageData;
+
+    // Grab the resources for the module
+    const {data: resourceData} = params.module_id ? await supabase.from("module_resources").select("resources(*, owner(*, courses(*)))").eq("module", id) : {data: null};
+    const resources = resourceData?.map((row) => row.resources);
 
     return (
         <div className="w-full grid space-y-4">
@@ -73,19 +78,29 @@ export default async function ComboDisplay({params, searchParams}: {
                 <PostsDisplay tags={pageData.tags || []} id={data.id} type={params.module_id ? "modules" : "topics"}
                               searchParams={searchParams}/>
             </section>
-            <Separator/>
-            <section className="p-6 space-y-4">
-                <div>
-                    <h2 className="text-2xl font-bold">Useful resources</h2>s
-                    <p className="text-muted-foreground">
-                        Here are some resources that you might find useful for this module.
-                    </p>
-                </div>
-                <div className="flex flex-row flex-wrap gap-4">
-                    <LinkBox title={"None available."} href={"#"}
-                             description={"Please suggest useful resources for this module."} disabled/>
-                </div>
-            </section>
+            {
+                params.module_id && (
+                    <>
+                        <Separator/>
+                        <section className="p-6 space-y-4">
+                            <div>
+                                <h2 className="text-2xl font-bold">Useful resources</h2>
+                                <p className="text-muted-foreground">
+                                    Here are some resources that you might find useful for this module.
+                                </p>
+                                <UsefulResourceButton module_id={params.module_id}/>
+                            </div>
+                            <div className="flex flex-row flex-wrap gap-4">
+                                {
+                                    resources?.map((resource) => (
+                                        <Resource key={resource.id} resource={resource}/>
+                                    ))
+                                }
+                            </div>
+                        </section>
+                    </>
+                )
+            }
         </div>
     )
 }

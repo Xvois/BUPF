@@ -7,7 +7,7 @@ import Post, {PostSkeleton} from "@/components/Post";
 import {wrapQParams, Filter} from "@/utils/api/helpers";
 
 
-// Calculate the weight for a post
+// Calculate the weight for a uploadPost
 function calculateWeight(post: Tables<"posts">) {
     const now = Date.now();
     const postDate = new Date(post.created_at).getTime();

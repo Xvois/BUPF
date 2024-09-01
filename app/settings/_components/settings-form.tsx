@@ -130,8 +130,7 @@ export default function SettingsForm({user, profile}: {
                     </div>
                 </CardContent>
                 <CardFooter className="flex items-center justify-between w-full">
-                    <DeleteAccountButton variant={"outline"}
-                                         className="text-destructive bg-destructive/10 border-destructive/15 hover:bg-destructive/35 hover:border-destructive/40"/>
+                    <DeleteAccountButton variant={"destructive"}/>
                     <Button isLoading={isSubmitting || isValidating} type="submit">Save</Button>
                     <ServerError>
                         {serverError}

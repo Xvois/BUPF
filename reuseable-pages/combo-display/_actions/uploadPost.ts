@@ -2,12 +2,12 @@
 
 
 import {z} from "zod";
-import {formSchema} from "@/reuseable-pages/combo-display/_schema/formSchema";
+import {postSchema} from "@/reuseable-pages/combo-display/_schema/postSchema";
 import {createClient} from "@/utils/supabase/server";
 import {revalidatePath} from "next/cache";
 import {headers} from "next/headers";
 
-export default async function post(values: z.infer<typeof formSchema>) {
+export default async function uploadPost(values: z.infer<typeof postSchema>) {
 
 	const headersList = headers();
 	const domain = headersList.get('host') || "";

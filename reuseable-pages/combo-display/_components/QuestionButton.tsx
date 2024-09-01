@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import {formSchema} from "@/reuseable-pages/combo-display/_schema/formSchema";
+import {postSchema} from "@/reuseable-pages/combo-display/_schema/postSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
-import post from "@/reuseable-pages/combo-display/_actions/post";
+import uploadPost from "@/reuseable-pages/combo-display/_actions/uploadPost";
 import {Form} from "@/components/ui/form";
 import FormSkeleton from "@/reuseable-pages/combo-display/_components/FormSkeleton";
 import {Button, ButtonProps} from "@/components/ui/button";
@@ -23,9 +23,9 @@ const LazyQuestionForm = lazy(() => import("./question-form"));
 export default function QuestionButton({module_id, ...props}: { module_id: string } & ButtonProps) {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<z.infer<typeof postSchema>>({
 		mode: "onSubmit",
-		resolver: zodResolver(formSchema),
+		resolver: zodResolver(postSchema),
 		defaultValues: {
 			heading: "",
 			content: "",
@@ -35,8 +35,8 @@ export default function QuestionButton({module_id, ...props}: { module_id: strin
 		}
 	})
 
-	const onSubmit = async (values: z.infer<typeof formSchema>) => {
-		await post(values);
+	const onSubmit = async (values: z.infer<typeof postSchema>) => {
+		await uploadPost(values);
 		setIsDialogOpen(false);
 	}
 
