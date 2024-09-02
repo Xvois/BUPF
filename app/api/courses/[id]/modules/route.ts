@@ -15,7 +15,7 @@ async function fetchCourseData(id: string) {
 
 // Fetch the course modules
 async function fetchCourseModules(supabase: SupabaseClient, modules: number) {
-    return await supabase.from('course_modules').select('*').eq('id', modules).single();
+    return supabase.from('course_modules').select('*').eq('id', modules).single();
 }
 
 // Fetch the modules
@@ -42,9 +42,11 @@ function createModuleMap(modules: Tables<"modules">[]) {
 }
 
 // Replace module IDs with actual module objects
-function replaceModuleIDs(data: any, moduleMap: Map<string, Tables<"modules">>) {
+function replaceModuleIDs(data: unknown, moduleMap: Map<string, Tables<"modules">>) {
     // Define a type that can be indexed with a string
     type LooseObject = {
+        // THIS WILL BE FIXED WHEN THE API IS UPDATED
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         [key: string]: any
     };
 

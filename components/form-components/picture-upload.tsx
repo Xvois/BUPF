@@ -65,7 +65,7 @@ export default function ProfilePictureUpload() {
                 <FormField
                     control={form.control}
                     name="profilePicture"
-                    render={({field}) => (
+                    render={() => (
                         <FormItem className={"w-full"}>
                             <FormLabel>New file</FormLabel>
                             <FormControl>

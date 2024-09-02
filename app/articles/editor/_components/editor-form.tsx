@@ -11,7 +11,7 @@ import {Button} from "@/components/ui/button";
 import formSchema from "@/app/articles/editor/_schema/editorSchema";
 import {handleSave} from "@/app/articles/editor/_actions/handleSave";
 import {handlePublish} from "@/app/articles/editor/_actions/handlePublish";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -63,7 +63,7 @@ export default function EditorForm(props: {
 
 
 	// Auto save the form after a 2s debounce time
-	let timeoutId = useRef<NodeJS.Timeout | null>(null);
+	const timeoutId = useRef<NodeJS.Timeout | null>(null);
 	const handleSaveDebounced = (...args: Parameters<typeof handleSave>) => {
 		if (timeoutId.current) {
 			clearTimeout(timeoutId.current);
@@ -150,7 +150,7 @@ export default function EditorForm(props: {
 					)}/>
 
 
-				<FormField control={form.control} name={"header_picture"} render={({field}) => (
+				<FormField control={form.control} name={"header_picture"} render={() => (
 					<FormItem>
 						<FormLabel>Heading Picture</FormLabel>
 						<AspectRatio ratio={10 / 4}>

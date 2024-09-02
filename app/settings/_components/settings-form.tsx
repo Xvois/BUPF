@@ -17,7 +17,6 @@ import {redirect, useSearchParams} from "next/navigation";
 import ProfilePictureUpload from "@/components/form-components/picture-upload";
 import {createClient} from "@/utils/supabase/client";
 import {User} from "@supabase/auth-js";
-import {useEffect} from "react";
 
 
 export default function SettingsForm({user, profile}: {
@@ -98,10 +97,6 @@ export default function SettingsForm({user, profile}: {
     }
 
     const {isSubmitting, isValidating} = form.formState;
-
-    const dumpData = () => {
-        console.log(form.getValues());
-    }
 
     return (
         <Form {...form}>

@@ -3,8 +3,7 @@ import {ExternalLink} from "lucide-react";
 import {cn} from "@/utils/cn";
 
 // Extending React anchor element attributes to include href explicitly
-interface ExtLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-}
+type ExtLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement>
 
 const ExtLink: React.FC<ExtLinkProps> = (props) => {
     // Destructure href from props to ensure it's explicitly used

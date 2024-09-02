@@ -87,7 +87,7 @@ type DynamicSectionsProps = \{
 export default function DynamicSections({children, ...props}: DynamicSectionsProps) {
     return (
         <ActiveSectionProvider>
-            <div {...props}>
+            <div>
                 {children}
             </div>
         </ActiveSectionProvider>
@@ -161,7 +161,7 @@ const bunchedSnippet = safeSnippet.replace(/\s+/g, ' ');
 
 export default function OpenSourceSection() {
 
-    const {activeSection, registerSection, getSectionIndex} = useActiveSection();
+    const {registerSection} = useActiveSection();
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

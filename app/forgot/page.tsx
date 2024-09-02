@@ -9,7 +9,6 @@ import {ServerError} from "@/components/ServerError";
 
 
 export default async function Forgot({
-                                         params,
                                          searchParams,
                                      }: {
     params: { slug: string };

@@ -5,19 +5,13 @@ import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {Separator} from "@/components/ui/separator";
 import {Component} from "lucide-react";
 import Link from "next/link";
-import {Metadata, ResolvingMetadata} from "next";
+import {Metadata} from "next";
 
 export async function generateMetadata(
-	{params, searchParams}: { params: { post_id: string }, searchParams: { sort?: string, tag?: string } },
-	parent: ResolvingMetadata
+	{params}: { params: { post_id: string }, searchParams: { sort?: string, tag?: string } },
 ): Promise<Metadata> {
 	// read route params
 	const id = params.post_id
-
-	const defaultUrl = process.env.VERCEL_URL
-		? `https://${process.env.VERCEL_URL}`
-		: "http://localhost:3000";
-
 
 	// fetch data
 	const post = await fetch(`api/post/${id}`).then((res) => res.json())

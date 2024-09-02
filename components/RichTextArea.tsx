@@ -16,7 +16,7 @@ interface RichTextAreaProps extends TextareaProps {
  * @param {RichTextAreaProps & React.RefAttributes<HTMLTextAreaElement>} props - The props of the textarea
  * @returns {JSX.Element} The RichTextArea component
  */
-const RichTextArea = forwardRef<HTMLTextAreaElement, RichTextAreaProps>(({className, id, value, ...props}, ref) => {
+const RichTextArea = forwardRef<HTMLTextAreaElement, RichTextAreaProps>(({className, value, ...props}, ref) => {
 
     return (
         <Tabs defaultValue={"write"}>

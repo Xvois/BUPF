@@ -1,4 +1,5 @@
 import {h1, p} from "@/styles/text";
+import React from "react";
 
 
 export default function SectionHeader({title, description, icon, type}: {

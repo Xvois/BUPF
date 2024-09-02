@@ -10,7 +10,6 @@ import {headers} from "next/headers";
 export default async function uploadPost(values: z.infer<typeof postSchema>) {
 
 	const headersList = headers();
-	const domain = headersList.get('host') || "";
 	const fullUrl = headersList.get('referer') || "";
 
 	// Create a new URL object from the fullUrl
@@ -84,7 +83,7 @@ export default async function uploadPost(values: z.infer<typeof postSchema>) {
 		anonymous: values.anonymous,
 	}
 
-	const {data: post, error: postError} = await supabase.from("posts").insert(postObject).select();
+	const {error: postError} = await supabase.from("posts").insert(postObject).select();
 
 	if (postError) {
 		throw new Error(`Failed to post: ${postError.message}`);

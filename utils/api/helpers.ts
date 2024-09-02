@@ -55,6 +55,7 @@ export const unwrapAndApplyQParams = <T extends GenericSchema, R extends Record<
                     // Use the corresponding handler to format the value
                     filter.value = handler(filter.value);
                 }
+                // noinspection JSIgnoredPromiseFromCall - this is just a query modification
                 query.filter(filter.column, filter.operator, filter.value);
             } else {
                 // Handle the case where the filters are not in the expected format
@@ -142,13 +143,13 @@ export const operatorHandlers: Record<PostgrestOperators, (value: string | strin
     'wfts': (value: string | string[]) => `${value}`, // format as a string
 };
 
-export const isFilters = (value: any[]): value is Filter[] => {
+export const isFilters = (value: unknown[]): value is Filter[] => {
     return Array.isArray(value) && value.every(item => {
-        return typeof item === 'object' && 'column' in item && 'operator' in item && 'value' in item;
+        return item !== null && typeof item === 'object' && 'column' in item && 'operator' in item && 'value' in item;
     });
 }
 
-export const isSort = (value: any): value is Sort => {
-    return typeof value === 'object' && 'id' in value && 'type' in value;
+export const isSort = (value: unknown): value is Sort => {
+    return value !== null && typeof value === 'object' && 'id' in value && 'type' in value;
 }
 

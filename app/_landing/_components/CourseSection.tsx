@@ -20,8 +20,6 @@ export default function CourseSection() {
         }
     }, [registerSection]);
 
-    const isActive = activeSection === getSectionIndex(ref.current);
-
     const [activeYear, setActiveYear] = useState(1);
     const courseLength = 4;
 
@@ -118,12 +116,12 @@ export default function CourseSection() {
             );
         });
 
-        const moduleNodes = allActiveModules.map((module, index) => ({
+        const moduleNodes = allActiveModules.map((module) => ({
             id: module.id,
             element: <Module module={module}/>,
         }));
 
-        const tagNodes = allTags.map((tag, index) => ({
+        const tagNodes = allTags.map((tag) => ({
             id: tag,
             element: <Tag tag={tag}/>,
         }));

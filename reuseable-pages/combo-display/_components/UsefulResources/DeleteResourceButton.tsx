@@ -34,7 +34,10 @@ export const DeleteResourceButton = ({resourceID}: { resourceID: string }) => {
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction onClick={() => {
-                        deleteResource(resourceID);
+                        deleteResource(resourceID).then(
+                            // No action needed, alert action dialog
+                            // auto closes here
+                        );
                     }}>Understood</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

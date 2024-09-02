@@ -1,6 +1,6 @@
 'use client'
 
-import {Button} from "@/components/ui/button";
+import {Button, ButtonProps} from "@/components/ui/button";
 import {lazy, Suspense, useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
@@ -10,10 +10,11 @@ import {Form} from "@/components/ui/form";
 import FormSkeleton from "@/reuseable-pages/combo-display/_components/FormSkeleton";
 import {resourceSchema} from "@/reuseable-pages/combo-display/_schema/resourceSchema";
 import {uploadResource} from "@/reuseable-pages/combo-display/_actions/uploadResource";
+import {BookPlus} from "lucide-react";
 
 const LazyResourceForm = lazy(() => import("./resource-form"));
 
-export default function UsefulResourceButton({module_id}: { module_id: string }) {
+export default function UsefulResourceButton({module_id, ...props}: { module_id: string } & ButtonProps) {
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -34,7 +35,10 @@ export default function UsefulResourceButton({module_id}: { module_id: string })
     return (
         <Dialog open={isDialogOpen} onOpenChange={(e) => setIsDialogOpen(e)}>
             <DialogTrigger asChild>
-                <Button>Add</Button>
+				<Button {...props} className={"space-x-2"}>
+					<BookPlus className={"h-4 w-4"}/>
+					<p>Add a resource</p>
+				</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

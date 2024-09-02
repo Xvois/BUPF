@@ -151,7 +151,7 @@ type ReportButtonProps = {
 };
 
 export const ReportButton = (props: ReportButtonProps & ButtonProps) => {
-    const {comment, postID, ...buttonProps} = props;
+    const {comment, ...buttonProps} = props;
 
     const [open, setOpen] = useState(false);
     const [isReporting, setIsReporting] = useState(false);

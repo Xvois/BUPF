@@ -3,12 +3,12 @@ import {redirect} from "next/navigation";
 import {Separator} from "@/components/ui/separator";
 import PostsDisplay from "@/components/PostsDisplay/PostsDisplay";
 import {BookCopy, Component} from "lucide-react";
-import LinkBox from "@/components/LinkBox";
 import DiscussionButton from "@/reuseable-pages/combo-display/_components/DiscussionButton";
 import QuestionButton from "@/reuseable-pages/combo-display/_components/QuestionButton";
 import SectionHeader from "@/components/SectionHeader";
-import UsefulResourceButton from "@/reuseable-pages/combo-display/_components/UsefulResources/UsefulResourceButton";
+import UsefulResourceButton from "@/reuseable-pages/combo-display/_components/UsefulResourceButton";
 import Resource from "@/reuseable-pages/combo-display/_components/UsefulResources/Resource";
+import InfoBox from "@/components/InfoBox";
 
 type PageData = {
     created_at: string,
@@ -44,6 +44,7 @@ export default async function ComboDisplay({params, searchParams}: {
     const {data: resourceData} = params.module_id ? await supabase.from("module_resources").select("resources(*, owner(*, courses(*)))").eq("module", id) : {data: null};
     const resources = resourceData?.map((row) => row.resources);
 
+    // @ts-ignore
     return (
         <div className="w-full grid space-y-4">
             <SectionHeader
@@ -64,6 +65,9 @@ export default async function ComboDisplay({params, searchParams}: {
                         :
                         params.topic_id &&
                         <DiscussionButton topic_id={params.topic_id}/>
+                }
+                {
+                    isModule && params.module_id && <UsefulResourceButton module_id={params.module_id}/>
                 }
             </div>
             <Separator/>
@@ -88,13 +92,22 @@ export default async function ComboDisplay({params, searchParams}: {
                                 <p className="text-muted-foreground">
                                     Here are some resources that you might find useful for this module.
                                 </p>
-                                <UsefulResourceButton module_id={params.module_id}/>
                             </div>
                             <div className="flex flex-row flex-wrap gap-4">
                                 {
                                     resources?.map((resource) => (
+                                        // Types are not working on resource call for some reason
+                                        // @ts-expect-error
                                         <Resource key={resource.id} resource={resource}/>
                                     ))
+                                }
+                                {
+                                    resources?.length === 0 && (
+                                        <InfoBox title={"No resources"} className={"w-full"}>
+                                           No resources have been added yet. Be the first to add a
+                                                resource!
+                                        </InfoBox>
+                                    )
                                 }
                             </div>
                         </section>

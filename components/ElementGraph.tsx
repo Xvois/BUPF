@@ -153,7 +153,7 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<never>> = ({nodes, lin
 
         const dampening = 0.9;
         const repulsion = 20 * scale;
-        const attraction = 1 * scale;
+        const attraction = scale;
 
         const prev = {
             position: motionStates.position.current,
