@@ -8,6 +8,8 @@ import {h2, subtle_p} from "@/styles/text";
 import EmSubtle from "@/components/EmSubtle";
 import ElementGraph from "@/components/ElementGraph";
 import {useActiveSection} from "@/components/DynamicSections";
+import {createClient} from "@/utils/supabase/client";
+import {Tables} from "@/types/supabase";
 
 export default function CourseSection() {
 
@@ -21,32 +23,14 @@ export default function CourseSection() {
     }, [registerSection]);
 
     const [activeYear, setActiveYear] = useState(1);
+    const [allActiveModules, setAllActiveModules] = useState<Tables<"modules">[] | null>(null);
     const courseLength = 4;
 
     // ID for MSci Physics
     const id = 36;
-    const {data: courseModulesResponse} = useSWR(`/api/courses/[id]/modules`, (url) => fetcher(url, {id: id.toString()}));
+    const {data: courseModulesResponse} = useSWR("/api/courses/[id]/modules", (url) => fetcher(url, {id: id.toString()}));
     const courseModules = courseModulesResponse?.data;
-
-    const getActiveModules = () => {
-        switch (activeYear) {
-            case 1:
-                return courseModules?.year_1;
-            case 2:
-                return courseModules?.year_2;
-            case 3:
-                return courseModules?.year_3;
-            case 4:
-                return courseModules?.year_4;
-            case 5:
-                return courseModules?.year_5;
-            default:
-                return {required: [], optional: []};
-        }
-    }
-    const activeModules = getActiveModules();
-
-    const allActiveModules = activeModules?.required.concat(activeModules.optional);
+    
 
     const YearsDisplay = () => {
         return (

@@ -22,6 +22,7 @@ const CourseDetailsInputs = () => {
 	const form = useFormContext()
 	const {data: response} = useSWR('/api/courses', (url) => fetcher(url));
 	const courses = response?.data;
+	console.log(courses)
 	const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 	return (
 		<>
@@ -48,7 +49,7 @@ const CourseDetailsInputs = () => {
 									>
 										{field.value
 											? courses?.find(
-												(course) => course.id.toString() === field.value
+												(course) => course.id === field.value
 											)?.title
 											: "Select course"}
 										<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
@@ -129,17 +130,18 @@ const CourseDetailsInputs = () => {
 			/>
 			<FormField
 				control={form.control}
-				name="yearOfStudy"
+				name="year"
 				render={({field}) => (
 					<FormItem className={"w-full"}>
 						<FormLabel>
-							Start of studies
+							Current year of study
 						</FormLabel>
 						<FormControl>
 							<Input type={"number"} {...field} />
 						</FormControl>
-						<FormDescription>The year your studies started. Not a student? You can ignore this
-							field.</FormDescription>
+						<FormDescription>
+							Your current year of study. This will affect what modules are available to you.
+						</FormDescription>
 						<FormMessage/>
 					</FormItem>
 				)}

@@ -13,26 +13,38 @@ export default function Page() {
         "use server";
         const supabase = createClient();
         const origin = headers().get("origin");
-        const date = formData.yearOfStudy
-            ? new Date(formData.yearOfStudy, 9, 1, 12, 0, 0, 0)
-            : null;
+
+        const enrollmentQuery = supabase.from("course_years").select("course_year_id").eq("course_id", formData.course);
+
+        // They have a year (not an academic / other)
+        if (formData.year) {
+            enrollmentQuery.eq("year_number", formData.year);
+        }
+
+        const {data: enrollmentID} = await enrollmentQuery.single();
 
         const data = {
-            email: formData.email,
-            password: formData.password,
-            options: {
-                emailRedirectTo: `${origin}/auth/callback`,
-                data: {
-                    first_name: formData.firstName,
-                    last_name: formData.lastName,
-                    // selects use string values
-                    course: +formData.course,
-                    entry_date: date,
-                },
-            },
-        };
+                email: formData.email,
+                password: formData.password,
+                options: {
+                    emailRedirectTo: `${origin}/auth/callback`,
+                    /*
+                    This data is used in the "handle_new_user" database function,
+                    which is triggered when a new user is created.
 
-        if(!data.email.endsWith("@bath.ac.uk")) {
+                    Consult the supabase dashboard for more information.
+                     */
+                    data: {
+                        first_name: formData.firstName,
+                        last_name: formData.lastName,
+                        course_year_id: enrollmentID,
+                        enrolled_at: new Date().toISOString(),
+                    },
+                },
+            }
+        ;
+
+        if (!data.email.endsWith("@bath.ac.uk")) {
             return redirect("/signup?error=Please use a bath.ac.uk email address");
         }
 

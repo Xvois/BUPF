@@ -1,24 +1,19 @@
 import LinkBox from "@/components/LinkBox";
-import {cookies} from "next/headers";
-import apiAxios from "@/utils/axios/apiAxios";
 import InfoBox from "@/components/InfoBox";
+import {Database} from "@/types/supabase";
 
 
-export async function CoreModules() {
-	const {data: modules} = await apiAxios.get("/api/user/modules", {}, {headers: {Cookie: cookies().toString()}}).then(res => res.data);
-
-
+export async function CoreModules({modules}: { modules: Database["public"]["Functions"]["get_user_module_assignments"]["Returns"]}) {
 	return (
 		<div className={"flex flex-wrap gap-4"}>
 			{
-				modules && modules?.required.length > 0 ?
-					modules.required.map(module => (
+					modules.length > 0 ? modules.map(module => (
 						<LinkBox
-							key={module.id}
-							title={`${module.title} / ${module.id.toUpperCase()}`}
-							href={`/modules/${module.id}`}
+							key={module.module_id}
+							title={`${module.module_title} / ${module.module_id?.toUpperCase()}`}
+							href={`/modules/${module.module_id}`}
 							className={"max-w-screen-sm flex-grow"}
-							description={module.description || undefined}
+							description={module.module_description || undefined}
 						>
 						</LinkBox>
 					))

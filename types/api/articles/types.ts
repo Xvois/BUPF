@@ -3,5 +3,5 @@ import {PostgrestResponse} from "@supabase/supabase-js";
 
 
 export type ArticlesResponse = PostgrestResponse<Tables<"posts"> & {
-	profiles: (Tables<"profiles"> & { courses: Tables<"courses"> | null }) | null
+	profiles: Tables<"profiles"> | null
 }>

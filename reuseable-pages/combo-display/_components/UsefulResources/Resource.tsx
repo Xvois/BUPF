@@ -8,7 +8,7 @@ import ExtLink from "@/components/ExtLink";
 
 
 export default async function Resource({resource}: {
-    resource: Tables<"resources"> & { owner: Tables<"profiles"> & { courses: Tables<"courses"> } }
+    resource: Tables<"resources"> & { owner: Tables<"profiles"> }
 }) {
 
     const supabase = createClient();

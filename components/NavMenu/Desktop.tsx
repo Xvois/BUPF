@@ -1,6 +1,6 @@
 'use client'
 
-import {Tables} from "@/types/supabase";
+import {Database, Tables} from "@/types/supabase";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -16,7 +16,7 @@ import * as React from "react";
 import {cn} from "@/utils/cn";
 
 export default function DesktopNavBar({modules, topics}: {
-	modules: Tables<"modules">[] | undefined,
+	modules: Database["public"]["Functions"]["get_user_module_assignments"]["Returns"] | null,
 	topics: Tables<"topics">[] | null | undefined
 }) {
 	return (
@@ -55,11 +55,11 @@ export default function DesktopNavBar({modules, topics}: {
 							<ul className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
 								{modules.slice(0, 4).map((module) => (
 									<ListItem
-										key={module.id}
-										title={module.title}
-										href={`/modules/${module.id}`}
+										key={module.module_id}
+										title={module.module_title}
+										href={`/modules/${module.module_id}`}
 									>
-										{module.description}
+										{module.module_description}
 									</ListItem>
 								))}
 							</ul>

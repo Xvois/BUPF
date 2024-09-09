@@ -41,7 +41,7 @@ export default async function ComboDisplay({params, searchParams}: {
     const pageData = data as PageData;
 
     // Grab the resources for the module
-    const {data: resourceData} = params.module_id ? await supabase.from("module_resources").select("resources(*, owner(*, courses(*)))").eq("module", id) : {data: null};
+    const {data: resourceData} = params.module_id ? await supabase.from("module_resources").select("resources(*, owner(*))").eq("module", id) : {data: null};
     const resources = resourceData?.map((row) => row.resources);
 
     // @ts-ignore
