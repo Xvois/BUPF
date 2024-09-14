@@ -4,10 +4,8 @@ import {useForm, useFormContext} from "react-hook-form";
 import {Tables} from "@/types/supabase";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Checkbox} from "@/components/ui/checkbox";
-import {Label} from "@/components/ui/label";
 import {formSchema} from "@/app/admin/assignments/_schema/formSchema";
 import {z} from "zod";
-import {CheckedState} from "@radix-ui/react-checkbox";
 import CourseDetails from "@/components/form-components/course-details";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
@@ -17,13 +15,12 @@ import EmSubtle from "@/components/EmSubtle";
 import {updateAssignments} from "@/app/admin/assignments/_actions/handleSubmit";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
-import useSWR, {mutate} from "swr";
+import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 
 
-export default function AssignmentsForm({modules, courses}: {
+export default function AssignmentsForm({modules}: {
     modules: Tables<"modules">[],
-    courses: Tables<"courses">[]
 }) {
 
     const urlSearchParams = useSearchParams();
@@ -38,6 +35,8 @@ export default function AssignmentsForm({modules, courses}: {
         reValidateMode: "onChange"
     })
 
+    // Watch the form for changes,
+    // will automatically invalidate courseModulesResponse
     const formCourse = form.watch("course");
     const formYear = form.watch("year");
 
@@ -116,8 +115,6 @@ function ModulesCommand({modules}: { modules: Tables<"modules">[] }) {
 
     const [search, setSearch] = useState("");
     const results = fuse.search(search);
-    const [targetModule, setTargetModule] = useState<string | null>(results[0]?.item.id ?? null);
-
 
     const handleSubmit = (value: string) => {
         const containsModule = parentForm.getValues("modules").find((m: z.infer<typeof formSchema>["modules"][number]) => m.id === value);

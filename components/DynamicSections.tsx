@@ -87,14 +87,14 @@ const TransitionWidget = () => {
     const nextSection = clamp(activeSection + 1, [0, sectionRefs.current.length - 1]);
 
     return (
-        <div className={"fixed backdrop-blur inline-flex flex-col gap-2 bottom-4 right-4 p-2 rounded-md border z-20"}>
+        <div className={"fixed backdrop-blur inline-flex flex-col bottom-4 right-4 rounded-md border z-20"}>
             <Button variant={"ghost"}
                     onClick={() => sectionRefs.current[prevSection].scrollIntoView({behavior: "smooth"})}>
-                <ChevronUp/>
+                <ChevronUp className={"w-4 h-4"}/>
             </Button>
             <Button variant={"ghost"}
                     onClick={() => sectionRefs.current[nextSection].scrollIntoView({behavior: "smooth"})}>
-                <ChevronDown/>
+                <ChevronDown className={"w-4 h-4"}/>
             </Button>
         </div>
     );

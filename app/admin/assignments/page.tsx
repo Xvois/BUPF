@@ -7,10 +7,9 @@ import React from "react";
 export default async function Page() {
 
     const {data: {data: modules, error: modulesError}} = await apiAxios.get("/api/modules");
-    const {data: {data: courses, error: coursesError}} = await apiAxios.get("/api/courses");
 
-    if(modulesError || coursesError) {
-        return; // Some fallback
+    if(modulesError) {
+        return; // TODO: Some fallback
     }
 
     return (
@@ -24,7 +23,7 @@ export default async function Page() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <AssignmentsForm modules={modules} courses={courses} />
+                <AssignmentsForm modules={modules} />
             </CardContent>
         </React.Fragment>
     )

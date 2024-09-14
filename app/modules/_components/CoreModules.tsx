@@ -18,7 +18,7 @@ export async function CoreModules({modules}: { modules: Database["public"]["Func
 						</LinkBox>
 					))
 					:
-					<InfoBox className={"border-dashed"} title={"No required modules available."}>
+					<InfoBox title={"No required modules available."}>
 						Think this is a mistake? Contact a site admin.
 					</InfoBox>
 			}

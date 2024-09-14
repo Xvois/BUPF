@@ -16,7 +16,7 @@ export default async function UserPosts({}: { params: { user_id: string } }) {
     const {data: profile} = await supabase.from('profiles').select().eq('id', user.id).single();
     const {
         data: posts,
-    } = await supabase.from('posts').select("*, profiles (*, courses (*))").eq('owner', user.id).order('created_at', {ascending: false});
+    } = await supabase.from('posts').select("*, profiles (*)").eq('owner', user.id).order('created_at', {ascending: false});
 
     if (!posts || !profile) {
         return redirect("/login");

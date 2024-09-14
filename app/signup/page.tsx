@@ -8,10 +8,16 @@ import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card
 
 export default function Page() {
 
-
     async function signUp(formData: z.infer<typeof formSchema>) {
         "use server";
         const supabase = createClient();
+
+        // They are logged in
+        const {data: {user}} = await supabase.auth.getUser();
+        if (user) {
+            return redirect("/home");
+        }
+
         const origin = headers().get("origin");
 
         const enrollmentQuery = supabase.from("course_years").select("course_year_id").eq("course_id", formData.course);

@@ -10,6 +10,7 @@ import ElementGraph from "@/components/ElementGraph";
 import {useActiveSection} from "@/components/DynamicSections";
 import {createClient} from "@/utils/supabase/client";
 import {Tables} from "@/types/supabase";
+import apiAxios from "@/utils/axios/apiAxios";
 
 export default function CourseSection() {
 
@@ -26,13 +27,27 @@ export default function CourseSection() {
     const [allActiveModules, setAllActiveModules] = useState<Tables<"modules">[] | null>(null);
     const courseLength = 4;
 
-    // ID for MSci Physics
-    const id = 36;
-    const {data: courseModulesResponse} = useSWR(["/api/courses/[id]/[year]/modules" as const, {
-        id: id.toString(),
-        year: activeYear.toString()
-    }], ([url, params]) => fetcher(url, params));
-    const courseModules = courseModulesResponse?.data;
+    /*
+    This is horrible, please someone for the love of god refactor this. I'm so sorry.
+     */
+    useEffect(() => {
+        // ID for MSci Physics
+        const id = 36;
+        apiAxios.get("/api/courses/[id]/[year]/modules", {id: id.toString(), year: activeYear.toString()}).then((courseModulesResponse) => {
+            const courseModules = courseModulesResponse?.data.data;
+
+            const allModulesRequest = courseModules?.map(m =>
+                apiAxios.get("/api/modules/[id]", {id: m.module_id}));
+
+            if (allModulesRequest) {
+                Promise.all(allModulesRequest).then((responses) => {
+                    const valid = responses.map(r => r.data.data);
+                    setAllActiveModules(valid.filter(m => m !== null));
+                })
+            }
+        });
+    }, [activeYear]);
+
 
     const YearsDisplay = () => {
         return (

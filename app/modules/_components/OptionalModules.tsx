@@ -17,7 +17,7 @@ export async function OptionalModules({modules}: { modules: Database["public"]["
 						</LinkBox>
 					))
 					:
-					<InfoBox className={"border-dashed"} title={"No optional modules available."}>
+					<InfoBox title={"No optional modules available."}>
 						Think this is a mistake? Contact a site admin.
 					</InfoBox>
 			}
