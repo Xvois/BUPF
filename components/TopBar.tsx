@@ -32,7 +32,10 @@ async function LoadedBar() {
         redirect("/login");
     }
 
-    const {data: modules} = await supabase.rpc("get_user_module_assignments");
+    const {data: modules, error} = await supabase.rpc("get_user_module_assignments");
+    if(error){
+        console.log(error)
+    }
     const {data: topics} = await supabase.from("topics").select("*");
 
     if (user) {

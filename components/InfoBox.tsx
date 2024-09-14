@@ -6,6 +6,9 @@ type InfoBoxProps = {
     title: string
 } & React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>
 
+/**
+ * A box that displays information with an icon.
+ */
 const InfoBox = (props: InfoBoxProps) => {
     if (props.children) {
         return (

@@ -53,9 +53,8 @@ const getRelativePosition = (element: HTMLElement, container: HTMLElement): Boun
 }
 
 /**
- * ElementGraph component
  *
- * This component is used to draw lines between child elements based on the provided nodes and links.
+ * This component is used to draw lines between child elements based on the provided nodes and links, it acts as a force graph.
  * Each node element must be a forward ref to allow the ElementGraph component to access its DOM element.
  *
  * @param {ElementGraphProps} props - The props for the ElementGraph component.

@@ -44,8 +44,6 @@ export default function SettingsForm({user, profile, enrollment}: {
         reValidateMode: "onChange"
     });
 
-    console.log(form.formState.defaultValues)
-
     const onSubmit = async (fd: z.infer<typeof formSchema>) => {
 
         const handleProfilePictureUpload = async (profilePicture: File) => {

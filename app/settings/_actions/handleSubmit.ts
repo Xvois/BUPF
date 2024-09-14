@@ -49,6 +49,7 @@ export const handleSubmit = async (fd: SettingsUploadSchema) => {
 
     const {data: enrollmentID} = await enrollmentQuery.single();
 
+
     if (!enrollmentID) {
         return redirect("/settings?error=An error occurred while fetching your course details.");
     }

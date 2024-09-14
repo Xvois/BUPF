@@ -2,6 +2,9 @@ import {h1, p} from "@/styles/text";
 import React from "react";
 
 
+/**
+ * A header for a section that displays a title, description and an icon.
+ */
 export default function SectionHeader({title, description, icon, type}: {
     title: string,
     description: string,

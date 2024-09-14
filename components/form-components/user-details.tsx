@@ -2,7 +2,35 @@ import {useFormContext} from "react-hook-form";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 
-
+/**
+ * A form component that takes in the first name, last name and email of the user.
+ *
+ * **It must be used within a Form component with *firstName*, *lastName* and *email* fields.**
+ *
+ * @example
+ * ```tsx
+ *
+ * const form = useForm({
+ *   resolver: zodResolver(formSchema),
+ *   defaultValues: {
+ *   firstName: "",
+ *   lastName: "",
+ *   email: ""
+ *   },
+ *   reValidateMode: "onChange"
+ *   });
+ *
+ * return (
+ *  <Form {...form}>
+ *      <form>
+ *          <UserDetailsInputs/>
+ *          <SubmitButton/>
+ *      </form>
+ *  </Form>
+ *  )
+ *  ```
+ * @constructor
+ */
 const UserDetailsInputs = () => {
 
     const form = useFormContext()

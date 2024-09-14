@@ -10,7 +10,7 @@ import {Separator} from "@/components/ui/separator";
 export default async function ArticlePage({params}: { params: { id: string } }) {
 	const supabase = createClient();
 
-	const {data: post} = await supabase.from("posts").select("*, profiles (*, courses (*))").eq("id", params.id).single();
+	const {data: post} = await supabase.from("posts").select("*, profiles (*)").eq("id", params.id).single();
 
 	if (!post) {
 		return <div>Post not found</div>
@@ -20,7 +20,7 @@ export default async function ArticlePage({params}: { params: { id: string } }) 
 		<article className={"flex flex-col space-y-8 w-full h-full max-w-screen-lg p-16 border-l border-r"}>
 			<div>
 				<h1 className={"font-black text-5xl"}>{post.heading}</h1>
-				by <Profile user={post.profiles}/>
+				by {post.profiles && <Profile profile={post.profiles}/>}
 			</div>
 			{
 				post.header_picture && (

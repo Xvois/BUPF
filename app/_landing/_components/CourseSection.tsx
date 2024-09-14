@@ -28,9 +28,11 @@ export default function CourseSection() {
 
     // ID for MSci Physics
     const id = 36;
-    const {data: courseModulesResponse} = useSWR("/api/courses/[id]/modules", (url) => fetcher(url, {id: id.toString()}));
+    const {data: courseModulesResponse} = useSWR(["/api/courses/[id]/[year]/modules" as const, {
+        id: id.toString(),
+        year: activeYear.toString()
+    }], ([url, params]) => fetcher(url, params));
     const courseModules = courseModulesResponse?.data;
-    
 
     const YearsDisplay = () => {
         return (
@@ -125,7 +127,7 @@ export default function CourseSection() {
             ref={ref}>
             <h2 className={h2}>
                 A course that <span className={"bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400" +
-                        " inline-block text-transparent bg-clip-text"}>stays with you</span>
+                " inline-block text-transparent bg-clip-text"}>stays with you</span>
             </h2>
             <p className={subtle_p}>
                 Choose your course, and <EmSubtle>never</EmSubtle> lose track of your progress.

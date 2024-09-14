@@ -4,6 +4,9 @@ import React from "react";
 import {ArrowRight} from "lucide-react";
 import {Skeleton} from "@/components/ui/skeleton";
 
+/**
+ * A box that displays a link with a title, description and an arrow icon.
+ */
 export default function LinkBox({title, description, href, className, ...props}: {
                                     title: string,
                                     description?: string,

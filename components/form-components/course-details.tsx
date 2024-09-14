@@ -18,11 +18,37 @@ import {Input} from "@/components/ui/input";
 import {useState} from "react";
 import {fetcher} from "@/utils/fetcher";
 
+/**
+ * A form component that takes in the course and year of study of the user.
+ *
+ * **It must be used within a Form component with *course* and *year* fields.**
+ *
+ * @example
+ * ```tsx
+ *
+ * const form = useForm({
+ *    resolver: zodResolver(formSchema),
+ *    defaultValues: {
+ *    	course: 0,
+ *    	year: 1
+ *    },
+ *    	reValidateMode: "onChange"
+ *    });
+ *
+ * return (
+ *		<Form {...form}>
+ *		    <form>
+ *		        <CourseDetailsInputs/>
+ *		        <SubmitButton/>
+ *		    </form>
+ *		</Form>
+ * )
+ * ```
+ */
 const CourseDetailsInputs = () => {
 	const form = useFormContext()
 	const {data: response} = useSWR('/api/courses', (url) => fetcher(url));
 	const courses = response?.data;
-	console.log(courses)
 	const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 	return (
 		<>
@@ -71,7 +97,7 @@ const CourseDetailsInputs = () => {
 													key={course.id}
 													onSelect={() => {
 														setPopoverOpen(false);
-														form.setValue("course", course.id.toString());
+														form.setValue("course", course.id);
 													}}
 												>
 													<p>{course.title} <span
@@ -88,7 +114,7 @@ const CourseDetailsInputs = () => {
 													key={course.id}
 													onSelect={() => {
 														setPopoverOpen(false);
-														form.setValue("course", course.id.toString())
+														form.setValue("course", course.id)
 													}}
 												>
 													<p>{course.title} <span
@@ -105,7 +131,7 @@ const CourseDetailsInputs = () => {
 													key={course.id}
 													onSelect={() => {
 														setPopoverOpen(false);
-														form.setValue("course", course.id.toString())
+														form.setValue("course", course.id)
 													}}
 												>
 													<p>{course.title} <span
@@ -134,7 +160,7 @@ const CourseDetailsInputs = () => {
 				render={({field}) => (
 					<FormItem className={"w-full"}>
 						<FormLabel>
-							Current year of study
+							Year of study
 						</FormLabel>
 						<FormControl>
 							<Input type={"number"} {...field} />

@@ -1,6 +1,5 @@
 import {SVGProps} from "react";
 
-
 export default function LoadingSpinner({className, ...props}: SVGProps<SVGSVGElement>) {
     return (
         <svg {...props} className={className} width="24" height="24"

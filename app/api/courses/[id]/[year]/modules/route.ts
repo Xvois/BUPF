@@ -10,11 +10,11 @@ export const revalidate = 60;
  */
 export async function GET(
     request: Request,
-    {params}: { params: { id: string } }
+    {params}: { params: { id: number, year: number } }
 ) {
     const supabase = createAdminClient();
 
-    const {data: courseYearData, error: courseYearError} = await supabase.from("course_years").select("course_year_id").eq("id", params.id).single();
+    const {data: courseYearData, error: courseYearError} = await supabase.from("course_years").select("course_year_id").eq("course_id", params.id).eq("year_number", params.year).single();
 
     if (courseYearError) {
         return Response.json({data: null, error: courseYearError});

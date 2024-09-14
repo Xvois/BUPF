@@ -11,9 +11,23 @@ import {Separator} from "@/components/ui/separator";
 import {cn} from "@/utils/cn";
 import {Skeleton} from "@/components/ui/skeleton";
 
+/**
+ * Displays an article with a header picture, heading, author, content, tags and a read more link.
+ * The content is truncated to fit the height of the container dynamically.
+ *
+ * @example
+ * const supabase = createClient();
+ * const {data: article} = await supabase.from("posts").select("*, profiles(*)").eq("id", articleID).single();
+ * //...
+ * <Article article={article} />
+ *
+ * @param article The article object from the "posts" table, with the author profile linked from the "profiles" table.
+ * @param props
+ * @constructor
+ */
 export const Article = ({article, ...props}: {
     article: Tables<"posts"> & {
-        profiles: (Tables<"profiles"> & { courses: Tables<"courses"> | null }) | null
+        profiles: (Tables<"profiles">) | null
     }
 } & Omit<LinkProps, "href"> & { className?: string }) => {
     const textRef = useRef<HTMLParagraphElement>(null);
@@ -57,7 +71,7 @@ export const Article = ({article, ...props}: {
                         {article.heading}
                     </h3>
                     <p className={"text-sm"}>
-                        by {article.profiles?.courses && <Profile user={article.profiles}/>}
+                        by {article.profiles && <Profile profile={article.profiles}/>}
                     </p>
                 </div>
                 <div className={"h-full overflow-hidden"}>

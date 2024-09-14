@@ -15,7 +15,33 @@ import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import resizeImage from "@/utils/resize";
 
-
+/**
+ * A form component that allows the user to upload a new profile picture. Takes in a file and deals with compression and display.
+ *
+ * **It must be used within a Form component with a *profilePicture* field.**
+ *
+ * @example
+ * ```tsx
+ *
+ * const form = useForm({
+ *   resolver: zodResolver(formSchema),
+ *   defaultValues: {
+ *   profilePicture: null
+ *   },
+ *   reValidateMode: "onChange"
+ *   });
+ *
+ * return (
+ *   <Form {...form}>
+ *       <form>
+ *           <ProfilePictureUpload/>
+ *           <SubmitButton/>
+ *       </form>
+ *   </Form>
+ *   )
+ * ```
+ * @constructor
+ */
 export default function ProfilePictureUpload() {
     const [previewSrc, setPreviewSrc] = useState('');
     const [isDialogOpen, setIsDialogOpen] = useState(false);

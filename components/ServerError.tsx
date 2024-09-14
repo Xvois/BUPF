@@ -2,6 +2,9 @@ import React from "react";
 import {cn} from "@/utils/cn";
 import {CircleAlert} from "lucide-react";
 
+/**
+ * A box that displays a server error message with an icon.
+ */
 export const ServerError = (props: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>) => {
     if(props.children) {
         return (

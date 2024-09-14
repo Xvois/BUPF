@@ -26,10 +26,10 @@ export default function Comment({
   return (
     <>
       <div className={"max-w-screen-lg"}>
-        {comment.anonymous ? (
+        {comment.anonymous || !comment.profiles ? (
           <p className={"text-sm"}>Anonymous</p>
         ) : (
-          <Profile user={comment.profiles} />
+          <Profile profile={comment.profiles} />
         )}
 		  <MarkdownRender>{comment.content}</MarkdownRender>
         <div

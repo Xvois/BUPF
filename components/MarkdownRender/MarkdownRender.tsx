@@ -18,6 +18,9 @@ interface MarkdownRenderProps {
     [x: string]: unknown; // for additional props
 }
 
+/**
+ * A markdown renderer that uses KaTeX for math rendering and Prism for code highlighting.
+ */
 export default function MarkdownRender({className, children, ...props}: MarkdownRenderProps) {
 
     const isDark = useMediaQuery('(prefers-color-scheme: dark)');

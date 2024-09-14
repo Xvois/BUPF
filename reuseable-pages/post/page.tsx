@@ -24,7 +24,7 @@ export async function generateMetadata(
 
 export default async function PostPage({params}: { params: { post_id: string } }) {
 	const supabse = createClient();
-	const {data: post} = await supabse.from("posts").select("*, profiles (*, courses (*))").eq("id", params.post_id).single();
+	const {data: post} = await supabse.from("posts").select("*, profiles(*)").eq("id", params.post_id).single();
 
 	if (post) {
 		return (
@@ -37,7 +37,7 @@ export default async function PostPage({params}: { params: { post_id: string } }
 					</Link>
 					<h1 className={"font-black text-4xl"}>{post.heading}</h1>
 					<p className={"text-sm"}>
-						By {!post.anonymous ? <Profile user={post.profiles}/> :
+						By {!post.anonymous && post.profiles ? <Profile profile={post.profiles}/> :
 						'Anonymous'}
 					</p>
 				</header>

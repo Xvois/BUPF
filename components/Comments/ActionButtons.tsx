@@ -35,8 +35,6 @@ type ReplyButtonProps = {
     postID: number;
 };
 
-// Build a ReplyButton using a dialog and a RichTextArea
-
 export const ReplyButton = (props: ReplyButtonProps & ButtonProps) => {
     const {comment, postID, ...buttonProps} = props;
     const searchParams = useSearchParams();

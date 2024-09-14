@@ -32,7 +32,7 @@ export default async function Resource({resource}: {
             <Separator/>
             <div className={"flex flex-row gap-4 items-center justify-between"}>
                 <div className={"text-muted-foreground"}>
-                    by <Profile user={resource.owner}/>
+                    by <Profile profile={resource.owner}/>
                 </div>
                 <div className={"inline-flex gap-2"}>
                     {
