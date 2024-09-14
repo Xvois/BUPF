@@ -3,16 +3,6 @@
 import {useForm, useFormContext} from "react-hook-form";
 import {Tables} from "@/types/supabase";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow
-} from "@/components/ui/table";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Label} from "@/components/ui/label";
 import {formSchema} from "@/app/admin/assignments/_schema/formSchema";
@@ -115,76 +105,6 @@ export default function AssignmentsForm({modules, courses}: {
     )
 }
 
-
-function ModulesTable({modules}: { modules: Tables<"modules">[] }) {
-
-    const form = useFormContext();
-
-    const handleCheckboxChange = (id: string) => {
-        const modules: z.infer<typeof formSchema>["modules"] = form.getValues("modules");
-        const module = modules.find((module) => module.id === id);
-        if (module) {
-            if (module.is_required) {
-                modules.splice(modules.indexOf(module), 1);
-            } else {
-                module.is_required = !module.is_required;
-            }
-        } else {
-            modules.push({id, is_required: false});
-        }
-        form.setValue("modules", modules);
-    }
-
-    const getCheckboxState = (id: string): CheckedState => {
-        const modules: z.infer<typeof formSchema>["modules"] = form.getValues("modules");
-        const module = modules.find((module) => module.id === id);
-        if (module) {
-            if (module.is_required) {
-                return true;
-            } else {
-                return "indeterminate" as const;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    return (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead className={"w-4"}>Selected</TableHead>
-                    <TableHead>Code</TableHead>
-                    <TableHead>Title</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {modules.map((module) => (
-                    <TableRow key={module.id}>
-                        <TableCell className={"justify-center items-center align-middle"}>
-                            <Checkbox checked={getCheckboxState(module.id)}
-                                      onClick={() => handleCheckboxChange(module.id)}/>
-                        </TableCell>
-                        <TableCell className={"uppercase"}>{module.id}</TableCell>
-                        <TableCell>{module.title}</TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-            <TableFooter>
-                <TableRow>
-                    <TableCell>
-                        <Checkbox checked={true} className={"pointer-events-none"}/>
-                        <Label className={"text-sm"}>Required</Label>
-                    </TableCell>
-                    <TableCell colSpan={2}>
-                        <Checkbox checked={"indeterminate"} className={"pointer-events-none"}/>
-                        <Label className={"text-sm"}>Optional</Label>
-                    </TableCell>
-                </TableRow>
-            </TableFooter>
-        </Table>
-    )
-}
 
 function ModulesCommand({modules}: { modules: Tables<"modules">[] }) {
 
