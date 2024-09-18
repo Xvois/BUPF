@@ -67,7 +67,7 @@ export default async function CommentSection(props: CommentSectionProps & HTMLAt
     const {
         data: comments,
         error: commentsError
-    } = await supabase.from("comments").select("*, profiles (*, courses (*))").in("id", postComments.attached_comments);
+    } = await supabase.from("comments").select("*, profiles (*)").in("id", postComments.attached_comments);
 
     if (!comments) {
         return (

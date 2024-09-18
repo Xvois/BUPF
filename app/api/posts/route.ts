@@ -18,3 +18,16 @@ export async function GET(request: Request) {
 		return Response.json({error: e}, {status: 400});
 	}
 }
+
+export async function DELETE(request: Request) {
+	const client = createClient();
+	const {id} = await request.json();
+
+	const {error} = await client.from("posts").delete().eq("id", id);
+
+	if (error) {
+		return Response.json({error: error.message}, {status: 400});
+	}
+
+	return Response.json({message: "Post deleted"});
+}

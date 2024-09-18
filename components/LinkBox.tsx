@@ -3,6 +3,7 @@ import {cn} from "@/utils/cn";
 import React from "react";
 import {ArrowRight} from "lucide-react";
 import {Skeleton} from "@/components/ui/skeleton";
+import {Separator} from "@/components/ui/separator";
 
 /**
  * A box that displays a link with a title, description and an arrow icon.
@@ -10,8 +11,8 @@ import {Skeleton} from "@/components/ui/skeleton";
 export default function LinkBox({title, description, href, className, ...props}: {
                                     title: string,
                                     description?: string,
-    href: string,
-    disabled?: boolean
+                                    href: string,
+                                    disabled?: boolean
                                 } & React.HTMLAttributes<HTMLDivElement>
 ) {
     return (
@@ -24,17 +25,26 @@ export default function LinkBox({title, description, href, className, ...props}:
             aria-disabled={props.disabled}
         >
             <div
+                className={"flex flex-col space-y-2"}
                 {...props}>
-                <h3 className={"text-xl font-bold"}>
-                    {title}
-                </h3>
-                <p className={"text-sm text-muted-foreground"}>
-                    {description}
-                </p>
-                {props.children}
-                <ArrowRight
-                    className={"text-sm text-muted-foreground group-hover:mr-1 h-4 mt-1 transition-all group-hover:text-foreground ml-auto w-fit"}
-                />
+                <div>
+                    <h3 className={"text-xl font-bold"}>
+                        {title}
+                    </h3>
+                    <p className={"text-sm text-muted-foreground"}>
+                        {description}
+                    </p>
+                </div>
+                <Separator/>
+                <div className={"inline-flex flex-row justify-between"}>
+                    <div className={"inline-flex flex-row gap-1"}>
+                        {props.children}
+                    </div>
+                    <ArrowRight
+                        className={"text-sm text-muted-foreground group-hover:mr-1 h-4 mt-1 transition-all group-hover:text-foreground ml-auto w-fit"}
+                    />
+                </div>
+
             </div>
         </Link>
     )

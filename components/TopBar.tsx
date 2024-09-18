@@ -28,10 +28,6 @@ async function LoadedBar() {
     const supabase = createClient()
     const {data: {user}} = await supabase.auth.getUser();
 
-    if(!user) {
-        redirect("/login");
-    }
-
     const {data: modules, error} = await supabase.rpc("get_user_module_assignments");
     if(error){
         console.log(error)

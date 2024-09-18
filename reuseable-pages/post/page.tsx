@@ -6,6 +6,7 @@ import {Separator} from "@/components/ui/separator";
 import {Component} from "lucide-react";
 import Link from "next/link";
 import {Metadata} from "next";
+import {DeleteButton} from "@/reuseable-pages/post/_components/DeleteButton";
 
 export async function generateMetadata(
 	{params}: { params: { post_id: string }, searchParams: { sort?: string, tag?: string } },
@@ -25,6 +26,9 @@ export async function generateMetadata(
 export default async function PostPage({params}: { params: { post_id: string } }) {
 	const supabse = createClient();
 	const {data: post} = await supabse.from("posts").select("*, profiles(*)").eq("id", params.post_id).single();
+
+	const {data: {user}} = await supabse.auth.getUser();
+	const isOwner = user?.id === post?.owner;
 
 	if (post) {
 		return (
@@ -46,10 +50,13 @@ export default async function PostPage({params}: { params: { post_id: string } }
 						{post.content}
 					</MarkdownRender>
 					<div className={"w-fit ml-auto"}>
-						<p className={"w-fit text-sm text-muted-foreground"} suppressHydrationWarning>
+						<p className={"w-fit text-sm text-muted-foreground"}>
 							Posted {new Date(post.created_at).toDateString()}
 						</p>
 					</div>
+					{
+						isOwner && <DeleteButton post_id={post.id}/>
+					}
 				</div>
 				<Separator/>
 				<CommentSection className={"p-6"} marked_comment={post.marked_comment || undefined}

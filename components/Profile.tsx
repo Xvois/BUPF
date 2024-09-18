@@ -64,7 +64,7 @@ export default function Profile(props: { profile: Tables<'profiles'> }) {
                             <div>
                                 <p>{profile.first_name} {profile.last_name} <span
                                     className={"text-xs text-muted-foreground"}>{course?.type}</span></p>
-                                <p className={"text-muted-foreground text-xs"}>{course?.title}</p>
+                                <p className={"text-muted-foreground text-xs"}>{course?.title} {}</p>
                             </div>
                         </>
                         :
