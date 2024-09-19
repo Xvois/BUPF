@@ -126,19 +126,6 @@ export default function DesktopNavBar({modules, topics}: {
 						</NavigationMenuLink>
 					</Link>
 				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<Link href="/about" legacyBehavior passHref>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
-							About
-						</NavigationMenuLink>
-					</Link>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<NavigationMenuLink className={navigationMenuTriggerStyle()}
-										href={"mailto:smp90@bath.ac.uk?subject=BUPF%20Help"}>
-						Help
-					</NavigationMenuLink>
-				</NavigationMenuItem>
 			</NavigationMenuList>
 		</NavigationMenu>
 	)

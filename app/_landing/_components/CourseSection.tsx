@@ -1,20 +1,17 @@
 'use client'
 
 import React, {HTMLProps, useEffect, useRef, useState} from "react";
-import useSWR from "swr";
-import {fetcher} from "@/utils/fetcher";
 import {cn} from "@/utils/cn";
 import {h2, subtle_p} from "@/styles/text";
 import EmSubtle from "@/components/EmSubtle";
 import ElementGraph from "@/components/ElementGraph";
 import {useActiveSection} from "@/components/DynamicSections";
-import {createClient} from "@/utils/supabase/client";
 import {Tables} from "@/types/supabase";
 import apiAxios from "@/utils/axios/apiAxios";
 
 export default function CourseSection() {
 
-    const {activeSection, registerSection, getSectionIndex} = useActiveSection();
+    const {registerSection} = useActiveSection();
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -25,7 +22,8 @@ export default function CourseSection() {
 
     const [activeYear, setActiveYear] = useState(1);
     const [allActiveModules, setAllActiveModules] = useState<Tables<"modules">[] | null>(null);
-    const courseLength = 4;
+    // TODO: UP AS COURSE LENGTH INCREASES
+    const courseLength = 2;
 
     /*
     This is horrible, please someone for the love of god refactor this. I'm so sorry.
@@ -53,8 +51,8 @@ export default function CourseSection() {
         return (
             <div className={"absolute left-0 bottom-8 w-full z-10"}>
                 <div
-                    className={"flex flex-col w-fit mx-auto gap-2 "}>
-                    <div className={"inline-flex gap-4 py-2 px-4 backdrop-blur rounded-md border items-center"}>
+                    className={"flex flex-col w-fit mx-auto gap-2 items-center"}>
+                    <div className={"inline-flex w-fit gap-4 py-2 px-4 backdrop-blur rounded-md border items-center"}>
                         <p className={"font-semibold"}>Year</p>
                         <div className={"flex gap-4"}>
                             {
@@ -68,6 +66,7 @@ export default function CourseSection() {
                         </div>
                     </div>
                     <p className={cn(subtle_p, "text-xs")}>of <EmSubtle>MSci Physics</EmSubtle></p>
+                    <p className={cn(subtle_p, "text-xs")}>Note: Years will appear when module selection is finalised.</p>
                 </div>
             </div>
         )

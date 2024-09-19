@@ -55,7 +55,8 @@ export default function Page() {
                     collect
                     any personal information about you unless you voluntarily provide it to us. Any personal
                     information
-                    you provide to us will be stored securely and will not be shared with any third parties.
+                    you provide to us will be stored securely and will not be shared with any third parties beyond those needed
+                    to operate the service.
                 </p>
                 <p className={"text-muted-foreground"}>
                     Your email address will only be used to send you a confirmation email when you sign up, and to send
@@ -72,7 +73,7 @@ export default function Page() {
                     The platform may, at times, use <a
                     className={"underline inline-flex items-center gap-1"}
                     href={"https://vercel.com/docs/analytics"}>Vercel Analytics <ExternalLink
-                    className={"w-3 h-3"}/></a> and <a
+                    className={"w-3 h-3"}/></a> and / or <a
                     className={"underline inline-flex items-center gap-1"}
                     href={"https://vercel.com/docs/speed-insights"}>Vercel Speed Insights <ExternalLink
                     className={"w-3 h-3"}/></a> which collects some data about your usage of the platform. This data is

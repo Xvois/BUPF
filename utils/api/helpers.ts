@@ -50,6 +50,7 @@ export const unwrapAndApplyQParams = <T extends GenericSchema, R extends Record<
         const filters: Filter[] = JSON.parse(filtersString);
         filters.forEach((filter) => {
             if (isFilters(filters)) {
+                // Grab the handler for the operator
                 const handler = operatorHandlers[filter.operator as PostgrestOperators];
                 if (handler) {
                     // Use the corresponding handler to format the value
