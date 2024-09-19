@@ -99,8 +99,7 @@ export default function CourseSection() {
                                                                                                           ...props
                                                                                                       }, ref) => {
             return (
-                <div {...props} ref={ref} className={cn("", props.className)}>
-                    <p className={"uppercase font-semibold"}>{module.id}</p>
+                <div {...props} ref={ref}>
                 </div>
             );
         });
@@ -110,20 +109,19 @@ export default function CourseSection() {
                                                                                                        ...props
                                                                                                    }, ref) => {
             return (
-                <div {...props} ref={ref} className={cn("text-muted-foreground", props.className)}>
-                    <p className={"text-xs"}>#{tag}</p>
+                <div {...props} ref={ref}>
                 </div>
             );
         });
 
         const moduleNodes = allActiveModules.map((module) => ({
             id: module.id,
-            element: <Module module={module}/>,
+            element: <Module className={"p-3 rounded-full bg-gradient-to-br from-muted-foreground/75 to-muted-foreground/50 backdrop-blur"} module={module}/>,
         }));
 
         const tagNodes = allTags.map((tag) => ({
             id: tag,
-            element: <Tag tag={tag}/>,
+            element: <Tag className={"p-2 rounded-full bg-gradient-to-br from-muted-foreground/50 to-muted-foreground/50 backdrop-blur"} tag={tag}/>,
         }));
 
         const nodes = moduleNodes.concat(tagNodes);

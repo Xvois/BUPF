@@ -172,8 +172,8 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<never>> = ({nodes, lin
                     const isLinked = links.some(link => (link.source === nodes[i].id && link.target === nodes[j].id) || (link.source === nodes[j].id && link.target === nodes[i].id));
                     const epsilon = 100;
                     const smoothedDistance = Math.sqrt(distance ** 2 + epsilon ** 2);
-                    const attractionForce = attraction / (Math.pow(smoothedDistance, 1.8));
-                    const repulsionForce = -repulsion / (Math.pow(smoothedDistance, 2.275));
+                    const attractionForce = attraction / (Math.pow(smoothedDistance, 1.805));
+                    const repulsionForce = -repulsion / (Math.pow(smoothedDistance, 2.3));
                     const forceMag = isLinked ? (2 * attractionForce + repulsionForce) : (attractionForce + repulsionForce);
                     force.x += direction.x * forceMag;
                     force.y += direction.y * forceMag;
