@@ -57,6 +57,9 @@ export const DeleteAccountButton = (props: ButtonProps) => {
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction onClick={performAction}>Understood</AlertDialogAction>
                     </AlertDialogFooter>
+                    <ServerError>
+                        {searchParams.get("delete_error")}
+                    </ServerError>
                 </AlertDialogContent>
             </AlertDialog>
         </Fragment>

@@ -12,6 +12,7 @@ const deleteAccount = async () => {
 		return redirect("/settings?delete_error=No user found");
 	}
 	const {error} = await supabaseAdmin.auth.admin.deleteUser(user.id);
+	console.log(error)
 	if (error) {
 		return redirect("/settings?delete_error=" + error.message);
 	}

@@ -43,8 +43,8 @@ export default function Page() {
                     data: {
                         first_name: formData.firstName,
                         last_name: formData.lastName,
-                        course_year_id: enrollmentID,
-                        enrolled_at: new Date().toISOString(),
+                        course_year_id: enrollmentID?.course_year_id,
+                        last_modified: new Date().toISOString(),
                     },
                 },
             }
@@ -55,6 +55,8 @@ export default function Page() {
         }
 
         const {error} = await supabase.auth.signUp(data);
+        console.log(error);
+        console.log(data)
         if (error) {
             return redirect("/signup?error=" + error.message);
         }

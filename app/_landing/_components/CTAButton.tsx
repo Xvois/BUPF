@@ -1,7 +1,7 @@
 "use client"
 
 import {createClient} from "@/utils/supabase/client";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 
@@ -11,11 +11,16 @@ export const CTAButton = () => {
 
     const supabase = createClient();
 
-    supabase.auth.getUser().then(({data: user}) => {
-        if (user) {
-            setIsLoggedIn(true);
-        }
-    })
+    useEffect(() => {
+        supabase.auth.getSession().then(({data}) => {
+            if (data.session?.access_token) {
+                setIsLoggedIn(true);
+            }
+        }).catch(() => {
+            setIsLoggedIn(false);
+        })
+    }, [])
+
 
     if (isLoggedIn) {
         return (

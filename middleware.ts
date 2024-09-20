@@ -4,7 +4,7 @@ import {type NextRequest, NextResponse} from "next/server";
 import {updateSession} from "@/utils/supabase/middleware";
 import {createClient} from "@/utils/supabase/server";
 
-const authorisedPaths = ["/", "/academics", "/login", "/signup", "/opengraph-image.ts", "/about", "/privacy", "/articles", "/auth/callback", "/auth/capture", "/auth/confirm", "/auth/confirm"];
+const authorisedPaths = ["/", "/academics", "/login", "/signup", "/opengraph-image.ts", "/about", "/privacy", "/articles", "/auth/callback", "/auth/capture", "/auth/confirm"];
 
 export async function middleware(request: NextRequest) {
 
