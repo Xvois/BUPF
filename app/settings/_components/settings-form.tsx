@@ -76,7 +76,7 @@ export default function SettingsForm({user, profile, enrollment}: {
         // Transform profile picture file to supabase URL
         let profilePictureUrl: string | undefined = undefined;
         if (fd.profilePicture) {
-            const {data: {publicUrl}} = await handleProfilePictureUpload(fd.profilePicture);
+            const {data: {publicUrl}} = await handleProfilePictureUpload(fd.profilePicture as File);
             profilePictureUrl = publicUrl;
         }
 
