@@ -53,9 +53,8 @@ const getRelativePosition = (element: HTMLElement, container: HTMLElement): Boun
 }
 
 /**
- * ElementGraph component
  *
- * This component is used to draw lines between child elements based on the provided nodes and links.
+ * This component is used to draw lines between child elements based on the provided nodes and links, it acts as a force graph.
  * Each node element must be a forward ref to allow the ElementGraph component to access its DOM element.
  *
  * @param {ElementGraphProps} props - The props for the ElementGraph component.
@@ -153,7 +152,7 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<never>> = ({nodes, lin
 
         const dampening = 0.9;
         const repulsion = 20 * scale;
-        const attraction = 1 * scale;
+        const attraction = scale;
 
         const prev = {
             position: motionStates.position.current,
@@ -173,8 +172,8 @@ const ElementGraph: React.FC<ElementGraphProps & SVGProps<never>> = ({nodes, lin
                     const isLinked = links.some(link => (link.source === nodes[i].id && link.target === nodes[j].id) || (link.source === nodes[j].id && link.target === nodes[i].id));
                     const epsilon = 100;
                     const smoothedDistance = Math.sqrt(distance ** 2 + epsilon ** 2);
-                    const attractionForce = attraction / (Math.pow(smoothedDistance, 1.8));
-                    const repulsionForce = -repulsion / (Math.pow(smoothedDistance, 2.275));
+                    const attractionForce = attraction / (Math.pow(smoothedDistance, 1.805));
+                    const repulsionForce = -repulsion / (Math.pow(smoothedDistance, 2.3));
                     const forceMag = isLinked ? (2 * attractionForce + repulsionForce) : (attractionForce + repulsionForce);
                     force.x += direction.x * forceMag;
                     force.y += direction.y * forceMag;

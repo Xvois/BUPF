@@ -16,7 +16,7 @@ import {TopicsResponse} from "@/types/api/topics/types";
 export type GetRouteResponseMap = {
     '/api/courses': CoursesResponse,
     '/api/courses/[id]': CourseResponse,
-    '/api/courses/[id]/modules': CourseModulesResponse,
+    '/api/courses/[id]/[year]/modules': CourseModulesResponse,
     '/api/modules': ModulesResponse,
     '/api/modules/[id]': ModuleResponse,
     '/api/posts/[id]': PostResponse,

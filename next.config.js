@@ -1,19 +1,24 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-	enabled: process.env.ANALYZE === 'true',
+    enabled: process.env.ANALYZE === 'true',
 })
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	images: {
-		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'uyadlyphtuclcowrmrem.supabase.co',
-				port: '',
-				pathname: '/storage/v1/object/public/**',
-			},
-		],
-	},
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'uyadlyphtuclcowrmrem.supabase.co',
+                port: '',
+                pathname: '/storage/v1/object/public/**',
+            },
+        ],
+    },
+    logging: {
+        fetches: {
+            fullUrl: true,
+        },
+    },
 }
 
 module.exports = withBundleAnalyzer(nextConfig)

@@ -7,9 +7,7 @@ import {ServerError} from "@/components/ServerError";
 import {HTMLAttributes} from "react";
 
 export type CommentType = Tables<"comments"> & {
-    profiles: Tables<"profiles"> & {
-        courses: Tables<"courses"> | null
-    } | null
+    profiles: Tables<"profiles"> | null
 } & { children: CommentType[] }
 
 type CommentWOChildren = Omit<CommentType, "children">;
@@ -21,6 +19,11 @@ type CommentSectionProps = {
     owner: string | null
 }
 
+/**
+ * Comments are organised in a hierarchy pointing to their parent,
+ * this function organises them into a tree structure that we can traverse **down**.
+ * @param comments
+ */
 function organizeComments(comments: CommentWOChildren[]): CommentType[] {
     const commentsMap: { [key: number]: CommentType } = {};
 
@@ -64,7 +67,7 @@ export default async function CommentSection(props: CommentSectionProps & HTMLAt
     const {
         data: comments,
         error: commentsError
-    } = await supabase.from("comments").select("*, profiles (*, courses (*))").in("id", postComments.attached_comments);
+    } = await supabase.from("comments").select("*, profiles (*)").in("id", postComments.attached_comments);
 
     if (!comments) {
         return (

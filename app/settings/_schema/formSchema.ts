@@ -7,8 +7,8 @@ export const formSchema = z.object({
     firstName: z.string().min(0),
     lastName: z.string().min(0),
     email: z.string().email().min(0).refine(data => data.includes("@bath.ac.uk"), "Please enter a valid Bath email address."),
-    course: z.string(),
-    yearOfStudy: z.coerce.number().max(new Date().getFullYear(), {message: "This forum only supports enrolled students."}).optional(),
+    course: z.number(),
+    year: z.coerce.number().min(0, {message: "Enter a valid year."}).max(5, {message: "Years above 5 are not expected."}).optional(),
     profilePicture: z
         .instanceof(File)
         .refine((file) => file.size && file.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)

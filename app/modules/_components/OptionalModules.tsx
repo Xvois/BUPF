@@ -1,25 +1,27 @@
 import LinkBox from "@/components/LinkBox";
-import {cookies} from "next/headers";
-import apiAxios from "@/utils/axios/apiAxios";
 import InfoBox from "@/components/InfoBox";
+import {Database} from "@/types/supabase";
+import PostsIndicator from "@/app/modules/_components/PostsIndicator";
 
-export async function OptionalModules() {
-    const {data: modules} = await apiAxios.get("/api/user/modules", {}, {headers: {Cookie: cookies().toString()}}).then(res => res.data);
+export async function OptionalModules({modules}: {
+    modules: Database["public"]["Functions"]["get_user_module_assignments"]["Returns"]
+}) {
     return (
         <div className={"flex flex-wrap gap-4"}>
             {
-                modules && modules?.optional.length > 0 ?
-                    modules.optional.map(module => (
+                modules.length > 0 ? modules.map(module => (
                         <LinkBox
-                            key={module.id}
-                            title={`${module.title} / ${module.id.toUpperCase()}`}
-                            href={`/modules/${module.id}`}
+                            key={module.module_id}
+                            title={`${module.module_title} / ${module.module_id?.toUpperCase()}`}
+                            href={`/modules/${module.module_id}`}
                             className={"max-w-screen-sm flex-grow"}
-                            description={module.description || undefined}
-                        />
+                            description={module.module_description || undefined}
+                        >
+                            <PostsIndicator moduleID={module.module_id}/>
+                        </LinkBox>
                     ))
                     :
-                    <InfoBox className={"border-dashed"} title={"No optional modules available."}>
+                    <InfoBox title={"No optional modules available."}>
                         Think this is a mistake? Contact a site admin.
                     </InfoBox>
             }

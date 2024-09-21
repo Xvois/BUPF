@@ -8,13 +8,16 @@ import {Skeleton} from "@/components/ui/skeleton";
 
 type PostProps = {
     post: Tables<'posts'> & {
-        profiles: Tables<'profiles'> & {
-            courses: Tables<'courses'> | null
-        } | null
+        profiles: Tables<'profiles'> | null
     }
     type: "modules" | "topics"
 };
 
+/**
+ * Displays a post with a heading, content, author and target.
+ * @param props
+ * @constructor
+ */
 export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { className?: string }) {
     const {post, ...linkProps} = props;
 
@@ -45,7 +48,7 @@ export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { clas
                 <p className={"text-sm"}>
                     {post.profiles ?
                         !post.anonymous ?
-                        <Profile user={post.profiles}/> :
+                        <Profile profile={post.profiles}/> :
                             'Anonymous'
                         :
                         "Deleted User"

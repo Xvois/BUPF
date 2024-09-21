@@ -12,6 +12,10 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 
+/**
+ * A dropdown menu that displays user account information.
+ * Requires no props as it fetches the user's profile from the database.
+ */
 export default async function UserDropdown() {
     const supabase = createClient();
     const {

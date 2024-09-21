@@ -5,19 +5,14 @@ import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {Separator} from "@/components/ui/separator";
 import {Component} from "lucide-react";
 import Link from "next/link";
-import {Metadata, ResolvingMetadata} from "next";
+import {Metadata} from "next";
+import {DeleteButton} from "@/reuseable-pages/post/_components/DeleteButton";
 
 export async function generateMetadata(
-	{params, searchParams}: { params: { post_id: string }, searchParams: { sort?: string, tag?: string } },
-	parent: ResolvingMetadata
+	{params}: { params: { post_id: string }, searchParams: { sort?: string, tag?: string } },
 ): Promise<Metadata> {
 	// read route params
 	const id = params.post_id
-
-	const defaultUrl = process.env.VERCEL_URL
-		? `https://${process.env.VERCEL_URL}`
-		: "http://localhost:3000";
-
 
 	// fetch data
 	const post = await fetch(`api/post/${id}`).then((res) => res.json())
@@ -30,7 +25,10 @@ export async function generateMetadata(
 
 export default async function PostPage({params}: { params: { post_id: string } }) {
 	const supabse = createClient();
-	const {data: post} = await supabse.from("posts").select("*, profiles (*, courses (*))").eq("id", params.post_id).single();
+	const {data: post} = await supabse.from("posts").select("*, profiles(*)").eq("id", params.post_id).single();
+
+	const {data: {user}} = await supabse.auth.getUser();
+	const isOwner = user?.id === post?.owner;
 
 	if (post) {
 		return (
@@ -43,7 +41,7 @@ export default async function PostPage({params}: { params: { post_id: string } }
 					</Link>
 					<h1 className={"font-black text-4xl"}>{post.heading}</h1>
 					<p className={"text-sm"}>
-						By {!post.anonymous ? <Profile user={post.profiles}/> :
+						By {!post.anonymous && post.profiles ? <Profile profile={post.profiles}/> :
 						'Anonymous'}
 					</p>
 				</header>
@@ -52,10 +50,13 @@ export default async function PostPage({params}: { params: { post_id: string } }
 						{post.content}
 					</MarkdownRender>
 					<div className={"w-fit ml-auto"}>
-						<p className={"w-fit text-sm text-muted-foreground"} suppressHydrationWarning>
+						<p className={"w-fit text-sm text-muted-foreground"}>
 							Posted {new Date(post.created_at).toDateString()}
 						</p>
 					</div>
+					{
+						isOwner && <DeleteButton post_id={post.id}/>
+					}
 				</div>
 				<Separator/>
 				<CommentSection className={"p-6"} marked_comment={post.marked_comment || undefined}

@@ -1,7 +1,6 @@
 import {createAdminClient} from "@/utils/supabase/admin";
 import {CoursesResponse} from "@/types/api/courses/types";
 import {unwrapAndApplyQParams} from "@/utils/api/helpers";
-import {ArticlesResponse} from "@/types/api/articles/types";
 
 export const dynamic = 'force-static';
 export const revalidate = 60;

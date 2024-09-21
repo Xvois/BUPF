@@ -3,7 +3,7 @@ import {Tables} from "@/types/supabase";
 
 // /api/posts
 export type PostsResponse = PostgrestResponse<Tables<"posts"> & {
-	profiles: (Tables<"profiles"> & { courses: Tables<"courses"> | null }) | null
+	profiles: Tables<"profiles"> | null
 }>
 
 // /api/posts/[id]

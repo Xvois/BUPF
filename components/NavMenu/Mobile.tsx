@@ -5,11 +5,11 @@ import {Menu} from "lucide-react";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import Link from "next/link";
 import * as React from "react";
-import {Tables} from "@/types/supabase";
+import {Database, Tables} from "@/types/supabase";
 
 
 export default function MobileNavMenu({modules, topics}: {
-	modules: Tables<"modules">[] | undefined,
+	modules: Database["public"]["Functions"]["get_user_module_assignments"]["Returns"] | null,
 	topics: Tables<"topics">[] | null | undefined
 }) {
 	const [isSheetOpen, setIsSheetOpen] = React.useState(false);
@@ -34,18 +34,18 @@ export default function MobileNavMenu({modules, topics}: {
 								{
 									modules ?
 										modules.map((module) => (
-											<li key={module.id}>
+											<li key={module.module_id}>
 												<Link
 													onClick={() => setIsSheetOpen(false)}
-													href={`/modules/${module.id}`}
+													href={`/modules/${module.module_id}`}
 													className={
 														"block h-full space-y-1 rounded-md py-3 leading-none focus:outline-foreground transition-colors"
 													}
 												>
 													<div
-														className="capitalize text-sm font-medium leading-none">{module.title}</div>
+														className="capitalize text-sm font-medium leading-none">{module.module_title}</div>
 													<p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
-														{module.description}
+														{module.module_description}
 													</p>
 												</Link>
 											</li>
@@ -117,18 +117,6 @@ export default function MobileNavMenu({modules, topics}: {
 						<div className="py-4 font-medium flex">
 							<Link onClick={() => setIsSheetOpen(false)} className="w-full h-full"
 								  href="/articles">Articles</Link>
-						</div>
-					</AccordionItem>
-					<AccordionItem value="item-5">
-						<div className="py-4 font-medium flex">
-							<Link onClick={() => setIsSheetOpen(false)} className="w-full h-full"
-								  href="/about">About</Link>
-						</div>
-					</AccordionItem>
-					<AccordionItem value="item-6">
-						<div className="py-4 font-medium flex">
-							<a onClick={() => setIsSheetOpen(false)} className="w-full h-full"
-							   href={"mailto:smp90@bath.ac.uk?subject=BUPF%20Help"}>Help</a>
 						</div>
 					</AccordionItem>
 				</Accordion>

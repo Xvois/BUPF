@@ -6,18 +6,17 @@ import {Separator} from "@/components/ui/separator";
 import Post from "@/components/Post";
 
 
-export default async function UserPosts({params}: { params: { user_id: string } }) {
+export default async function UserPosts({}: { params: { user_id: string } }) {
     const supabase = createClient();
-    const {data: {user}, error} = await supabase.auth.getUser();
+    const {data: {user}} = await supabase.auth.getUser();
     if (!user) {
         return redirect("/login");
     }
 
-    const {data: profile, error: profileError} = await supabase.from('profiles').select().eq('id', user.id).single();
+    const {data: profile} = await supabase.from('profiles').select().eq('id', user.id).single();
     const {
         data: posts,
-        error: postsError
-    } = await supabase.from('posts').select("*, profiles (*, courses (*))").eq('owner', user.id).order('created_at', {ascending: false});
+    } = await supabase.from('posts').select("*, profiles (*)").eq('owner', user.id).order('created_at', {ascending: false});
 
     if (!posts || !profile) {
         return redirect("/login");

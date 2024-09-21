@@ -15,10 +15,13 @@ interface MarkdownRenderProps {
     className?: string;
     children: string;
 
-    [x: string]: any; // for additional props
+    [x: string]: unknown; // for additional props
 }
 
-export default function MarkdownRender({id, className, children, ...props}: MarkdownRenderProps) {
+/**
+ * A markdown renderer that uses KaTeX for math rendering and Prism for code highlighting.
+ */
+export default function MarkdownRender({className, children, ...props}: MarkdownRenderProps) {
 
     const isDark = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -31,7 +34,7 @@ export default function MarkdownRender({id, className, children, ...props}: Mark
                 a: props => {
                     return <a {...props} className={cn("text-blue-500 underline", props.className)}/>
                 },
-                code({node, style, className, children}) {
+                code({className, children}) {
                     const match = /language-(\w+)/.exec(className || '');
                     return match ? (
                         <SyntaxHighlighter

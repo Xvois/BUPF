@@ -17,16 +17,19 @@ import {redirect, useSearchParams} from "next/navigation";
 import ProfilePictureUpload from "@/components/form-components/picture-upload";
 import {createClient} from "@/utils/supabase/client";
 import {User} from "@supabase/auth-js";
-import {useEffect} from "react";
 
 
-export default function SettingsForm({user, profile}: {
+export default function SettingsForm({user, profile, enrollment}: {
     user: User,
-    profile: Tables<"profiles">
+    profile: Tables<"profiles">,
+    enrollment: Tables<"users_courses"> & {
+        details: Tables<"course_years"> & { course: Tables<"courses"> | null } | null
+    }
 }) {
     const searchParams = useSearchParams();
     // If the server is running, do not show the error message
     const serverError = process.env.NEXT_PUBLIC_VERCEL_ENV ? (searchParams.get("error") && "A server error has occurred.") : searchParams.get("error");
+
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -34,8 +37,8 @@ export default function SettingsForm({user, profile}: {
             firstName: profile.first_name,
             lastName: profile.last_name,
             email: user.email as string,
-            course: profile.course ? profile.course.toString() : "0",
-            yearOfStudy: profile.entry_date ? (new Date(profile.entry_date)).getFullYear().toString() : null,
+            course: enrollment?.details?.course?.id ?? 0,
+            year: enrollment?.details?.year_number,
             profilePicture: ''
         },
         reValidateMode: "onChange"
@@ -77,31 +80,20 @@ export default function SettingsForm({user, profile}: {
             profilePictureUrl = publicUrl;
         }
 
-        // Transform year string to date object, starting 1st of October
-        let entryDate: string | null = null;
-        if (fd.yearOfStudy) {
-            entryDate = (new Date(fd.yearOfStudy, 9, 1)).toISOString();
-        }
 
         const transformedFormData: SettingsUploadSchema = {
             first_name: fd.firstName,
             last_name: fd.lastName,
-            course: parseInt(fd.course),
-            entry_date: entryDate,
+            course: fd.course,
+            year: fd.year ?? null,
             email: fd.email,
             profile_picture: profilePictureUrl
         }
-
-        console.log(transformedFormData);
 
         await handleSubmit(transformedFormData);
     }
 
     const {isSubmitting, isValidating} = form.formState;
-
-    const dumpData = () => {
-        console.log(form.getValues());
-    }
 
     return (
         <Form {...form}>
@@ -130,13 +122,12 @@ export default function SettingsForm({user, profile}: {
                     </div>
                 </CardContent>
                 <CardFooter className="flex items-center justify-between w-full">
-                    <DeleteAccountButton variant={"outline"}
-                                         className="text-destructive bg-destructive/10 border-destructive/15 hover:bg-destructive/35 hover:border-destructive/40"/>
+                    <DeleteAccountButton variant={"destructive"}/>
                     <Button isLoading={isSubmitting || isValidating} type="submit">Save</Button>
-                    <ServerError>
-                        {serverError}
-                    </ServerError>
                 </CardFooter>
+                <ServerError>
+                    {serverError}
+                </ServerError>
             </form>
         </Form>
     )

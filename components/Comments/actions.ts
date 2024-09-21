@@ -13,7 +13,7 @@ export const markComment = async (
     postID: number,
 ) => {
     const client = createClient();
-    const {data, error} = await client
+    const {error} = await client
         .from("posts")
         .update({
             marked_comment: comment.id,

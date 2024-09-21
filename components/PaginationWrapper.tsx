@@ -15,6 +15,16 @@ interface PaginationWrapperProps {
     children: React.ReactNode[];
 }
 
+/**
+* A wrapper that paginates its children, such that only one child is visible at a time.
+ *
+ * @example
+ * <PaginationWrapper>
+ *     <div>Page 1</div>
+ *     <div>Page 2</div>
+ *     <div>Page 3</div>
+ * </PaginationWrapper>
+ */
 export default function PaginationWrapper({children}: PaginationWrapperProps) {
     const [page, setPage] = React.useState(1);
     const pages = children.length;

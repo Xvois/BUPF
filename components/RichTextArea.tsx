@@ -13,10 +13,10 @@ interface RichTextAreaProps extends TextareaProps {
 /**
  * A controlled textarea component that allows the user to write markdown and preview it.
  *
- * @param {RichTextAreaProps & React.RefAttributes<HTMLTextAreaElement>} props - The props of the textarea
+ * @param {RichTextAreaProps & React.RefAttributes<HTMLTextAreaElement>} props - Customizable props for the Textarea and MarkdownRender components
  * @returns {JSX.Element} The RichTextArea component
  */
-const RichTextArea = forwardRef<HTMLTextAreaElement, RichTextAreaProps>(({className, id, value, ...props}, ref) => {
+const RichTextArea = forwardRef<HTMLTextAreaElement, RichTextAreaProps>(({className, value, ...props}, ref) => {
 
     return (
         <Tabs defaultValue={"write"}>

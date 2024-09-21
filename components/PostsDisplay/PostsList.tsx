@@ -1,21 +1,9 @@
 'use client'
 
-import {Tables} from "@/types/supabase";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
 import Post, {PostSkeleton} from "@/components/Post";
 import {wrapQParams, Filter} from "@/utils/api/helpers";
-
-
-// Calculate the weight for a post
-function calculateWeight(post: Tables<"posts">) {
-    const now = Date.now();
-    const postDate = new Date(post.created_at).getTime();
-    const timeDifference = now - postDate; // in milliseconds
-    const daysDifference = timeDifference / (1000 * 60 * 60 * 24); // convert to days
-    const commentsWeight = post.attached_comments.length;
-    return commentsWeight - daysDifference; // adjust these values as needed
-}
 
 export function PostsList({queryFilters, type}: {
 	queryFilters: Filter[],

@@ -14,7 +14,7 @@ export async function GET(request: Request) {
 
     const params = new URL(request.url).searchParams;
 
-    const query = client.from("posts").select("*, profiles (*, courses (*))").eq("type", "article");
+    const query = client.from("posts").select("*, profiles (*)").eq("type", "article");
 
     try {
         unwrapAndApplyQParams(query, params);

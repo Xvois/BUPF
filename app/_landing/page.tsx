@@ -8,8 +8,10 @@ import WelcomeSection from "@/app/_landing/_components/WelcomeSection";
 import MarkdownSection from "@/app/_landing/_components/MarkdownSections";
 import CourseSection from "@/app/_landing/_components/CourseSection";
 import OpenSourceSection from "@/app/_landing/_components/OpenSourceSection";
+import {createClient} from "@/utils/supabase/server";
 
 export default function Landing() {
+
     return (
         <DynamicSections className={"w-full"}>
             <WelcomeSection/>

@@ -1,7 +1,7 @@
 import Profile from "@/components/Profile";
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {DeleteButton, MarkButton, ReplyButton, ReportButton,} from "@/components/Comments/ActionButtons";
-import {CheckCircle} from "lucide-react";
+import {CheckCircle, CircleCheck} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip";
 import {CommentType} from "@/components/Comments/CommentSection";
 import {User} from "@supabase/auth-js";
@@ -26,10 +26,10 @@ export default function Comment({
   return (
     <>
       <div className={"max-w-screen-lg"}>
-        {comment.anonymous ? (
+        {comment.anonymous || !comment.profiles ? (
           <p className={"text-sm"}>Anonymous</p>
         ) : (
-          <Profile user={comment.profiles} />
+          <Profile profile={comment.profiles} />
         )}
 		  <MarkdownRender>{comment.content}</MarkdownRender>
         <div
@@ -76,7 +76,7 @@ export default function Comment({
             <TooltipProvider>
               <Tooltip delayDuration={0}>
                 <TooltipTrigger>
-                  <CheckCircle className={"h-5 w-5 text-green-600/90"} />
+                  <CircleCheck className={"h-5 w-5 text-green-600/90"} />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>This thread is the author&apos;s selected answer.</p>

@@ -2,15 +2,14 @@
 
 
 import {z} from "zod";
-import {formSchema} from "@/reuseable-pages/combo-display/_schema/formSchema";
+import {postSchema} from "@/reuseable-pages/combo-display/_schema/postSchema";
 import {createClient} from "@/utils/supabase/server";
 import {revalidatePath} from "next/cache";
 import {headers} from "next/headers";
 
-export default async function post(values: z.infer<typeof formSchema>) {
+export default async function uploadPost(values: z.infer<typeof postSchema>) {
 
 	const headersList = headers();
-	const domain = headersList.get('host') || "";
 	const fullUrl = headersList.get('referer') || "";
 
 	// Create a new URL object from the fullUrl
@@ -67,8 +66,44 @@ export default async function post(values: z.infer<typeof formSchema>) {
 				keywords: ["lab", "experiment", "experimentation", "data", "analysis", "measurement", "error", "uncertainty"]
 			},
 			{
-				name: "computational physics",
-				keywords: ["computational", "simulation", "numerical", "algorithm", "computation", "programming", "code", "python", "coding", "spyder", "jupyter"]
+				name: "scientific computing",
+				keywords: ["computational", "simulation", "numerical", "algorithm", "computation", "programming", "code", "python", "coding", "spyder", "jupyter", "c++", "linux"]
+			},
+			{
+				name: "atoms & matrix mechanics",
+				keywords: ["atom", "matrix", "quantum", "mechanics", "schrodinger", "heisenberg", "uncertainty", "wave", "particle"]
+			},
+			{
+				name: "statistical physics",
+				keywords: ["statistical", "physics", "mechanics", "boltzmann", "gibbs", "partition", "ensemble", "entropy", "microstate"]
+			},
+			{
+				name: "particle & nuclear physics",
+				keywords: ["particle", "nuclear", "physics", "quark", "lepton", "boson", "hadron", "meson", "baryon", "nucleon", "proton", "neutron", "electron", "positron", "photon", "gluon", "graviton", "higgs", "boson"]
+			},
+			{
+				name: "further astrophysics",
+				keywords: ["astrophysics", "cosmology", "galaxy", "star", "planet", "black hole", "big bang", "dark matter", "supernova"]
+			},
+			{
+				name: "condensed matter physics",
+				keywords: ["condensed", "matter", "physics", "solid", "liquid", "gas", "crystal", "amorphous", "glass", "metal", "insulator", "semiconductor", "superconductor", "fermi", "bose", "einstein", "condensate"]
+			},
+			{
+				name: "maxwell's equations",
+				keywords: ["maxwell", "equations", "faraday", "gauss", "ampere", "coulomb", "electric", "magnetic"]
+			},
+			{
+				name: "observational astrophysics",
+				keywords: ["astrophysics", "cosmology", "galaxy", "star", "planet", "black hole", "big bang", "dark matter", "supernova", "telescope", "lens", "mirror"]
+			},
+			{
+				name: "advanced data analysis",
+				keywords: ["big-data", "data", "analysis", "statistics", "statistical", "mathematics", "maths", "algebra", "calculus", "geometry", "trigonometry", "analysis", "topology", "python", "coding", "spyder", "jupyter", "c++", "linux"]
+			},
+			{
+				name: "oral presentation",
+				keywords: ["presentation", "oral", "public-speaking", "speech", "talk", "lecture", "seminar", "conference", "symposium", "meeting"]
 			}
 		]
 
@@ -84,7 +119,7 @@ export default async function post(values: z.infer<typeof formSchema>) {
 		anonymous: values.anonymous,
 	}
 
-	const {data: post, error: postError} = await supabase.from("posts").insert(postObject).select();
+	const {error: postError} = await supabase.from("posts").insert(postObject).select();
 
 	if (postError) {
 		throw new Error(`Failed to post: ${postError.message}`);

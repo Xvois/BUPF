@@ -1,63 +1,20 @@
-import {type NextRequest, NextResponse} from "next/server";
-import {type CookieOptions, createServerClient} from "@supabase/ssr";
+// noinspection DuplicatedCode
 
-const authorisedPaths = ["/", "/academics", "/login", "/signup", "/opengraph-image.ts", "/about", "/privacy", "/articles", "/auth/callback", "/auth/capture", "/auth/confirm", "/auth/confirm"];
+import {type NextRequest, NextResponse} from "next/server";
+import {updateSession} from "@/utils/supabase/middleware";
+import {createClient} from "@/utils/supabase/server";
+
+const authorisedPaths = ["/", "/academics", "/login", "/signup", "/opengraph-image.ts", "/about", "/privacy", "/articles", "/auth/callback", "/auth/capture", "/auth/confirm"];
 
 export async function middleware(request: NextRequest) {
 
 	try {
-		let response = NextResponse.next({
-			request: {
-				headers: request.headers,
-			},
-		});
-		const supabase = createServerClient(
-			process.env.NEXT_PUBLIC_SUPABASE_URL!,
-			process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-			{
-				cookies: {
-					get(name: string) {
-						return request.cookies.get(name)?.value;
-					},
-					set(name: string, value: string, options: CookieOptions) {
-						// If the cookie is updated, update the cookies for the request and response
-						request.cookies.set({
-							name,
-							value,
-							...options,
-						});
-						response = NextResponse.next({
-							request: {
-								headers: request.headers,
-							},
-						});
-						response.cookies.set({
-							name,
-							value,
-							...options,
-						});
-					},
-					remove(name: string, options: CookieOptions) {
-						// If the cookie is removed, update the cookies for the request and response
-						request.cookies.set({
-							name,
-							value: "",
-							...options,
-						});
-						response = NextResponse.next({
-							request: {
-								headers: request.headers,
-							},
-						});
-						response.cookies.set({
-							name,
-							value: "",
-							...options,
-						});
-					},
-				},
-			},
-		);
+
+		// Updates session
+		// https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=environment&environment=middleware&queryGroups=framework&framework=nextjs
+		let response = updateSession(request);
+
+		const supabase = createClient();
 
 		// This will refresh session if expired - required for Server Components
 		// https://supabase.com/docs/guides/auth/server-side/nextjs
