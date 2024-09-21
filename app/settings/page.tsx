@@ -2,8 +2,6 @@ import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import SettingsForm from "@/app/settings/_components/settings-form";
 
-export const dynamic = 'force-dynamic';
-
 export default async function Settings() {
     const supabase = createClient();
     const {

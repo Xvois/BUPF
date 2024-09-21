@@ -65,7 +65,13 @@ export default async function UserDropdown() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem>
-                    <Link href={"/signout"}>Sign out</Link>
+                    {
+                        /*
+                        Prefetching is disabled because otherwise they will be logged out whenever they open the dropdown!
+                        (Or sometimes only occasionally, which is even worse and made this bug very hard to track down.)
+                         */
+                    }
+                    <Link prefetch={false} href={"/signout"}>Sign out</Link>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
