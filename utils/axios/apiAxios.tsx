@@ -77,35 +77,44 @@ class APIAxios {
             return !(/^(?:[a-z]+:)?\/\//i.test(url));
         }
 
+        console.log(`(apiAxios): Checking if route is a relative URL: ${route}`);
         if (!isRelativeUrl(route as string)) {
             throw new Error('(apiAxios): Route must be a relative URL.');
         }
 
         let defaultURL: string = 'http://localhost:3000'; // Initialize with a default value
+        console.log(`(apiAxios): Initial defaultURL: ${defaultURL}`);
 
         if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'development') {
+            console.log('(apiAxios): Environment is development');
             if (process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL) {
                 defaultURL = `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`;
+                console.log(`(apiAxios): Using VERCEL_BRANCH_URL: ${defaultURL}`);
             } else if (process.env.NEXT_PUBLIC_VERCEL_URL) {
                 defaultURL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+                console.log(`(apiAxios): Using VERCEL_URL: ${defaultURL}`);
             }
         } else if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
             defaultURL = `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`;
+            console.log(`(apiAxios): Environment is production, using PROJECT_PRODUCTION_URL: ${defaultURL}`);
         }
-
 
         // Replace all instances of something enclosed in square brackets with its corresponding string in the ids parameter
         let url = `${defaultURL}${route}`;
+        console.log(`(apiAxios): Initial URL: ${url}`);
         for (const key in params) {
             if (params[key] !== undefined && key !== 'searchParams') {
                 url = url.replace(`[${key}]`, params[key] as string);
+                console.log(`(apiAxios): Replaced [${key}] with ${params[key]}: ${url}`);
             }
         }
         // Append the search params to the URL
         if (params && params.searchParams) {
             url = url + `?${params.searchParams}`;
+            console.log(`(apiAxios): Appended searchParams: ${url}`);
         }
 
+        console.log(`(apiAxios): Final URL: ${url}`);
         return this.axiosInstance.get(url, config);
     }
 }

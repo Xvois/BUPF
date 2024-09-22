@@ -19,6 +19,7 @@ export async function GET(request: Request) {
     try {
         unwrapAndApplyQParams(query, params);
         const response: ArticlesResponse = await query;
+        console.log(response)
         return Response.json(response);
     } catch (e) {
         return Response.json({error: e}, {status: 400});
