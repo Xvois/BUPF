@@ -16,5 +16,5 @@ export const formSchema = z.object({
         .refine(
             (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
             ".jpg, .jpeg, .png and .webp files are accepted."
-        ),
+        ).optional(),
 })
