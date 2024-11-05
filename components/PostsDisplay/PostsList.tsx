@@ -26,8 +26,6 @@ export function PostsList({queryFilters, type}: {
                 <PostSkeleton/>
                 <PostSkeleton/>
                 <PostSkeleton/>
-                <PostSkeleton/>
-                <PostSkeleton/>
             </div>
         );
     }

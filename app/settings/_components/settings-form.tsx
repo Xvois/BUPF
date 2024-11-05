@@ -39,7 +39,7 @@ export default function SettingsForm({user, profile, enrollment}: {
             email: user.email as string,
             course: enrollment?.details?.course?.id ?? 0,
             year: enrollment?.details?.year_number,
-            profilePicture: ''
+            profilePicture: undefined
         },
         reValidateMode: "onChange"
     });
@@ -79,7 +79,6 @@ export default function SettingsForm({user, profile, enrollment}: {
             const {data: {publicUrl}} = await handleProfilePictureUpload(fd.profilePicture as File);
             profilePictureUrl = publicUrl;
         }
-
 
         const transformedFormData: SettingsUploadSchema = {
             first_name: fd.firstName,

@@ -17,6 +17,9 @@ import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";
+import {Label} from "@/components/ui/label";
+import {X} from "lucide-react";
+import {Separator} from "@/components/ui/separator";
 
 
 export default function AssignmentsForm({modules}: {
@@ -77,16 +80,30 @@ export default function AssignmentsForm({modules}: {
                                 </FormDescription>
                             </div>
                             <ModulesCommand modules={modules}/>
-                            <div>
+                            <div className={"flex flex-col gap-2"}>
                                 {form.getValues("modules").map((module) => (
-                                    <div className={"flex flex-row w-full"} key={module.id}>
+                                    <div
+                                        className={"flex flex-row px-4 py-2 rounded-md border w-full items-center justify-between"}
+                                        key={module.id}>
                                         <p>{module.id}</p>
-                                        <Checkbox
-                                            onClick={() => {
-                                                module.is_required = !module.is_required;
-                                                form.setValue("modules", form.getValues("modules").map((m) => m.id === module.id ? module : m))
-                                            }}
-                                            checked={module.is_required}/>
+                                        <div className={"inline-flex items-center gap-4"}>
+                                            <div className={"inline-flex items-center gap-1"}>
+                                                <Label>Required</Label>
+                                                <Checkbox
+                                                    onClick={() => {
+                                                        module.is_required = !module.is_required;
+                                                        form.setValue("modules", form.getValues("modules").map((m) => m.id === module.id ? module : m))
+                                                    }}
+                                                    checked={module.is_required}/>
+                                            </div>
+                                            <button
+                                                type={"button"}
+                                                onClick={() => {
+                                                    form.setValue("modules", form.getValues("modules").filter((m) => m.id !== module.id))
+                                                }}>
+                                                <X className={"h-4 w-4"}/>
+                                            </button>
+                                        </div>
                                     </div>
                                 ))
                                 }
@@ -95,7 +112,7 @@ export default function AssignmentsForm({modules}: {
                         </FormItem>
                     )
                     }/>
-                <Button isLoading={isSubmitting} type={"submit"}>Save</Button>
+                <Button className={"mt-2"} isLoading={isSubmitting} type={"submit"}>Save</Button>
             </form>
             <ServerError>
                 {urlSearchParams.get("error")}
@@ -124,8 +141,7 @@ function ModulesCommand({modules}: { modules: Tables<"modules">[] }) {
     }
 
     return (
-        <div>
-            <div className={"relative flex flex-row gap-4"}>
+        <div className={"relative flex flex-row gap-4"}>
                 <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={"Search for a module"}/>
                 {
                     search.length > 0 && <div
@@ -144,6 +160,5 @@ function ModulesCommand({modules}: { modules: Tables<"modules">[] }) {
                     </div>
                 }
             </div>
-        </div>
     )
 }

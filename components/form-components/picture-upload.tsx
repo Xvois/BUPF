@@ -62,7 +62,6 @@ export default function ProfilePictureUpload() {
 
             resizeImage(file, settings).then((resizedFile) => {
                 form.setValue("profilePicture", resizedFile)
-                console.log(resizedFile);
             })
 
             if (file) {

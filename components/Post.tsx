@@ -76,14 +76,14 @@ export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { clas
 export const PostSkeleton = () => {
     return (
         <Skeleton
-            className={"flex flex-col border rounded-md p-4 transition-all focus:outline-foreground hover:bg-accent"}>
+            className={"flex flex-col border rounded-md p-4 transition-all bg-muted"}>
             <Skeleton className={"space-y-4"}>
                 <h3 className={"text-xl font-bold"}>
-                    <Skeleton className={"w-1/2 bg-background h-6 rounded-md"}/>
+                    <Skeleton className={"w-1/2 bg-muted-foreground/5 h-6 rounded-md"}/>
                 </h3>
-                <Skeleton className={"w-1/3 bg-background h-4 rounded-md"}/>
+                <Skeleton className={"w-1/3 bg-muted-foreground/5 h-4 rounded-md"}/>
                 <Skeleton
-                    className={"w-1/4 bg-background h-4 ml-auto"}
+                    className={"w-1/4 bg-muted-foreground/5 h-4 ml-auto"}
                 />
             </Skeleton>
         </Skeleton>

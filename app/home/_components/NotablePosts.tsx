@@ -15,10 +15,10 @@ export default function NotablePosts() {
 
 function NotablePostsSkeleton() {
     return (
-        <div>
-            <PostSkeleton />
-            <PostSkeleton />
-            <PostSkeleton />
+        <div className={"w-full space-y-4"}>
+            <PostSkeleton/>
+            <PostSkeleton/>
+            <PostSkeleton/>
         </div>
     )
 }
@@ -45,7 +45,7 @@ async function NotablePostsFilled() {
     }
 
     return (
-        <div>
+        <div className={"w-full space-y-4"}>
             {
                 posts.map(post => (
                     <Post key={post.id} post={post} type={"modules"}/>

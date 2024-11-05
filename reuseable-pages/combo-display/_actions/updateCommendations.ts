@@ -14,7 +14,8 @@ export async function updateCommendations(resourceID: string) {
         throw new Error("User is not authenticated");
     }
 
-    const {data: isResourceOwner} = await supabase.from("resources").select("owner").eq("id", resourceID).eq("owner", user.id);
+    const {data: isResourceOwner} = await supabase.from("resources").select("owner").eq("id", resourceID).eq("owner", user.id).single();
+
 
     if(isResourceOwner) {
         throw new Error("Resource owner cannot commend their own resource");
