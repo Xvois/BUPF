@@ -4,15 +4,15 @@ import {createClient} from "@/utils/supabase/server";
 import crypto from 'crypto';
 
 async function createUniqueName(blob: Blob): Promise<string> {
-	// Convert Blob to Buffer
-	const buffer = Buffer.from(await blob.arrayBuffer());
+    // Convert Blob to Uint8Array
+    const arrayBuffer = await blob.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
 
-	// Create a hash of the file
-	const hash = crypto.createHash('sha256');
-	hash.update(buffer);
-	return hash.digest('hex');
+    // Create a hash of the file
+    const hash = crypto.createHash('sha256');
+    hash.update(uint8Array);
+    return hash.digest('hex');
 }
-
 export const uploadDraftPicture = async (picture: File) => {
 	const supabase = createClient();
 	const {data: {user}} = await supabase.auth.getUser();
