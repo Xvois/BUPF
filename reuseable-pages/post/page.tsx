@@ -6,63 +6,112 @@ import {Separator} from "@/components/ui/separator";
 import {Component} from "lucide-react";
 import Link from "next/link";
 import {Metadata} from "next";
-import {DeleteButton} from "@/reuseable-pages/post/_components/DeleteButton";
+import {Tables} from "@/types/supabase";
 
+// Metadata Generation
 export async function generateMetadata(
-	{params}: { params: { post_id: string }, searchParams: { sort?: string, tag?: string } },
+    {params}: { params: { post_id: string } }
 ): Promise<Metadata> {
-	// read route params
-	const id = params.post_id
-
-	// fetch data
-	const post = await fetch(`api/post/${id}`).then((res) => res.json())
-
-	return {
-		title: post.heading,
-		description: post.content,
-	}
+    const id = params.post_id;
+    try {
+        const post = await fetch(`api/post/${id}`).then((res) => res.json());
+        return {
+            title: post.heading,
+            description: post.content,
+        };
+    } catch {
+        return {title: "Post", description: "Post details"};
+    }
 }
 
-export default async function PostPage({params}: { params: { post_id: string } }) {
-	const supabse = createClient();
-	const {data: post} = await supabse.from("posts").select("*, profiles(*)").eq("id", params.post_id).single();
+// Fetch Post Data
+async function fetchPostData(postId: string) {
+    const supabase = createClient();
 
-	const {data: {user}} = await supabse.auth.getUser();
-	const isOwner = user?.id === post?.owner;
+    // Fetch the post and profile (single query using join)
+    const {data: post} = await supabase
+        .from("posts")
+        .select("*, profiles(*)")
+        .eq("id", postId)
+        .single();
 
-	if (post) {
-		return (
-			<article className={"w-full space-y-4"}>
-				<header
-					className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none break-words overflow-hidden">
-					<Link href={`/modules/${post.target}`} className={"inline-flex gap-2"}>
-						<Component/>
-						<p>{post.target}</p>
-					</Link>
-					<h1 className={"font-black text-4xl"}>{post.heading}</h1>
-					<p className={"text-sm"}>
-						By {!post.anonymous && post.profiles ? <Profile profile={post.profiles}/> :
-						'Anonymous'}
-					</p>
-				</header>
-				<div className={"p-6"}>
-					<MarkdownRender>
-						{post.content}
-					</MarkdownRender>
-					<div className={"w-fit ml-auto"}>
-						<p className={"w-fit text-sm text-muted-foreground"}>
-							Posted {new Date(post.created_at).toDateString()}
-						</p>
-					</div>
-					{
-						isOwner && <DeleteButton post_id={post.id}/>
-					}
-				</div>
-				<Separator/>
-				<CommentSection className={"p-6"} marked_comment={post.marked_comment || undefined}
-								post_type={post.type}
-								post_id={params.post_id} owner={post.owner}/>
-			</article>
-		)
-	}
+    // Fetch user data
+    const {
+        data: {user},
+    } = await supabase.auth.getUser();
+
+    const isOwner = user?.id === post?.owner;
+
+    return {post, isOwner, user};
+}
+
+// Post Header Component
+const PostHeader = ({
+                        post,
+                    }: {
+    post: Tables<"posts"> & {
+        profiles: Tables<"profiles"> | null;
+    };
+}) => (
+    <header
+        className="flex flex-col gap-2 h-full w-full select-none justify-end rounded-md no-underline outline-none break-words overflow-hidden">
+        <Link
+            href={`/modules/${post.target}`}
+            className={"inline-flex gap-1 text-sm text-muted-foreground hover:underline"}
+        >
+            <Component className="h-4 w-4"/>
+            <span>{post.target}</span>
+        </Link>
+        <h1 className={"font-black text-4xl"}>
+            {post.heading}
+            <span className="ml-2 text-sm font-medium text-muted-foreground">
+				({new Date(post.created_at).toDateString()})
+			</span>
+        </h1>
+        <p className={"text-sm"}>
+            By{" "}
+            {!post.anonymous && post.profiles ? (
+                <Profile profile={post.profiles}/>
+            ) : (
+                <span className="font-medium text-muted-foreground">Anonymous</span>
+            )}
+        </p>
+    </header>
+);
+
+// Post Content Component
+const PostContent = ({post}: {     post: Tables<"posts"> & {
+        profiles: Tables<"profiles"> | null;
+    }; }) => (
+    <MarkdownRender>{post.content}</MarkdownRender>
+);
+
+// Main Post Page Component
+export default async function PostPage({
+                                           params,
+                                       }: {
+    params: { post_id: string };
+}) {
+    const {post} = await fetchPostData(params.post_id);
+
+    if (!post) {
+        return <p>Post not found</p>; // Fallback for non-existent post
+    }
+
+    return (
+        <article className={"w-full space-y-4"}>
+            <div className={"inline-flex flex-col p-8 gap-2"}>
+                <PostHeader post={post}/>
+                <PostContent post={post}/>
+            </div>
+            <Separator/>
+            <CommentSection
+                className={"p-6"}
+                marked_comment={post.marked_comment || undefined}
+                post_type={post.type}
+                post_id={params.post_id}
+                owner={post.owner}
+            />
+        </article>
+    );
 }

@@ -5,7 +5,7 @@ import {redirect} from "next/navigation";
 import changeEmail from "@/app/settings/_actions/changeEmail";
 
 export type SettingsUploadSchema =
-    { first_name: string; last_name: string; course: number; year: number | null; profile_picture?: string; email: string }
+    { first_name: string; last_name: string; course: number; year: number | null; profile_picture?: string; email: string, roundup: boolean }
 
 export const handleSubmit = async (fd: SettingsUploadSchema) => {
 
@@ -62,4 +62,17 @@ export const handleSubmit = async (fd: SettingsUploadSchema) => {
     if (enrollmentError) {
         return redirect("/settings?error=" + enrollmentError.message);
     }
+
+    /*
+        * Update the user's subscriptions
+     */
+
+    const {error: subscriptionsError} = await supabase.from("subscriptions").update({
+        roundup: fd.roundup
+    }).eq("id", user.id);
+
+    if (subscriptionsError) {
+        return redirect("/settings?error=" + subscriptionsError.message);
+    }
+
 }

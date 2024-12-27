@@ -44,7 +44,6 @@ export default async function ComboDisplay({params, searchParams}: {
     const {data: resourceData} = params.module_id ? await supabase.from("module_resources").select("resources(*, owner(*))").eq("module", id) : {data: null};
     const resources = resourceData?.map((row) => row.resources);
 
-    // @ts-ignore
     return (
         <div className="w-full grid space-y-4">
             <SectionHeader
@@ -96,8 +95,7 @@ export default async function ComboDisplay({params, searchParams}: {
                             <div className="flex flex-row flex-wrap gap-4">
                                 {
                                     resources?.map((resource) => (
-                                        // Types are not working on resource call for some reason
-                                        // @ts-expect-error
+                                        /* Types are not working on resource call for some reason @ts-expect-error */
                                         <Resource key={resource.id} resource={resource}/>
                                     ))
                                 }

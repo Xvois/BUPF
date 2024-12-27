@@ -32,8 +32,11 @@ function LoginContents() {
         };
         const email = target.email.value;
         const password = target.password.value;
+
+        const redirect = searchParams.get("redirect") || "/home";
+
         setIsLoading(true)
-        await login({email, password});
+        await login({email, password}, redirect);
         setIsLoading(false)
     }
 

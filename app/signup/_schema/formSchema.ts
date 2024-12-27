@@ -8,6 +8,7 @@ export const formSchema = z.object({
     confirmPassword: z.string(),
     course: z.number(),
     year: z.coerce.number().min(0, {message: "Enter a valid year."}).max(5, {message: "Years above 5 are not expected."}).optional(),
+    roundup: z.boolean(),
 }).refine(data => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"]

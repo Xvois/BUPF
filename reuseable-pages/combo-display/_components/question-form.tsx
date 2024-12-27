@@ -1,3 +1,5 @@
+"use client"
+
 import {useFormContext} from "react-hook-form";
 import useSWR from "swr";
 import {fetcher} from "@/utils/fetcher";

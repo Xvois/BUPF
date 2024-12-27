@@ -24,7 +24,7 @@ export const DeleteButton = ({post_id}: {
     }
 
     return (
-        <Button isLoading={isDeleting} onClick={() => deletePost()} variant={"destructive"}>
+        <Button className={"w-fit"} isLoading={isDeleting} onClick={() => deletePost()} variant={"destructive"}>
             Delete
         </Button>
     )

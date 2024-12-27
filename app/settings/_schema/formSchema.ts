@@ -8,6 +8,7 @@ export const formSchema = z.object({
     firstName: z.string().min(0),
     lastName: z.string().min(0),
     email: z.string().email().min(0).refine(data => data.includes("@bath.ac.uk"), "Please enter a valid Bath email address."),
+    roundup: z.boolean(),
     course: z.number(),
     year: z.coerce.number().min(0, {message: "Enter a valid year."}).max(5, {message: "Years above 5 are not expected."}).optional(),
     profilePicture: z

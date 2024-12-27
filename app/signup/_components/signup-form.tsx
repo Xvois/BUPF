@@ -34,7 +34,8 @@ function SignupContents(props: { signUp: (fd: z.infer<typeof formSchema>) => Pro
             lastName: "",
             email: "",
             password: "",
-            confirmPassword: ""
+            confirmPassword: "",
+            roundup: true,
         },
         mode: "onChange"
     })
@@ -51,7 +52,7 @@ function SignupContents(props: { signUp: (fd: z.infer<typeof formSchema>) => Pro
 
     const pageSchema =
         [
-            ["firstName", "lastName", "email"],
+            ["firstName", "lastName", "email", "roundup"],
             ["course", "yearOfStudy"],
             ["password", "confirmPassword"]
         ]

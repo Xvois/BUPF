@@ -14,6 +14,8 @@ const ExtLink: React.FC<ExtLinkProps> = (props) => {
     return (
         <a
             href={href}
+            target="_blank"
+            rel="noopener noreferrer"
             {...rest}
             className={cn("underline inline-flex items-center gap-1", className)}>
             {children} <ExternalLink className={"w-3 h-3"}/>

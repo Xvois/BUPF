@@ -6,8 +6,8 @@ import {Button} from "@/components/ui/button";
 import RichTextArea from "@/components/RichTextArea";
 import {postComment} from "@/components/Comments/actions";
 import {ServerError} from "@/components/ServerError";
-import {Checkbox} from "@/components/ui/checkbox";
 import {useSearchParams} from "next/navigation";
+import {User, VenetianMask} from "lucide-react";
 
 export default function CommentForm({postID}: { postID: number }) {
     const searchParams = useSearchParams();
@@ -28,30 +28,20 @@ export default function CommentForm({postID}: { postID: number }) {
     }
 
     return (
-        <form className={"flex flex-col gap-2"} onSubmit={onSubmit}>
-            <RichTextArea className={"min-h-20"} id={"comment"} placeholder={"Write a comment..."} value={comment}
+        <form className={"flex flex-col gap-4"} onSubmit={onSubmit}>
+
+            <RichTextArea className={"min-h-20 md:min-h-28 lg:min-h-36"} id={"comment"} placeholder={"Write a comment..."} value={comment}
                           onChange={onChange}/>
-            <div className={"flex flex-row justify-between"}>
-                <div className="items-top flex space-x-2">
-                    <Checkbox
-                        name={"anonymous"}
-                        id={"anonymous"}
-                        checked={isAnonymous}
-                        onClick={() => setIsAnonymous(!isAnonymous)}
-                    />
-                    <div className="grid gap-1.5 leading-none">
-                        <label
-                            htmlFor="anonymous"
-                            className="text-sm font-medium leading-none"
-                        >
-                            Anonymous
-                        </label>
-                        <p className="text-sm text-muted-foreground">
-                            Your comment will be posted anonymously.
-                        </p>
-                    </div>
-                </div>
-                <Button className={"w-fit"} variant={"secondary"} type="submit">Submit</Button>
+            <div className={"flex flex-col md:flex-row gap-4 items-center"}>
+                <Button variant={"default"} type="submit">Submit</Button>
+                <Button type={"button"} className={"w-36 transition-colors"} variant={isAnonymous ? "outline" : "secondary"} onClick={() => setIsAnonymous(!isAnonymous)}>
+                    {isAnonymous
+                        ?
+                        <p className={"inline-flex gap-2 items-center"}><VenetianMask /> Anonymous</p>
+                        :
+                        <p className={"inline-flex gap-2 items-center"}><User /> Public</p>
+                    }
+                </Button>
             </div>
             <ServerError>
                 {searchParams.get("error")}

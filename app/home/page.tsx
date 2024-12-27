@@ -6,6 +6,7 @@ import {cookies} from "next/headers";
 import SectionHeader from "@/components/SectionHeader";
 import {Home} from "lucide-react";
 import NotablePosts from "@/app/home/_components/NotablePosts";
+import QuickQuestionButton from "@/app/home/_components/QuickQuestionButton";
 
 export default async function HomePage() {
 
@@ -37,6 +38,12 @@ export default async function HomePage() {
                            type={"Your home"}
             />
             <Separator/>
+            <div className={"flex flex-row flex-wrap items-center p-6 py-0 gap-4"}>
+                <p className={"font-semibold"}>Action Bar</p>
+                <Separator orientation={"vertical"} className={"h-10"}/>
+                <QuickQuestionButton />
+            </div>
+            <Separator/>
             <section className={"space-y-4 p-6"}>
                 <div>
                     <h2 className={"text-2xl font-bold"}>Forum sections</h2>
@@ -61,7 +68,7 @@ export default async function HomePage() {
                         Some of the most recent and popular posts on the forum, relevant to you.
                     </p>
                 </div>
-                <NotablePosts />
+                <NotablePosts/>
             </section>
         </div>
     );

@@ -19,12 +19,13 @@ import {createClient} from "@/utils/supabase/client";
 import {User} from "@supabase/auth-js";
 
 
-export default function SettingsForm({user, profile, enrollment}: {
+export default function SettingsForm({user, profile, enrollment, subscriptions}: {
     user: User,
     profile: Tables<"profiles">,
     enrollment: Tables<"users_courses"> & {
         details: Tables<"course_years"> & { course: Tables<"courses"> | null } | null
-    }
+    },
+    subscriptions: Tables<"subscriptions">
 }) {
     const searchParams = useSearchParams();
     // If the server is running, do not show the error message
@@ -37,9 +38,10 @@ export default function SettingsForm({user, profile, enrollment}: {
             firstName: profile.first_name,
             lastName: profile.last_name,
             email: user.email as string,
+            roundup: subscriptions.roundup,
             course: enrollment?.details?.course?.id ?? 0,
             year: enrollment?.details?.year_number,
-            profilePicture: undefined
+            profilePicture: undefined,
         },
         reValidateMode: "onChange"
     });
@@ -86,6 +88,7 @@ export default function SettingsForm({user, profile, enrollment}: {
             course: fd.course,
             year: fd.year ?? null,
             email: fd.email,
+            roundup: fd.roundup,
             profile_picture: profilePictureUrl
         }
 
