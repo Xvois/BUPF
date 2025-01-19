@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck Deprecated component
+
+
 'use client'
 
 /**
@@ -53,6 +57,8 @@ const getRelativePosition = (element: HTMLElement, container: HTMLElement): Boun
 }
 
 /**
+
+ *
  *
  * This component is used to draw lines between child elements based on the provided nodes and links, it acts as a force graph.
  * Each node element must be a forward ref to allow the ElementGraph component to access its DOM element.
@@ -91,6 +97,9 @@ const getRelativePosition = (element: HTMLElement, container: HTMLElement): Boun
  *
  * // Use the ElementGraph component
  * <ElementGraph nodes={nodes} links={links} />
+ *
+ * @deprecated
+ * This component is deprecated and will be removed in the future.
  */
 const ElementGraph: React.FC<ElementGraphProps & SVGProps<never>> = ({nodes, links}: ElementGraphProps) => {
 

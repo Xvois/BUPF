@@ -43,12 +43,12 @@ function organizeComments(comments: CommentWOChildren[]): CommentType[] {
 }
 
 export default async function CommentSection(props: CommentSectionProps & HTMLAttributes<HTMLDivElement>) {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {data: {user: user}, error: userError} = await supabase.auth.getUser();
     const {
         data: postComments,
         error: postCommentsError
-    } = await supabase.from("posts").select("attached_comments").eq("id", props.post_id).single();
+    } = await supabase.from("posts").select("attached_comments").eq("id", Number(props.post_id)).single();
 
     if (!user) {
         return (
@@ -82,7 +82,7 @@ export default async function CommentSection(props: CommentSectionProps & HTMLAt
     const resolvedComments = organizeComments(comments);
 
     return (
-        <section className={cn("space-y-8 md:gap-6 lg:w-2/3 lg:mx-auto", props.className)}>
+        <section className={cn("space-y-8 ", props.className)}>
 
             <header className="space-y-4">
                 <h2 className="text-xl font-semibold">

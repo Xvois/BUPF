@@ -11,7 +11,7 @@ export const revalidate = false;
 
 export default async function Modules() {
 
-	const supabase = createClient()
+	const supabase = await createClient()
 	const {data: {user}} = await supabase.auth.getUser();
 
 	if(!user) {

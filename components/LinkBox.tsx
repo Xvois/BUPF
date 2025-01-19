@@ -20,7 +20,6 @@ export default function LinkBox({title, description, href, className, ...props}:
             className={
                 cn(cn("group flex flex-col border rounded-md p-4 transition-all focus:outline-foreground hover:bg-gradient-to-br hover:from-muted/0 hover:to-muted/50", className), `${props.disabled && "cursor-not-allowed opacity-50 pointer-events-none "}`)
             }
-            ref={props.itemRef}
             href={href}
             aria-disabled={props.disabled}
         >

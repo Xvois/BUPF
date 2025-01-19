@@ -7,7 +7,7 @@ import {redirect} from 'next/navigation'
 import {uploadDraftPicture} from "@/app/articles/editor/_actions/handlePictures";
 
 export async function handleSave(data: z.infer<typeof formSchema>, id?: number) {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const {data: {user}} = await supabase.auth.getUser();
 
 	if (!user) {

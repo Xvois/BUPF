@@ -12,7 +12,7 @@ export const markComment = async (
     comment: Tables<"comments">,
     postID: number,
 ) => {
-    const client = createClient();
+    const client = await createClient();
     const {error} = await client
         .from("posts")
         .update({
@@ -32,7 +32,7 @@ export const unMarkComment = async (
     comment: Tables<"comments">,
     postID: number,
 ) => {
-    const client = createClient();
+    const client = await createClient();
     const {error} = await client
         .from("posts")
         .update({
@@ -51,7 +51,7 @@ export const unMarkComment = async (
 export const reportComment = async (
     comment: Tables<"comments">,
 ) => {
-    const client = createClient();
+    const client = await createClient();
     const {
         data: {user: user},
     } = await client.auth.getUser();
@@ -99,7 +99,7 @@ export async function postComment(
     postID: number,
     parentID?: number,
 ) {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const revertChanges = async () => {
         if (data) {
@@ -155,7 +155,7 @@ export async function postComment(
 }
 
 export async function deleteComment(commentID: number, postID: number) {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const {data: children} = await supabase.from("comments").select("*").eq("parent", commentID);
 

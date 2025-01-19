@@ -5,7 +5,7 @@ import {createAdminClient} from "@/utils/supabase/admin";
 import {redirect} from "next/navigation";
 
 const deleteAccount = async () => {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const supabaseAdmin = createAdminClient();
 	const {data: {user: user}} = await supabase.auth.getUser();
 	if (!user) {

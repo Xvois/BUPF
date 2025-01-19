@@ -9,7 +9,7 @@ export type SettingsUploadSchema =
 
 export const handleSubmit = async (fd: SettingsUploadSchema) => {
 
-    const supabase = createClient();
+    const supabase = await createClient();
     const {data: {user}} = await supabase.auth.getUser();
 
     if (!user) {

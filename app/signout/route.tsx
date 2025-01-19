@@ -4,12 +4,15 @@ import {createClient} from "@/utils/supabase/server";
 import {revalidatePath} from "next/cache";
 
 export async function GET() {
-    const supabase = createClient();
+    const supabase = await createClient();
     await supabase.auth.signOut();
 
-    cookies().getAll().forEach(cookie => {
+    const cookieStore = await cookies();
+
+
+    cookieStore.getAll().forEach(cookie => {
         if(cookie.name.startsWith("sb")) {
-            cookies().delete(cookie.name);
+            cookieStore.delete(cookie.name);
         }
     })
 

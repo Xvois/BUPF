@@ -7,7 +7,7 @@ import {z} from "zod";
 
 
 export const updatePassword = async (fd: z.infer<typeof formSchema>) => {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {error} = await supabase.auth.updateUser({
         password: fd.password as string,
     })

@@ -13,7 +13,7 @@ export default async function PostsIndicator({moduleID}: { moduleID: string }) {
 }
 
 const FilledPostsIndicator = async ({moduleID}: { moduleID: string }) => {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {data: posts, error} = await supabase.from("posts").select("*").eq("target", moduleID);
 
     if(error) {

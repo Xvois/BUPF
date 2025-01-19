@@ -5,12 +5,10 @@ import {redirect} from "next/navigation";
 import {headers} from "next/headers";
 
 export const changePassword = async (fd: FormData) => {
-    const origin = headers().get("origin");
-    const supabase = createClient();
+    const origin = (await headers()).get("origin");
+    const supabase = await createClient();
 
     const email = fd.get("email") as string;
-
-    console.log(email);
 
     const {error} = await supabase.auth.resetPasswordForEmail(email,
         {

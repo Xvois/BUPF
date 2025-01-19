@@ -6,7 +6,6 @@ import UserDropdown from "@/components/UserDropdown";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {Skeleton} from "@/components/ui/skeleton";
-import {redirect} from "next/navigation";
 
 const wrapperClass = "sticky top-0 left-0 h-16 bg-gradient-to-b from-background to-background/50 backdrop-blur-sm" +
     " bg-background/50 border-b border-border inline-flex w-full flex-row items-center align-middle justify-between" +
@@ -25,20 +24,19 @@ export default function TopBar() {
 
 async function LoadedBar() {
 
-    const supabase = createClient()
+    const supabase = await createClient()
     const {data: {user}} = await supabase.auth.getUser();
 
     const {data: modules, error} = await supabase.rpc("get_user_module_assignments");
     if(error){
         console.log(error)
     }
-    const {data: topics} = await supabase.from("topics").select("*");
 
     if (user) {
         return (
             <div
                 className={wrapperClass}>
-                <NavMenu modules={modules} topics={topics}/>
+                <NavMenu modules={modules}/>
                 <UserDropdown/>
             </div>
         )
@@ -60,7 +58,6 @@ export const TopBarSkeleton = () => {
     return (
         <div className={wrapperClass}>
             <div className={"flex flex-row gap-4"}>
-                <Skeleton className={"h-8 w-24"}/>
                 <Skeleton className={"h-8 w-24"}/>
                 <Skeleton className={"h-8 w-24"}/>
             </div>

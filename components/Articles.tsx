@@ -16,7 +16,7 @@ import {Skeleton} from "@/components/ui/skeleton";
  * The content is truncated to fit the height of the container dynamically.
  *
  * @example
- * const supabase = createClient();
+ * const supabase = await createClient();
  * const {data: article} = await supabase.from("posts").select("*, profiles(*)").eq("id", articleID).single();
  * //...
  * <Article article={article} />

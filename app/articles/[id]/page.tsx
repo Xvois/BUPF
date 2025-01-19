@@ -7,10 +7,15 @@ import CommentSection from "@/components/Comments/CommentSection";
 import {Separator} from "@/components/ui/separator";
 
 
-export default async function ArticlePage({params}: { params: { id: string } }) {
-	const supabase = createClient();
+// @ts-expect-error Unknown types for dynamic APIs change with NEXT 15, see page route for expected params
+export default async function ArticlePage({params}) {
 
-	const {data: post} = await supabase.from("posts").select("*, profiles (*)").eq("id", params.id).single();
+	// See https://nextjs.org/docs/messages/sync-dynamic-apis
+	const {id} = await params;
+
+	const supabase = await createClient();
+
+	const {data: post} = await supabase.from("posts").select("*, profiles (*)").eq("id", Number(id)).single();
 
 	if (!post) {
 		return <div>Post not found</div>
@@ -34,7 +39,7 @@ export default async function ArticlePage({params}: { params: { id: string } }) 
 				{post.content}
 			</MarkdownRender>
 			<Separator/>
-			<CommentSection post_id={params.id} post_type={"article"} owner={post.owner}/>
+			<CommentSection post_id={id} post_type={"article"} owner={post.owner}/>
 		</article>
 	)
 }

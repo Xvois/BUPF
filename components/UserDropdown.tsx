@@ -17,7 +17,7 @@ import {Button} from "@/components/ui/button";
  * Requires no props as it fetches the user's profile from the database.
  */
 export default async function UserDropdown() {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
         data: {user},
     } = await supabase.auth.getUser();

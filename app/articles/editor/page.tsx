@@ -5,22 +5,13 @@ import EditorForm from "@/app/articles/editor/_components/editor-form";
 import DraftsPanel from "@/app/articles/editor/_components/DraftsPanel";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
-export default async function Editor({searchParams}: {
-	searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-	const supabase = createClient();
+// @ts-expect-error Unknown types for dynamic APIs change with NEXT 15
+export default async function Editor({searchParams}) {
+	const supabase = await createClient();
 
-	const {data: {user}} = await supabase.auth.getUser();
-	const {data: {session}} = await supabase.auth.getSession();
-
-	// This should never happen, middleware will redirect the user to the login page
-	if (!user || !session) {
-		return;
-	}
-
-	// Get the draft if a draftID is present
-	const draftID = searchParams?.draftID as string | undefined;
-	const {data: draft} = draftID ? await supabase.from("drafts").select("*").eq("id", draftID).single() : {data: null};
+	// See https://nextjs.org/docs/messages/sync-dynamic-apis
+	const {draftID} = await searchParams;
+	const {data: draft} = draftID ? await supabase.from("drafts").select("*").eq("id", Number(draftID)).single() : {data: null};
 
 
 	const defaultValues = {

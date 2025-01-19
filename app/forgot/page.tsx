@@ -7,13 +7,9 @@ import {SendHorizonal} from "lucide-react";
 import {changePassword} from "@/app/forgot/actions";
 import {ServerError} from "@/components/ServerError";
 
-
-export default async function Forgot({
-                                         searchParams,
-                                     }: {
-    params: { slug: string };
-    searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+// @ts-expect-error Unknown types for dynamic APIs change with NEXT 15
+export default async function Forgot({searchParams}) {
+    const {error} = await searchParams;
     return (
         <>
             <Card>
@@ -39,7 +35,7 @@ export default async function Forgot({
                 </CardFooter>
             </Card>
             <ServerError>
-                {searchParams?.error}
+                {error}
             </ServerError>
         </>
 

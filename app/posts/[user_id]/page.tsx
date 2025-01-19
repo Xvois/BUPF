@@ -6,8 +6,8 @@ import {Separator} from "@/components/ui/separator";
 import Post from "@/components/Post";
 
 
-export default async function UserPosts({}: { params: { user_id: string } }) {
-    const supabase = createClient();
+export default async function UserPosts() {
+    const supabase = await createClient();
     const {data: {user}} = await supabase.auth.getUser();
     if (!user) {
         return redirect("/login");
@@ -23,9 +23,6 @@ export default async function UserPosts({}: { params: { user_id: string } }) {
     }
 
     const questions = posts.filter(post => post.type === "question") as (Tables<'posts'> & {
-        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
-    })[];
-    const discussions = posts.filter(post => post.type === "discussion") as (Tables<'posts'> & {
         profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
     })[];
     const articles = posts.filter(post => post.type === "article") as (Tables<'posts'> & {
@@ -45,16 +42,6 @@ export default async function UserPosts({}: { params: { user_id: string } }) {
         return grouped;
     }, []);
 
-    const groupedDiscussions = discussions.reduce((grouped: (Tables<'posts'> & {
-        profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
-    })[][], post, index) => {
-        const groupIndex = Math.floor(index / 4);
-        if (!grouped[groupIndex]) {
-            grouped[groupIndex] = [];
-        }
-        grouped[groupIndex].push(post);
-        return grouped;
-    }, []);
     const groupedArticles = articles.reduce((grouped: (Tables<'posts'> & {
         profiles: Tables<'profiles'> & { courses: Tables<'courses'> } | null
     })[][], post, index) => {
@@ -91,7 +78,7 @@ export default async function UserPosts({}: { params: { user_id: string } }) {
                                     <div key={index} className={"flex flex-col gap-4 w-full max-h-[525px]"}>
                                         {
                                             group.map((post) => (
-                                                <Post type={"modules"} post={post} key={post.id}/>
+                                                <Post post={post} key={post.id}/>
                                             ))
                                         }
                                     </div>
@@ -101,36 +88,6 @@ export default async function UserPosts({}: { params: { user_id: string } }) {
                         :
                         <div>
                             <p className={"text-sm text-muted-foreground"}>No questions found.</p>
-                        </div>
-                    }
-                </div>
-            </section>
-            <Separator/>
-            <section className={"space-y-4 p-6"}>
-                <div>
-                    <h2 className={"text-2xl font-bold"}>Discussions</h2>
-                    <p className={"text-sm text-muted-foreground"}>
-                        These are all the discussions that you have started. You can view them here.
-                    </p>
-                </div>
-                <div>
-                    {groupedDiscussions.length > 0 ?
-                        <PaginationWrapper>
-                            {
-                                groupedDiscussions.map((group, index) => (
-                                    <div key={index} className={"flex flex-col gap-4 w-full h-[525px]"}>
-                                        {
-                                            group.map((post) => (
-                                                <Post type={"topics"} post={post} key={post.id}/>
-                                            ))
-                                        }
-                                    </div>
-                                ))
-                            }
-                        </PaginationWrapper>
-                        :
-                        <div>
-                            <p className={"text-sm text-muted-foreground"}>No discussions found.</p>
                         </div>
                     }
                 </div>

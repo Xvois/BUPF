@@ -514,27 +514,6 @@ export type Database = {
           },
         ]
       }
-      topics: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: string
-          title: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id: string
-          title: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          title?: string
-        }
-        Relationships: []
-      }
       user_email_permissions: {
         Row: {
           id: string
@@ -585,13 +564,40 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      course_modules: {
+        Row: {
+          course_id: number | null
+          course_year: number | null
+          is_required: boolean | null
+          module_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_years_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "module_assignments_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       create_email_for_user_with_top_posts: {
         Args: {
           user_id: string
         }
+        Returns: undefined
+      }
+      enroll_all_in_roundup: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       get_top_n_posts_by_targets: {
@@ -658,6 +664,12 @@ export type Database = {
               is_required: boolean
             }[]
           }
+      send_auto_subscription_email_to_user: {
+        Args: {
+          user_id: string
+        }
+        Returns: undefined
+      }
       send_email_mailersend: {
         Args: {
           message: Json
@@ -668,6 +680,10 @@ export type Database = {
         Args: {
           user_id: string
         }
+        Returns: undefined
+      }
+      send_weekly_roundups_to_subscribed_users: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
     }

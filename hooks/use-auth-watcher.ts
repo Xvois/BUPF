@@ -1,3 +1,4 @@
+'use client';
 import {useEffect} from "react";
 import {createClient} from "@/utils/supabase/client";
 import {Session} from "@supabase/auth-js";

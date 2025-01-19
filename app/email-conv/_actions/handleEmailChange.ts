@@ -5,7 +5,7 @@ import {redirect} from "next/navigation";
 import {createClient} from "@/utils/supabase/server";
 
 export const handleEmailChange = async (newEmail: string) => {
-    const admin = createClient();
+    const admin = await createClient();
     if (newEmail.endsWith("@bath.ac.uk")) {
         const {error} = await admin.auth.updateUser({email: newEmail});
         if (error) {

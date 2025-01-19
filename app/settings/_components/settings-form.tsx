@@ -49,7 +49,7 @@ export default function SettingsForm({user, profile, enrollment, subscriptions}:
     const onSubmit = async (fd: z.infer<typeof formSchema>) => {
 
         const handleProfilePictureUpload = async (profilePicture: File) => {
-            const supabase = createClient();
+            const supabase = await createClient();
             const {data: {user}} = await supabase.auth.getUser();
             const {data: {session}} = await supabase.auth.getSession();
 

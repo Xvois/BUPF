@@ -5,8 +5,8 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
 import {Button} from "@/components/ui/button";
 import {useEffect, useState} from "react";
-import {createClient} from "@/utils/supabase/client";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import {createClient} from "@/utils/supabase/client";
 
 /**
  * A small component that displays the profile name.
@@ -15,7 +15,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
  * The course is fetched from the database when hovered.
  *
  * @example
- * const supabase = createClient();
+ * const supabase = await createClient();
  * const {data: profile} = await supabase.from("profiles").select().eq("id", user.id).single();
  * //...
  * <Profile profile={profile} />
@@ -28,10 +28,11 @@ export default function Profile(props: { profile: Tables<'profiles'> }) {
     const [hasBeenTriggered, setHasBeenTriggered] = useState(false);
     const [course, setCourse] = useState<Tables<'courses'> | null>(null);
 
+    const supabase= createClient();
+
     useEffect(() => {
         if (hasBeenTriggered) {
-            const supabase = createClient();
-            supabase.from("users_courses").select("*, details:course_years(course:courses(*))").eq("user_id", profile.id).single().then(({data, error}) => {
+            supabase.from("users_courses").select("*, details:course_years(course:courses(*))").eq("user_id", profile.id).single().then(({data}) => {
                 if (data?.details?.course) {
                     setCourse(data.details.course);
                 }

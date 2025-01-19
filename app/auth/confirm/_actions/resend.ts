@@ -4,7 +4,7 @@
 import {createClient} from "@/utils/supabase/client";
 
 export const resendEmail = async (email: string, redirect: string) => {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const {error} = await supabase.auth.resend({
 		type: 'signup',
 		email: email,

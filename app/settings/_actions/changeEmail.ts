@@ -4,7 +4,7 @@ import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 
 const changeEmail = async (newEmail: string) => {
-	const supabase = createClient();
+	const supabase = await createClient();
 	if(newEmail.endsWith("@bath.ac.uk")) {
 		const {error} = await supabase.auth.updateUser({email: newEmail});
 		if (error) {

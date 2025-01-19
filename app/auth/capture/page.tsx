@@ -7,15 +7,18 @@ This is page is used to ensure a token isn't used up in email
 URL prefetching.
  */
 
+/*
 type ExpectedParams = {
     redirect?: string,
     token_hash?: string,
     type?: "signup"
-
 }
+ */
 
-export default function Page({searchParams}: { params: {}, searchParams: ExpectedParams }) {
-    const isValid = searchParams?.redirect && searchParams?.token_hash && (searchParams?.type === "signup");
+// @ts-expect-error Unknown types for dynamic APIs change with NEXT 15, see above type for expected params
+export default async function Page({searchParams}) {
+    const {redirect, token_hash, type} = await searchParams;
+    const isValid = redirect && token_hash && (type === "signup");
     if (!isValid) {
         return <div>Invalid request</div>
     }

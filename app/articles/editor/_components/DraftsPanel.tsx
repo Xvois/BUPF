@@ -3,15 +3,20 @@
 import Link from "next/link";
 import {Separator} from "@/components/ui/separator";
 import {Button} from "@/components/ui/button";
-import {Suspense, useState} from "react";
+import {Suspense, useEffect, useState} from "react";
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
-import useSWR from "swr";
-import {fetcher} from "@/utils/fetcher";
+import { createClient } from "@/utils/supabase/client";
+import {Tables} from "@/types/supabase";
 
 
 export default function DraftsPanel() {
-	const {data: response} = useSWR("/api/drafts", (url) => fetcher(url));
-	const drafts = response?.data;
+	const supabase = createClient();
+	const [drafts, setDrafts] = useState<Tables<"drafts">[]|null>(null);
+	useEffect(() => {
+		supabase.from("drafts").select().then(({data}) => {
+			setDrafts(data);
+		});
+	}, []);
 	const [isOpened, setIsOpened] = useState(false);
 	return (
 		<Sheet open={isOpened} onOpenChange={(state) => setIsOpened(state)}>

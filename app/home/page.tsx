@@ -1,34 +1,10 @@
-import {createClient} from "@/utils/supabase/server";
-import {redirect} from "next/navigation";
 import LinkBox from "@/components/LinkBox";
 import {Separator} from "@/components/ui/separator";
-import {cookies} from "next/headers";
 import SectionHeader from "@/components/SectionHeader";
 import {Home} from "lucide-react";
 import NotablePosts from "@/app/home/_components/NotablePosts";
-import QuickQuestionButton from "@/app/home/_components/QuickQuestionButton";
 
-export default async function HomePage() {
-
-    // Quick check that does not involve a query
-
-    const cookieStore = cookies();
-    const allCookies = cookieStore.getAll();
-    const sbCookies = allCookies.filter(cookie => cookie.name.startsWith('sb-'));
-    if (sbCookies.length === 0) {
-        return redirect("/login");
-    }
-
-    // Full check that involves a query
-
-    const supabase = createClient();
-    const {
-        data: {user},
-    } = await supabase.auth.getUser();
-    if (!user) {
-        return redirect("/login");
-    }
-
+export default function HomePage() {
 
     return (
         <div className="w-full space-y-4">
@@ -37,12 +13,6 @@ export default async function HomePage() {
                            icon={<Home/>}
                            type={"Your home"}
             />
-            <Separator/>
-            <div className={"flex flex-row flex-wrap items-center p-6 py-0 gap-4"}>
-                <p className={"font-semibold"}>Action Bar</p>
-                <Separator orientation={"vertical"} className={"h-10"}/>
-                <QuickQuestionButton />
-            </div>
             <Separator/>
             <section className={"space-y-4 p-6"}>
                 <div>
@@ -54,8 +24,6 @@ export default async function HomePage() {
                 <div className={"flex flex-row flex-wrap gap-4"}>
                     <LinkBox title={"Modules"} href={"/modules"} className={"flex-grow"}
                              description={"View your modules, see what's coming up, and discuss with your peers."}/>
-                    <LinkBox title={"Topics"} href={"/topics"} className={"flex-grow"}
-                             description={"Discuss physics topics with your peers, ask questions, and share knowledge."}/>
                     <LinkBox title={"Articles"} href={"/articles"} className={"flex-grow"}
                              description={"Write and read articles on physics topics, share your knowledge and learn from others."}/>
                 </div>

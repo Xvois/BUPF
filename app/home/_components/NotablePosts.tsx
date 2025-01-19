@@ -1,6 +1,4 @@
 import {createClient} from "@/utils/supabase/server";
-import apiAxios from "@/utils/axios/apiAxios";
-import {wrapQParams} from "@/utils/api/helpers";
 import {Suspense} from "react";
 import Post, {PostSkeleton} from "@/components/Post";
 
@@ -24,21 +22,14 @@ function NotablePostsSkeleton() {
 }
 
 async function NotablePostsFilled() {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {data: modules} = await supabase.rpc("get_user_module_assignments");
 
     if (!modules) {
         return <></>
     }
 
-    const params = wrapQParams([
-        {
-            column: "target",
-            operator: "in",
-            value: modules.map(m => m.module_id)
-        },
-    ], undefined, 3);
-    const {data: {data: posts}} = await apiAxios.get(`/api/posts`, {searchParams: params.toString()});
+    const {data: posts} = await supabase.from("posts").select("*, profiles (*)").in("target", modules.map(m => m.module_id)).limit(3);
 
     if (!posts) {
         return <></>
@@ -48,7 +39,7 @@ async function NotablePostsFilled() {
         <div className={"w-full space-y-4"}>
             {
                 posts.map(post => (
-                    <Post key={post.id} post={post} type={"modules"}/>
+                    <Post key={post.id} post={post}/>
                 ))
             }
         </div>

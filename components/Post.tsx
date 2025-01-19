@@ -10,7 +10,6 @@ type PostProps = {
     post: Tables<'posts'> & {
         profiles: Tables<'profiles'> | null
     }
-    type: "modules" | "topics"
 };
 
 /**
@@ -37,7 +36,7 @@ export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { clas
 
 
     return (
-        <Link {...linkProps} href={`/${props.type}/${post.target}/posts/${post.id}`}
+        <Link {...linkProps} href={`/modules/${post.target}/posts/${post.id}`}
               className={cn("flex flex-col border rounded-md p-4 transition-all hover:bg-accent focus:outline-foreground bg-popover", linkProps.className)}>
             <div>
                 <h3 className={"text-xl font-bold text-ellipsis overflow-hidden break-words"}>{post.heading}</h3>
@@ -76,8 +75,8 @@ export default function Post(props: PostProps & Omit<LinkProps, 'href'> & { clas
 export const PostSkeleton = () => {
     return (
         <Skeleton
-            className={"flex flex-col border rounded-md p-4 transition-all bg-muted"}>
-            <Skeleton className={"space-y-4"}>
+            className={"flex flex-col border rounded-md p-4 transition-all bg-background"}>
+            <div className={"space-y-4"}>
                 <h3 className={"text-xl font-bold"}>
                     <Skeleton className={"w-1/2 bg-muted-foreground/5 h-6 rounded-md"}/>
                 </h3>
@@ -85,7 +84,7 @@ export const PostSkeleton = () => {
                 <Skeleton
                     className={"w-1/4 bg-muted-foreground/5 h-4 ml-auto"}
                 />
-            </Skeleton>
+            </div>
         </Skeleton>
     )
 }

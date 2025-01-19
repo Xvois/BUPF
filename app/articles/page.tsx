@@ -1,38 +1,25 @@
 import {Separator} from "@/components/ui/separator";
-import apiAxios from "@/utils/axios/apiAxios";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import SectionHeader from "@/components/SectionHeader";
 import {Package, PlusCircle} from "lucide-react";
 import {Article, ArticleSkeleton} from "@/components/Articles";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
-import {wrapQParams} from "@/utils/api/helpers";
-import {ArticlesResponse} from "@/types/api/articles/types";
+import {createClient} from "@/utils/supabase/server";
+import {Tables} from "@/types/supabase";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60;
 
 export default async function Articles() {
 
+    const supabase = await createClient();
+
     const articlesPerCarousel = 5;
 
-    const recentParams = wrapQParams([], {id: "created_at", type: {ascending: false}}, articlesPerCarousel);
-    const {
-        data: recentArticles,
-        error: recentArticlesError
-    } = await apiAxios.get("/api/articles", {searchParams: recentParams.toString()}).then(res => res.data);
-    if (recentArticlesError) {
-        return new Error(recentArticlesError.message);
-    }
+    const {data: recentArticles} = await supabase.from("posts").select("*, profiles (*)").eq("type", "article").order("created_at", {ascending: false}).limit(articlesPerCarousel);
 
-    const popularParams = wrapQParams([], {id: "attached_comments", type: {ascending: false}}, articlesPerCarousel);
-    const {
-        data: popularArticles,
-        error: popularArticlesError
-    } = await apiAxios.get("/api/articles", {searchParams: popularParams.toString()}).then(res => res.data);
-    if (popularArticlesError) {
-        return new Error(popularArticlesError.message);
-    }
+    const {data: popularArticles} = await supabase.from("posts").select("*, profiles (*)").eq("type", "article").order("attached_comments", {ascending: false}).limit(articlesPerCarousel);
 
     return (
         <div className={"space-y-4 w-full"}>
@@ -44,8 +31,6 @@ export default async function Articles() {
             />
             <Separator/>
             <div className={"flex flex-row flex-wrap items-center p-6 py-0 gap-4"}>
-                <p className={"font-semibold"}>Action Bar</p>
-                <Separator orientation={"vertical"} className={"h-10"}/>
                 <Button asChild>
                     <Link href={"/articles/editor"}>
                         Write an article
@@ -75,7 +60,7 @@ export default async function Articles() {
     )
 }
 
-const ArticlesCarousel = ({articles, articlesPerCarousel}: { articles: ArticlesResponse["data"], articlesPerCarousel: number }) => {
+const ArticlesCarousel = ({articles, articlesPerCarousel}: { articles: Array<Tables<"posts"> & {profiles: Tables<"profiles"> | null}> | null, articlesPerCarousel: number }) => {
     return (
         <Carousel
             opts={{

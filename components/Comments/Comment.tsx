@@ -1,7 +1,7 @@
 import Profile from "@/components/Profile";
 import MarkdownRender from "@/components/MarkdownRender/MarkdownRender";
 import {DeleteButton, MarkButton, ReplyButton, ReportButton,} from "@/components/Comments/ActionButtons";
-import {CheckCircle, CircleCheck} from "lucide-react";
+import {CircleCheck} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip";
 import {CommentType} from "@/components/Comments/CommentSection";
 import {User} from "@supabase/auth-js";

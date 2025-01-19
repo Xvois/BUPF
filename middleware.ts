@@ -25,9 +25,9 @@ export async function middleware(request: NextRequest) {
 
         // Updates session
         // https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=environment&environment=middleware&queryGroups=framework&framework=nextjs
-        let response = updateSession(request);
+        const response = updateSession(request);
 
-        const supabase = createClient();
+        const supabase = await createClient();
 
         // This will refresh session if expired - required for Server Components
         // https://supabase.com/docs/guides/auth/server-side/nextjs
@@ -54,7 +54,7 @@ export async function middleware(request: NextRequest) {
         }
 
         return response;
-    } catch (error) {
+    } catch {
         // If you are here, a Supabase client could not be created!
         // This is likely because you have not set up environment variables.
         return NextResponse.next({

@@ -7,7 +7,7 @@ import {redirect} from "next/navigation";
 import {uploadPublishedPicture} from "@/app/articles/editor/_actions/handlePictures";
 
 const deleteDraft = async (draftID: number) => {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const delRes = await supabase.from("drafts").delete().eq("id", draftID).select().single();
 	if (delRes.error) {
 		throw new Error(delRes.error.message);
@@ -22,7 +22,7 @@ const deleteDraft = async (draftID: number) => {
 }
 
 export async function handlePublish(data: z.infer<typeof formSchema>, draftID?: number) {
-	const supabase = createClient();
+	const supabase = await createClient();
 
 	// Delete draft
 	if (draftID) {

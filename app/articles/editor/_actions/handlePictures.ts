@@ -14,7 +14,7 @@ async function createUniqueName(blob: Blob): Promise<string> {
     return hash.digest('hex');
 }
 export const uploadDraftPicture = async (picture: File) => {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const {data: {user}} = await supabase.auth.getUser();
 	const {data: {session}} = await supabase.auth.getSession();
 	if (!user || !session) {
@@ -38,7 +38,7 @@ export const uploadDraftPicture = async (picture: File) => {
 }
 
 export const uploadPublishedPicture = async (picture: File) => {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const {data: {user}} = await supabase.auth.getUser();
 	const {data: {session}} = await supabase.auth.getSession();
 	if (!user || !session) {

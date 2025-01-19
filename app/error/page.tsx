@@ -1,11 +1,8 @@
 import {XCircle} from "lucide-react";
 
-export default function Success({
-                                    searchParams,
-                                }: {
-    searchParams: { [key: string]: string | string[] | undefined };
-}) {
-    const message = searchParams["message"];
+// @ts-expect-error Unknown types for dynamic APIs change with NEXT 15
+export default async function Success({searchParams}) {
+    const {message} = await searchParams;
 
     if (message) {
         return (

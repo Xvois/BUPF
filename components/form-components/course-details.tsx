@@ -1,5 +1,4 @@
 import {useFormContext} from "react-hook-form";
-import useSWR from "swr";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
@@ -15,8 +14,9 @@ import {
 	CommandSeparator
 } from "@/components/ui/command";
 import {Input} from "@/components/ui/input";
-import {useState} from "react";
-import {fetcher} from "@/utils/fetcher";
+import {useEffect, useState} from "react";
+import {createClient} from "@/utils/supabase/client";
+import {Tables} from "@/types/supabase";
 
 /**
  * A form component that takes in the course and year of study of the user.
@@ -46,9 +46,16 @@ import {fetcher} from "@/utils/fetcher";
  * ```
  */
 const CourseDetailsInputs = () => {
+	const supabase = createClient();
+
+	const [courses, setCourses] = useState<Tables<"courses">[] | null>(null);
+	useEffect(() => {
+		supabase.from("courses").select().then(({data}) => {
+			setCourses(data);
+		});
+	}, []);
+
 	const form = useFormContext()
-	const {data: response} = useSWR('/api/courses', (url) => fetcher(url));
-	const courses = response?.data;
 	const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 	return (
 		<>

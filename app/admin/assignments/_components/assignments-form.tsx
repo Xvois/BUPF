@@ -2,7 +2,7 @@
 
 import {useForm, useFormContext} from "react-hook-form";
 import {Tables} from "@/types/supabase";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Form, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Checkbox} from "@/components/ui/checkbox";
 import {formSchema} from "@/app/admin/assignments/_schema/formSchema";
 import {z} from "zod";
@@ -15,11 +15,9 @@ import EmSubtle from "@/components/EmSubtle";
 import {updateAssignments} from "@/app/admin/assignments/_actions/handleSubmit";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
-import useSWR from "swr";
-import {fetcher} from "@/utils/fetcher";
 import {Label} from "@/components/ui/label";
 import {X} from "lucide-react";
-import {Separator} from "@/components/ui/separator";
+import {createClient} from "@/utils/supabase/client";
 
 
 export default function AssignmentsForm({modules}: {
@@ -27,7 +25,6 @@ export default function AssignmentsForm({modules}: {
 }) {
 
     const urlSearchParams = useSearchParams();
-
     const form = useForm({
         defaultValues: {
             modules: [] as z.infer<typeof formSchema>["modules"],
@@ -43,22 +40,34 @@ export default function AssignmentsForm({modules}: {
     const formCourse = form.watch("course");
     const formYear = form.watch("year");
 
-    const {
-        data: courseModulesResponse,
-    } = useSWR(['/api/courses/[id]/[year]/modules' as const, {
-        id: formCourse.toString(),
-        year: formYear.toString()
-    }], ([url, params]) => fetcher(url, params));
-
-    const defaultModules = courseModulesResponse?.data?.map((m) => ({id: m.module_id, is_required: m.is_required}));
+    const supabase = createClient();
 
     useEffect(() => {
-        if (defaultModules) {
-            form.setValue("modules", defaultModules);
-        }
-    }, [defaultModules]);
+        const fetchCourseModules = async () => {
+            const { data, error } = await supabase
+                .from('course_modules')
+                .select('*')
+                .eq('course_id', formCourse)
+                .eq('course_year', formYear);
 
-    const {isSubmitting} = form.formState;
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            const defaultModules = data
+                ?.filter((m) => m.module_id !== null && m.is_required !== null)
+                .map((m) => ({ id: m.module_id as string, is_required: m.is_required as boolean }));
+
+            if (defaultModules) {
+                form.setValue("modules", defaultModules);
+            }
+        };
+
+        fetchCourseModules();
+    }, [formCourse, formYear, form]);
+
+    const { isSubmitting } = form.formState;
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         await updateAssignments(data);

@@ -4,8 +4,8 @@ import {formSchema} from "@/app/admin/assignments/_schema/formSchema";
 import {z} from "zod";
 import {redirect} from "next/navigation";
 import {createAdminClient} from "@/utils/supabase/admin";
-import {toPostgresList} from "@/utils/api/helpers";
 import {revalidatePath} from "next/cache";
+import {toPostgresList} from "@/utils/supabase/postgresHelpers";
 
 
 export const updateAssignments = async (fd: z.infer<typeof formSchema>) => {

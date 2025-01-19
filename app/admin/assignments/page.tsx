@@ -1,14 +1,16 @@
-import apiAxios from "@/utils/axios/apiAxios";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import AssignmentsForm from "@/app/admin/assignments/_components/assignments-form";
 import React from "react";
+import {createClient} from "@/utils/supabase/server";
 
 
 export default async function Page() {
 
-    const {data: {data: modules, error: modulesError}} = await apiAxios.get("/api/modules");
+    const supabase = await createClient();
 
-    if(modulesError) {
+    const {data: modules, error} = await supabase.from("modules").select("*");
+
+    if(error) {
         return; // TODO: Some fallback
     }
 

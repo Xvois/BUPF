@@ -7,7 +7,7 @@ import RichTextArea from "@/components/RichTextArea";
 import {postComment} from "@/components/Comments/actions";
 import {ServerError} from "@/components/ServerError";
 import {useSearchParams} from "next/navigation";
-import {User, VenetianMask} from "lucide-react";
+import AnonymousButton from "@/components/AnonymousButton";
 
 export default function CommentForm({postID}: { postID: number }) {
     const searchParams = useSearchParams();
@@ -34,14 +34,7 @@ export default function CommentForm({postID}: { postID: number }) {
                           onChange={onChange}/>
             <div className={"flex flex-col md:flex-row gap-4 items-center"}>
                 <Button variant={"default"} type="submit">Submit</Button>
-                <Button type={"button"} className={"w-36 transition-colors"} variant={isAnonymous ? "outline" : "secondary"} onClick={() => setIsAnonymous(!isAnonymous)}>
-                    {isAnonymous
-                        ?
-                        <p className={"inline-flex gap-2 items-center"}><VenetianMask /> Anonymous</p>
-                        :
-                        <p className={"inline-flex gap-2 items-center"}><User /> Public</p>
-                    }
-                </Button>
+                <AnonymousButton state={isAnonymous} dispatch={setIsAnonymous} />
             </div>
             <ServerError>
                 {searchParams.get("error")}
