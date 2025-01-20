@@ -1,11 +1,15 @@
+"use client"
+
 import * as React from "react"
-import {Suspense} from "react"
-import {createClient} from "@/utils/supabase/server";
+import {createClient} from "@/utils/supabase/client";
 import NavMenu from "@/components/NavMenu/NavMenu";
 import UserDropdown from "@/components/UserDropdown";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {Skeleton} from "@/components/ui/skeleton";
+import {useEffect} from "react";
+import {User} from "@supabase/auth-js";
+import {Database} from "@/types/supabase";
 
 const wrapperClass = "sticky top-0 left-0 h-16 bg-gradient-to-b from-background to-background/50 backdrop-blur-sm" +
     " bg-background/50 border-b border-border inline-flex w-full flex-row items-center align-middle justify-between" +
@@ -14,23 +18,20 @@ const wrapperClass = "sticky top-0 left-0 h-16 bg-gradient-to-b from-background 
 
 
 export default function TopBar() {
-    return (
-        <Suspense fallback={<TopBarSkeleton/>}>
-            <LoadedBar/>
-        </Suspense>
-    )
-}
+
+    const supabase = createClient()
+
+    type RPCReturn = Database["public"]["Functions"]["get_user_module_assignments"]["Returns"];
 
 
-async function LoadedBar() {
+    const [user, setUser] = React.useState<User | null>(null)
+    const [modules, setModules] = React.useState<RPCReturn | null>(null)
 
-    const supabase = await createClient()
-    const {data: {user}} = await supabase.auth.getUser();
+    useEffect(() => {
+        supabase.auth.getUser().then(({data: {user}}) => setUser(user));
+        supabase.rpc("get_user_module_assignments").then(({data: modules}) => setModules(modules));
+    }, []);
 
-    const {data: modules, error} = await supabase.rpc("get_user_module_assignments");
-    if(error){
-        console.log(error)
-    }
 
     if (user) {
         return (
@@ -51,7 +52,6 @@ async function LoadedBar() {
             </div>
         )
     }
-
 }
 
 export const TopBarSkeleton = () => {

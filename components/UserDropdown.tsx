@@ -1,5 +1,8 @@
+"use client"
+
 import * as React from "react";
-import {createClient} from "@/utils/supabase/server";
+import { useState, useEffect } from "react";
+import { createClient } from "@/utils/supabase/client";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,19 +11,36 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import {Tables} from "@/types/supabase";
+import {User} from "@supabase/auth-js";
+import {PostgrestError} from "@supabase/supabase-js";
 
-/**
- * A dropdown menu that displays user account information.
- * Requires no props as it fetches the user's profile from the database.
- */
-export default async function UserDropdown() {
-    const supabase = await createClient();
-    const {
-        data: {user},
-    } = await supabase.auth.getUser();
+export default function UserDropdown() {
+    const supabase = createClient();
+    const [user, setUser] = useState<User | null>(null);
+    const [profile, setProfile] = useState<Tables<"profiles"> | null>(null);
+    const [profileError, setProfileError] = useState<PostgrestError | null>(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+            if (user) {
+                const { data: profile, error } = await supabase
+                    .from("profiles")
+                    .select()
+                    .eq("id", user.id)
+                    .single();
+                setProfile(profile);
+                setProfileError(error);
+            }
+        };
+        fetchUser();
+    }, [supabase]);
+
     if (!user) {
         return (
             <Button variant={"link"} asChild>
@@ -28,11 +48,6 @@ export default async function UserDropdown() {
             </Button>
         );
     }
-    const {data: profile, error: profileError} = await supabase
-        .from("profiles")
-        .select()
-        .eq("id", user.id)
-        .single();
 
     if (!profile) {
         return <span>Error fetching profile: {profileError?.message}</span>;
@@ -56,21 +71,15 @@ export default async function UserDropdown() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator/>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem>
                     <Link href={`/posts/${user.id}`}>My Posts</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <Link href={`/settings`}>Settings</Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator/>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                    {
-                        /*
-                        Prefetching is disabled because otherwise they will be logged out whenever they open the dropdown!
-                        (Or sometimes only occasionally, which is even worse and made this bug very hard to track down.)
-                         */
-                    }
                     <Link prefetch={false} href={"/signout"}>Sign out</Link>
                 </DropdownMenuItem>
             </DropdownMenuContent>
